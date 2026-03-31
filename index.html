@@ -5,51 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>আল ইত্তেহাদ ফাউন্ডেশন - ড্যাশবোর্ড</title>
     <style>
-        :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; }
+        :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; --whatsapp: #25d366; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
         .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
         .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; position: relative; }
         
-        /* রোলিং টেক্সট ডিজাইন - এখন উপরে */
-        .header-rolling { 
-            width: 100%; 
-            overflow: hidden; 
-            background: #f1f5f9; 
-            margin-bottom: 20px; 
-            padding: 12px 0; 
-            border-radius: 8px; 
-            border: 1px solid #e2e8f0; 
-        }
+        .header-rolling { width: 100%; overflow: hidden; background: #f1f5f9; margin-bottom: 20px; padding: 12px 0; border-radius: 8px; border: 1px solid #e2e8f0; }
         .rolling-text { display: inline-block; white-space: nowrap; font-weight: bold; font-size: 16px; animation: roll 25s linear infinite; }
         .warning-red { color: #b91c1c; }
         .name-green { color: var(--primary); }
         @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         .logo-container { margin-bottom: 20px; display: flex; justify-content: center; }
-        .logo-container img { 
-            width: 140px; height: 140px; 
-            border-radius: 50%; border: 5px solid var(--primary); 
-            padding: 3px; object-fit: cover; background: #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        
+        .logo-container img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--primary); padding: 3px; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 26px; font-weight: bold; }
+        
         .payment-info { background: #e8f5e9; color: var(--primary); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 2px solid var(--primary); text-align: left; font-size: 15px; line-height: 1.6; }
-        .payment-info h3 { margin: 0 0 10px 0; border-bottom: 1px solid var(--primary); padding-bottom: 5px; }
         .admin-bar { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .stat-card { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-size: 18px; }
+        
         .section { display: none; }
         .active { display: block; }
         .admin-only { display: none; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
         th { background: #f1f5f9; color: var(--primary); }
+        
         .pagination { margin-top: 20px; display: flex; justify-content: center; gap: 10px; align-items: center; }
         .page-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
         .page-btn:disabled { background: #ccc; cursor: not-allowed; }
+
         .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; }
-        .btn-login { background: var(--admin); }
+        .btn-wa { background: var(--whatsapp); font-size: 12px; margin-left: 5px; }
         input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; width: 85%; max-width: 300px; }
     </style>
 </head>
@@ -71,7 +60,7 @@
 
     <div class="header">
         <div class="logo-container">
-            <img src="logo.jpg?v=14" alt="Al-Ittehad Logo">
+            <img src="logo.jpg?v=15" alt="Al-Ittehad Logo">
         </div>
         <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
     </div>
@@ -90,7 +79,7 @@
         <div id="admin-status">👤 মোড: <strong>সাধারণ সদস্য</strong></div>
         <div style="margin-top:15px;">
             <input type="password" id="login-input" placeholder="পাসওয়ার্ড লিখুন">
-            <button class="btn btn-login" onclick="handleLogin()">লগইন</button>
+            <button class="btn" style="background:var(--admin);" onclick="handleLogin()">লগইন</button>
             <button id="change-pass-btn" class="btn" style="background:#4b5563; display:none; margin-top:10px;" onclick="changePassword()">পাসওয়ার্ড পরিবর্তন</button>
         </div>
     </div>
@@ -102,8 +91,8 @@
         </div>
         <div class="admin-only" id="add-form-div" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px;">
             <input type="text" id="m-name" placeholder="নাম">
-            <input type="text" id="m-phone" placeholder="মোবাইল">
-            <button class="btn btn-add" id="member-submit-btn" style="background:var(--secondary);" onclick="addMember()">যোগ করুন</button>
+            <input type="text" id="m-phone" placeholder="মোবাইল (উদা: 017xx)">
+            <button class="btn" style="background:var(--secondary);" onclick="addMember()">যোগ করুন</button>
         </div>
         <table>
             <thead><tr><th>নাম ও মোবাইল</th><th>মোট জমা</th><th>অ্যাকশন</th></tr></thead>
@@ -125,7 +114,7 @@
             <input type="number" id="e-amount" placeholder="জমা">
             <input type="number" id="e-extra" placeholder="অতিরিক্ত">
             <input type="number" id="e-fine" placeholder="জরিমানা">
-            <button class="btn btn-add" id="entry-submit-btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ</button>
+            <button class="btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ</button>
         </div>
         <table>
             <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only">অ্যাকশন</th></tr></thead>
@@ -206,8 +195,17 @@
     }
 
     function changePage(step) { currentPage += step; renderMain(); }
-    function viewMember(i) { currentIdx = i; document.getElementById('main-view').classList.remove('active'); document.getElementById('member-detail-view').classList.add('active'); document.getElementById('detail-title').innerText = members[i].name + " এর হিসাব"; renderEntries(); }
+    
+    function viewMember(i) { 
+        currentIdx = i; 
+        document.getElementById('main-view').classList.remove('active'); 
+        document.getElementById('member-detail-view').classList.add('active'); 
+        document.getElementById('detail-title').innerText = members[i].name + " এর হিসাব"; 
+        renderEntries(); 
+    }
+    
     function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
+
     function addMember() {
         let name = document.getElementById('m-name').value;
         let phone = document.getElementById('m-phone').value;
@@ -216,31 +214,50 @@
         saveData();
         document.getElementById('m-name').value=''; document.getElementById('m-phone').value='';
     }
+
     function addMonthlyEntry() {
-        let data = {
+        let entry = {
             month: document.getElementById('e-month').value,
             amount: Number(document.getElementById('e-amount').value || 0),
             extra: Number(document.getElementById('e-extra').value || 0),
             fine: Number(document.getElementById('e-fine').value || 0)
         };
         if(!members[currentIdx].entries) members[currentIdx].entries = [];
-        members[currentIdx].entries.push(data);
+        members[currentIdx].entries.push(entry);
         saveData(); renderEntries();
         document.getElementById('e-amount').value=''; document.getElementById('e-extra').value=''; document.getElementById('e-fine').value='';
     }
+
     function renderEntries() {
         const body = document.getElementById('entry-list-body'); body.innerHTML = ''; let personalTotal = 0;
-        (members[currentIdx].entries || []).forEach((e, i) => {
+        const currentMember = members[currentIdx];
+        (currentMember.entries || []).forEach((e, i) => {
             let rowSum = Number(e.amount || 0) + Number(e.extra || 0) + Number(e.fine || 0);
             personalTotal += rowSum;
             body.innerHTML += `<tr>
                 <td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td>
-                <td class="admin-only">${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteEntry(${i})">X</button>` : ''}</td>
+                <td class="admin-only">
+                    ${isAdmin ? `
+                    <button class="btn btn-wa" onclick="sendWA('${currentMember.phone}', '${currentMember.name}', '${e.month}', ${rowSum})">WhatsApp</button>
+                    <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteEntry(${i})">X</button>
+                    ` : ''}
+                </td>
             </tr>`;
         });
         document.getElementById('p-total-display').innerText = personalTotal + " ৳";
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
+
+    // হোয়াটসঅ্যাপ মেসেজ পাঠানোর ফাংশন
+    function sendWA(phone, name, month, total) {
+        if(!phone || phone.length < 10) { alert("সদস্যের সঠিক মোবাইল নম্বর নেই!"); return; }
+        // নম্বর ফরম্যাট ঠিক করা (যেমন: 017... থেকে 88017...)
+        let cleanPhone = phone.startsWith('88') ? phone : '88' + phone;
+        let msg = `সম্মানিত ${name}, আল ইত্তেহাদ ফাউন্ডেশনে আপনার ${month} মাসের মোট ${total} টাকা জমা হয়েছে। ধন্যবাদ।`;
+        let url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank');
+    }
+
     function deleteMember(i) { if(confirm("সদস্য ডিলিট করবেন?")) { members.splice(i, 1); saveData(); } }
     function deleteEntry(i) { if(confirm("এন্ট্রি ডিলিট করবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
     function generateMonths() {
