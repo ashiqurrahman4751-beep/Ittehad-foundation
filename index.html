@@ -133,7 +133,7 @@
         const body = document.getElementById('member-list-body');
         body.innerHTML = ''; let totalFund = 0;
         members.forEach((m, i) => {
-            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount) + Number(curr.extra) - Number(curr.fine)), 0);
+            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount) + Number(curr.extra) + Number(curr.fine)), 0);
             totalFund += pTotal;
             body.innerHTML += `<tr><td><strong>${m.name}</strong><br><small>${m.phone}</small></td><td>${pTotal} /-</td><td><button class="btn" style="background:var(--primary)" onclick="viewMember(${i})">দেখুন</button> ${isAdmin ? `<button class="btn btn-del" onclick="deleteMember(${i})">X</button>` : ''}</td></tr>`;
         });
@@ -172,7 +172,7 @@
     function renderEntries() {
         const body = document.getElementById('entry-list-body'); body.innerHTML = ''; let personalTotal = 0;
         (members[currentIdx].entries || []).forEach((e, i) => {
-            let rowSum = e.amount + e.extra - e.fine; personalTotal += rowSum;
+            let rowSum = e.amount + e.extra + e.fine; personalTotal += rowSum;
             body.innerHTML += `<tr><td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td><td class="admin-only">${isAdmin ? `<button class="btn btn-del" onclick="deleteEntry(${i})">X</button>` : ''}</td></tr>`;
         });
         document.getElementById('p-total-display').innerText = personalTotal + " /-";
