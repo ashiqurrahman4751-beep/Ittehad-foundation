@@ -8,17 +8,17 @@
         :root { --primary: #2c3e50; --secondary: #27ae60; --danger: #e74c3c; --admin: #8e44ad; --edit: #f39c12; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 0; }
         
-        /* ওয়ার্নিং সাইন স্টাইল */
-        .warning-bar { background: #d63031; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 16px; border-bottom: 3px solid #b22222; }
+        /* লাল ওয়ার্নিং বার */
+        .warning-bar { background: #d63031; color: white; text-align: center; padding: 12px; font-weight: bold; font-size: 16px; border-bottom: 3px solid #b22222; }
         
         .container { max-width: 1100px; margin: 20px auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
         
-        /* লোগো এবং টাইটেল স্টাইল */
+        /* লোগো ও হেডার */
         .header { margin-bottom: 25px; }
-        .logo { max-width: 150px; height: auto; margin-bottom: 10px; border-radius: 50%; }
-        .main-title { color: var(--primary); margin: 0; font-size: 28px; }
+        .logo { max-width: 150px; height: auto; margin-bottom: 10px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .main-title { color: var(--primary); margin: 0; font-size: 28px; font-weight: 800; }
 
-        .admin-bar { background: #dfe6e9; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        .admin-bar { background: #dfe6e9; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; font-weight: bold; }
         
@@ -30,7 +30,8 @@
         th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
         th { background: #f8f9fa; color: var(--primary); }
         
-        .btn { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; margin: 2px; font-size: 14px; }
+        .btn { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; margin: 2px; transition: 0.3s; }
+        .btn:hover { opacity: 0.8; }
         .btn-login { background: var(--admin); }
         .btn-add { background: var(--secondary); }
         .btn-edit { background: var(--edit); font-size: 11px; }
@@ -38,7 +39,7 @@
         .btn-view { background: var(--primary); }
         .btn-back { background: #636e72; }
         
-        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin: 5px; font-size: 14px; }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin: 5px; }
         #add-form-div { background: #f1f2f6; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
         #entry-form-div { background: #e8f4fd; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
     </style>
@@ -51,18 +52,18 @@
 
 <div class="container">
     <div class="header">
-        <img src="https://i.ibb.co/v6mXmDqC/1000235257.jpg" alt="আল ইত্তেহাদ লোগো" class="logo">
+        <img src="https://i.ibb.co/v6mXmDqC/1000235257.jpg" alt="Logo" class="logo">
         <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
     </div>
 
     <div class="admin-bar">
-        <div id="admin-status">🔓 মোড: <strong>সাধারণ সদস্য</strong></div>
+        <div id="admin-status">🔓 মোড: <strong>সদস্য</strong></div>
         <div style="margin-top:10px;">
-            <input type="password" id="login-input" placeholder="পাসওয়ার্ড দিন">
+            <input type="password" id="login-input" placeholder="পাসওয়ার্ড">
             <button class="btn btn-login" onclick="login()">লগইন</button>
         </div>
         <div id="setup-area" style="margin-top:10px;">
-            <small>পাসওয়ার্ড সেট না থাকলে এখানে দিন:</small><br>
+            <small>পাসওয়ার্ড সেট করতে এখানে লিখুন:</small><br>
             <input type="password" id="new-pass-input" placeholder="নতুন পাসওয়ার্ড">
             <button class="btn btn-add" onclick="setPass()">সেভ</button>
         </div>
@@ -118,7 +119,7 @@
         try {
             const response = await fetch(dbURL + ".json");
             const data = await response.json();
-            members = data ? data.members || [] : [];
+            members = data ? (data.members || []) : [];
             renderMain();
         } catch (e) { console.error("Error:", e); }
     }
@@ -131,5 +132,134 @@
         renderMain();
     }
 
+    function login() {
+        let input = document.getElementById('login-input').value;
+        if (input === localStorage.getItem('ittehad_live_pass')) {
+            isAdmin = true;
+            document.getElementById('admin-status').innerHTML = "🔒 মোড: <strong>এডমিন</strong>";
+            document.getElementById('setup-area').style.display = 'none';
+            renderMain();
+        } else { alert("ভুল পাসওয়ার্ড!"); }
+    }
+
     function setPass() {
-        let p
+        let p = document.getElementById('new-pass-input').value;
+        if(p.length >= 4) {
+            localStorage.setItem('ittehad_live_pass', p);
+            alert("পাসওয়ার্ড সেট হয়েছে!");
+            document.getElementById('setup-area').style.display = 'none';
+        }
+    }
+
+    function generateMonths() {
+        const select = document.getElementById('e-month');
+        const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+        let opt = document.createElement('option'); opt.text = "ডিসেম্বর ২০২৫"; select.add(opt);
+        for (let y = 2026; y <= 2030; y++) {
+            months.forEach(m => { let o = document.createElement('option'); o.text = `${m} ${y}`; select.add(o); });
+        }
+    }
+
+    function renderMain() {
+        const body = document.getElementById('member-list-body');
+        body.innerHTML = ''; let totalFund = 0;
+        members.forEach((m, i) => {
+            // জরিমানা এখন যোগ হচ্ছে (+)
+            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
+            totalFund += pTotal;
+            body.innerHTML += `<tr><td><strong>${m.name}</strong><br><small>${m.phone}</small></td><td>${pTotal} /-</td><td><button class="btn btn-view" onclick="viewMember(${i})">দেখুন</button> ${isAdmin ? `<button class="btn btn-edit" onclick="editMember(${i})">এডিট</button> <button class="btn btn-del" onclick="deleteMember(${i})">X</button>` : ''}</td></tr>`;
+        });
+        document.getElementById('total-members').innerText = members.length;
+        document.getElementById('total-fund').innerText = totalFund + " /-";
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('bn-BD');
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
+    }
+
+    function viewMember(i) {
+        currentIdx = i;
+        document.getElementById('main-view').classList.remove('active');
+        document.getElementById('member-detail-view').classList.add('active');
+        document.getElementById('detail-title').innerText = members[i].name + " এর হিসাব";
+        renderEntries();
+    }
+
+    function showMain() { currentIdx = null; editIdx = null; entryEditIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
+
+    function addMember() {
+        let name = document.getElementById('m-name').value;
+        let phone = document.getElementById('m-phone').value;
+        if(!name) return;
+        if(editIdx !== null) {
+            members[editIdx].name = name;
+            members[editIdx].phone = phone;
+            editIdx = null;
+            document.getElementById('member-submit-btn').innerText = "যোগ করুন";
+        } else {
+            members.push({name, phone, entries: []});
+        }
+        saveData();
+        document.getElementById('m-name').value='';
+        document.getElementById('m-phone').value='';
+    }
+
+    function editMember(i) {
+        editIdx = i;
+        document.getElementById('m-name').value = members[i].name;
+        document.getElementById('m-phone').value = members[i].phone;
+        document.getElementById('member-submit-btn').innerText = "আপডেট করুন";
+        window.scrollTo(0,0);
+    }
+
+    function addMonthlyEntry() {
+        let data = {
+            month: document.getElementById('e-month').value,
+            amount: Number(document.getElementById('e-amount').value || 0),
+            extra: Number(document.getElementById('e-extra').value || 0),
+            fine: Number(document.getElementById('e-fine').value || 0)
+        };
+        if(!members[currentIdx].entries) members[currentIdx].entries = [];
+        
+        if(entryEditIdx !== null) {
+            members[currentIdx].entries[entryEditIdx] = data;
+            entryEditIdx = null;
+            document.getElementById('entry-submit-btn').innerText = "সেভ";
+        } else {
+            members[currentIdx].entries.push(data);
+        }
+        saveData(); renderEntries();
+        document.getElementById('e-amount').value='';
+        document.getElementById('e-extra').value='';
+        document.getElementById('e-fine').value='';
+    }
+
+    function editEntry(i) {
+        entryEditIdx = i;
+        let e = members[currentIdx].entries[i];
+        document.getElementById('e-month').value = e.month;
+        document.getElementById('e-amount').value = e.amount;
+        document.getElementById('e-extra').value = e.extra;
+        document.getElementById('e-fine').value = e.fine;
+        document.getElementById('entry-submit-btn').innerText = "আপডেট";
+    }
+
+    function renderEntries() {
+        const body = document.getElementById('entry-list-body'); body.innerHTML = ''; let personalTotal = 0;
+        (members[currentIdx].entries || []).forEach((e, i) => {
+            let rowSum = Number(e.amount || 0) + Number(e.extra || 0) + Number(e.fine || 0);
+            personalTotal += rowSum;
+            body.innerHTML += `<tr><td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td><td class="admin-only">${isAdmin ? `<button class="btn btn-edit" onclick="editEntry(${i})">এডিট</button> <button class="btn btn-del" onclick="deleteEntry(${i})">X</button>` : ''}</td></tr>`;
+        });
+        document.getElementById('p-total-display').innerText = personalTotal + " /-";
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
+    }
+
+    function deleteMember(i) { if(confirm("মুছবেন?")) { members.splice(i, 1); saveData(); } }
+    function deleteEntry(i) { if(confirm("মুছবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
+
+    window.onload = function() {
+        if(localStorage.getItem('ittehad_live_pass')) { document.getElementById('setup-area').style.display = 'none'; }
+        generateMonths(); fetchData();
+    };
+</script>
+</body>
+</html>
