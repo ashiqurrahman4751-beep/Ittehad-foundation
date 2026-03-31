@@ -8,35 +8,33 @@
         :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
         
+        /* লাল সতর্কবার্তা */
         .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
+        
         .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
         
-        /* লোগো ফিক্সড ডিজাইন */
-        .logo-container { margin-bottom: 15px; display: flex; justify-content: center; }
-        .logo-container img { 
-            width: 150px; 
-            height: 150px; 
-            border-radius: 50%; 
-            border: 4px solid var(--primary); 
-            padding: 5px; 
-            object-fit: cover;
-            background: #fff;
-        }
+        /* লোগো সাইজ */
+        .logo-container { margin-bottom: 15px; }
+        .logo-container img { max-width: 150px; height: auto; border-radius: 50%; border: 3px solid var(--primary); padding: 5px; }
         
         .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 28px; font-weight: bold; }
         .admin-bar { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .stat-card { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-size: 18px; }
+        
         .section { display: none; }
         .active { display: block; }
         .admin-only { display: none; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
         th { background: #f1f5f9; color: var(--primary); }
+        
         .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; }
         .btn-login { background: var(--admin); }
         .btn-add { background: var(--secondary); }
         .btn-view { background: var(--primary); }
+        
         input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; }
         #add-form-div, #entry-form-div { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
     </style>
@@ -50,9 +48,7 @@
 <div class="container">
     <div class="header">
         <div class="logo-container">
-            <img id="mainLogo" src="https://i.ibb.co/v6mXmDqC/1000235257.jpg" 
-                 onerror="this.onerror=null; this.src='https://i.postimg.cc/85M2N3Xg/1000235257.jpg';" 
-                 alt="Foundation Logo">
+            <img src="https://i.ibb.co/v6mXmDqC/1000235257.jpg" alt="Logo">
         </div>
         <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
     </div>
@@ -104,7 +100,8 @@
 </div>
 
 <script>
-    const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/data.json"; 
+    // আপনার ফায়ারবেস ডাটাবেস লিঙ্ক
+    const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/.json"; 
 
     let isAdmin = false;
     let members = [];
@@ -116,6 +113,8 @@
         try {
             const response = await fetch(dbURL);
             const data = await response.json();
+            
+            // ডাটা স্ট্রাকচার চেক করা
             if (data && data.members) {
                 members = data.members;
             } else if (Array.isArray(data)) {
@@ -139,7 +138,8 @@
 
     function login() {
         let input = document.getElementById('login-input').value;
-        if (input === "admin123" || input === "1234") {
+        // ডিফল্ট পাসওয়ার্ড '1234' অথবা 'admin123'
+        if (input === "admin123" || input === "1234" || input === localStorage.getItem('ittehad_live_pass')) {
             isAdmin = true;
             document.getElementById('admin-status').innerHTML = "✅ মোড: <strong>এডমিন</strong>";
             renderMain();
@@ -261,3 +261,6 @@
 </script>
 </body>
 </html>
+
+
+তুমি আমার এই কোডটির মধ্যে লোগোটা ভালোভাবে সেটাপ করে দাও। কোনোভাবেই লোগোটি শো করছে না
