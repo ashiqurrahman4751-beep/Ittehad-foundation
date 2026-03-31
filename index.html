@@ -135,8 +135,8 @@
         members.forEach((m, i) => {
             let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount) + Number(curr.extra) + Number(curr.fine)), 0);
             totalFund += pTotal;
-            body.innerHTML += `<tr><td><strong>${m.name}</strong><br><small>${m.phone}</small></td><td>${pTotal} /-</td><td><button class="btn" style="background:var(--primary)" onclick="viewMember(${i})">দেখুন</button> ${isAdmin ? `<button class="btn btn-del" onclick="deleteMember(${i})">X</button>` : ''}</td></tr>`;
-        });
+            ...viewMember(${i})">দেখুন</button> ${isAdmin ? `<button class="btn" style="background:#f39c12; font-size:11px;" onclick="editMember(${i})">এডিট</button> <button class="btn btn-del" onclick="deleteMember(${i})">X</button>` : ''}</td></tr>`;
+
         document.getElementById('total-members').innerText = members.length;
         document.getElementById('total-fund').innerText = totalFund + " /-";
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('bn-BD');
@@ -153,10 +153,34 @@
 
     function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
 
+        let editIndex = null;
+
     function addMember() {
         let name = document.getElementById('m-name').value;
-        if(name) { members.push({name, phone: document.getElementById('m-phone').value, entries: []}); saveData(); document.getElementById('m-name').value=''; }
+        let phone = document.getElementById('m-phone').value;
+        if(!name) return;
+
+        if(editIndex !== null) {
+            members[editIndex].name = name;
+            members[editIndex].phone = phone;
+            editIndex = null;
+            document.querySelector('.btn-add').innerText = "যোগ করুন";
+        } else {
+            members.push({name, phone, entries: []});
+        }
+        saveData();
+        document.getElementById('m-name').value='';
+        document.getElementById('m-phone').value='';
     }
+
+    function editMember(i) {
+        editIndex = i;
+        document.getElementById('m-name').value = members[i].name;
+        document.getElementById('m-phone').value = members[i].phone;
+        document.querySelector('.btn-add').innerText = "আপডেট করুন";
+        window.scrollTo(0,0);
+    }
+
 
     function addMonthlyEntry() {
         if(!members[currentIdx].entries) members[currentIdx].entries = [];
