@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আল ইত্তেহাদ ফাউন্ডেশন - সিকিউর প্যানেল</title>
+    <title>আল ইত্তেহাদ ফাউন্ডেশন - লাইভ ডাটাবেস</title>
     <style>
         :root { --primary: #2c3e50; --secondary: #27ae60; --danger: #e74c3c; --admin: #8e44ad; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 15px; }
@@ -22,7 +22,6 @@
         .btn-add { background: var(--secondary); }
         .btn-del { background: var(--danger); font-size: 11px; }
         input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin: 5px; }
-        .setup-box { border-top: 1px solid #ccc; margin-top: 15px; padding-top: 15px; }
     </style>
 </head>
 <body>
@@ -34,11 +33,10 @@
             <input type="password" id="login-input" placeholder="পাসওয়ার্ড দিন">
             <button class="btn btn-login" onclick="login()">লগইন</button>
         </div>
-        
-        <div id="setup-area" class="setup-box">
+        <div id="setup-area" style="margin-top:10px;">
             <small>পাসওয়ার্ড সেট না থাকলে এখানে দিন:</small><br>
             <input type="password" id="new-pass-input" placeholder="নতুন পাসওয়ার্ড">
-            <button class="btn btn-add" style="padding:5px 10px;" onclick="setPass()">সেভ করুন</button>
+            <button class="btn btn-add" style="padding:5px 10px;" onclick="setPass()">সেভ</button>
         </div>
     </div>
 
@@ -51,7 +49,6 @@
         </div>
 
         <div class="admin-only" style="background:#f1f2f6; padding:15px; border-radius:10px; margin-bottom:20px;">
-            <strong>সদস্য যোগ করুন:</strong>
             <input type="text" id="m-name" placeholder="নাম">
             <input type="text" id="m-phone" placeholder="মোবাইল">
             <button class="btn btn-add" onclick="addMember()">যোগ করুন</button>
@@ -82,23 +79,40 @@
 </div>
 
 <script>
+    // আপনার Firebase URL এখানে বসান (শেষে / থাকতে হবে)
+    const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/"; 
+
     let isAdmin = false;
-    let members = JSON.parse(localStorage.getItem('ittehad_vfinal_db')) || [];
+    let members = [];
     let currentIdx = null;
+
+    async function fetchData() {
+        const response = await fetch(dbURL + ".json");
+        const data = await response.json();
+        members = data ? data.members || [] : [];
+        renderMain();
+    }
+
+    async function saveData() {
+        await fetch(dbURL + ".json", {
+            method: "PATCH",
+            body: JSON.stringify({ members: members })
+        });
+        renderMain();
+    }
 
     function setPass() {
         let p = document.getElementById('new-pass-input').value;
         if(p.length >= 4) {
-            localStorage.setItem('ittehad_vfinal_pass', p);
-            alert("পাসওয়ার্ড সেট হয়েছে! এবার লগইন করুন।");
+            localStorage.setItem('ittehad_live_pass', p);
+            alert("পাসওয়ার্ড সেট হয়েছে!");
             document.getElementById('setup-area').style.display = 'none';
-        } else { alert("পাসওয়ার্ড অন্তত ৪ অক্ষরের দিন।"); }
+        }
     }
 
     function login() {
         let input = document.getElementById('login-input').value;
-        let saved = localStorage.getItem('ittehad_vfinal_pass');
-        if (input === saved) {
+        if (input === localStorage.getItem('ittehad_live_pass')) {
             isAdmin = true;
             document.getElementById('admin-status').innerHTML = "🔒 মোড: <strong>এডমিন</strong>";
             document.getElementById('setup-area').style.display = 'none';
@@ -119,7 +133,7 @@
         const body = document.getElementById('member-list-body');
         body.innerHTML = ''; let totalFund = 0;
         members.forEach((m, i) => {
-            let pTotal = m.entries.reduce((acc, curr) => acc + (Number(curr.amount) + Number(curr.extra) - Number(curr.fine)), 0);
+            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount) + Number(curr.extra) - Number(curr.fine)), 0);
             totalFund += pTotal;
             body.innerHTML += `<tr><td><strong>${m.name}</strong><br><small>${m.phone}</small></td><td>${pTotal} /-</td><td><button class="btn" style="background:var(--primary)" onclick="viewMember(${i})">দেখুন</button> ${isAdmin ? `<button class="btn btn-del" onclick="deleteMember(${i})">X</button>` : ''}</td></tr>`;
         });
@@ -127,45 +141,50 @@
         document.getElementById('total-fund').innerText = totalFund + " /-";
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('bn-BD');
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
-        document.querySelectorAll('th.admin-only, td.admin-only').forEach(el => el.style.display = isAdmin ? 'table-cell' : 'none');
     }
 
     function viewMember(i) {
         currentIdx = i;
         document.getElementById('main-view').classList.remove('active');
         document.getElementById('member-detail-view').classList.add('active');
-        document.getElementById('detail-title').innerText = members[i].name + " এর লেজার";
+        document.getElementById('detail-title').innerText = members[i].name + " এর হিসাব";
         renderEntries();
     }
 
     function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
-    function addMember() { let name = document.getElementById('m-name').value; if(name) { members.push({name, phone: document.getElementById('m-phone').value, entries: []}); save(); document.getElementById('m-name').value=''; } }
+
+    function addMember() {
+        let name = document.getElementById('m-name').value;
+        if(name) { members.push({name, phone: document.getElementById('m-phone').value, entries: []}); saveData(); document.getElementById('m-name').value=''; }
+    }
+
     function addMonthlyEntry() {
-        let month = document.getElementById('e-month').value;
-        let amount = Number(document.getElementById('e-amount').value);
-        let extra = Number(document.getElementById('e-extra').value);
-        let fine = Number(document.getElementById('e-fine').value);
-        members[currentIdx].entries.push({month, amount, extra, fine}); save(); renderEntries();
+        if(!members[currentIdx].entries) members[currentIdx].entries = [];
+        members[currentIdx].entries.push({
+            month: document.getElementById('e-month').value,
+            amount: Number(document.getElementById('e-amount').value),
+            extra: Number(document.getElementById('e-extra').value),
+            fine: Number(document.getElementById('e-fine').value)
+        });
+        saveData(); renderEntries();
     }
 
     function renderEntries() {
         const body = document.getElementById('entry-list-body'); body.innerHTML = ''; let personalTotal = 0;
-        members[currentIdx].entries.forEach((e, i) => {
+        (members[currentIdx].entries || []).forEach((e, i) => {
             let rowSum = e.amount + e.extra - e.fine; personalTotal += rowSum;
             body.innerHTML += `<tr><td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td><td class="admin-only">${isAdmin ? `<button class="btn btn-del" onclick="deleteEntry(${i})">X</button>` : ''}</td></tr>`;
         });
         document.getElementById('p-total-display').innerText = personalTotal + " /-";
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
-        document.querySelectorAll('th.admin-only, td.admin-only').forEach(el => el.style.display = isAdmin ? 'table-cell' : 'none');
     }
 
-    function save() { localStorage.setItem('ittehad_vfinal_db', JSON.stringify(members)); renderMain(); }
-    function deleteMember(i) { if(confirm("মুছবেন?")) { members.splice(i, 1); save(); } }
-    function deleteEntry(i) { if(confirm("মুছবেন?")) { members[currentIdx].entries.splice(i, 1); save(); renderEntries(); } }
+    function deleteMember(i) { if(confirm("মুছবেন?")) { members.splice(i, 1); saveData(); } }
+    function deleteEntry(i) { if(confirm("মুছবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
 
     window.onload = function() {
-        if(localStorage.getItem('ittehad_vfinal_pass')) { document.getElementById('setup-area').style.display = 'none'; }
-        generateMonths(); renderMain();
+        if(localStorage.getItem('ittehad_live_pass')) { document.getElementById('setup-area').style.display = 'none'; }
+        generateMonths(); fetchData();
     };
 </script>
 </body>
