@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আল ইত্তেহাদ ফাউন্ডেশন - ড্যাশবোর্ড</title>
+    <title>আল ইত্তেহাদ ফাউন্ডেশন</title>
     <style>
-        :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+        :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
         
         /* লাল সতর্কবার্তা */
-        .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; font-size: 16px; position: sticky; top: 0; z-index: 1000; }
         
-        .container { max-width: 900px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
         
-        /* লোগো ফিক্সড সাইজ */
-        .header-logo { width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 15px; background: #eee; object-fit: cover; }
+        /* লোগো সেকশন */
+        .logo-box { margin-bottom: 20px; }
+        .logo-box img { width: 150px; height: 150px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; background: #eee; }
         
-        .main-title { color: var(--primary); margin: 0; font-size: 28px; font-weight: bold; }
-        .admin-status-box { background: #f8fafc; padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px solid #e2e8f0; }
-        
-        .stats-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
-        .stat-box { background: var(--primary); color: white; padding: 15px 25px; border-radius: 10px; min-width: 140px; }
+        .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 30px; font-weight: bold; }
+        .admin-bar { background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        .stats { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
+        .stat-card { background: var(--primary); color: white; padding: 15px 30px; border-radius: 12px; font-size: 18px; min-width: 150px; }
         
         .section { display: none; }
         .active { display: block; }
@@ -28,14 +28,15 @@
         
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
-        th { background: #f1f5f9; }
+        th { background: #f1f5f9; color: var(--primary); }
         
-        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.2s; }
+        .btn { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.2s; }
         .btn-login { background: var(--admin); }
         .btn-add { background: var(--secondary); }
+        .btn-view { background: var(--primary); }
         
-        input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; }
-        #add-form, #entry-form { background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed #ccc; }
+        input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; outline: none; }
+        #add-form-div, #entry-form-div { background: #f1f5f9; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed #ccc; }
     </style>
 </head>
 <body>
@@ -46,168 +47,198 @@
 
 <div class="container">
     <div class="header">
-        <img src="https://i.ibb.co/v6mXmDqC/1000235257.jpg" class="header-logo" alt="Foundation Logo">
+        <div class="logo-box">
+            <img src="https://i.postimg.cc/85M2N3Xg/1000235257.jpg" alt="আল ইত্তেহাদ লোগো" onerror="this.src='https://via.placeholder.com/150?text=Logo+Missing'">
+        </div>
         <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
     </div>
 
-    <div class="admin-status-box">
-        <div id="status-text">👤 মোড: <strong>সাধারণ সদস্য</strong></div>
-        <div style="margin-top:10px;">
-            <input type="password" id="pass-input" placeholder="এডমিন পাসওয়ার্ড">
-            <button class="btn btn-login" onclick="handleLogin()">লগইন</button>
+    <div class="admin-bar">
+        <div id="admin-status">👤 মোড: <strong>সদস্য (View Only)</strong></div>
+        <div style="margin-top:15px;">
+            <input type="password" id="login-input" placeholder="এডমিন পাসওয়ার্ড">
+            <button class="btn btn-login" onclick="login()">লগইন</button>
         </div>
     </div>
 
     <div id="main-view" class="section active">
-        <div class="stats-row">
-            <div class="stat-box">সদস্য: <span id="m-count">০</span></div>
-            <div class="stat-box" style="background:#2d6a4f">মোট ফান্ড: <span id="f-count">০</span> ৳</div>
+        <div class="stats">
+            <div class="stat-card">সদস্য: <span id="total-members">০</span></div>
+            <div class="stat-card" style="background:#2d6a4f">মোট ফান্ড: <span id="total-fund">০</span> ৳</div>
         </div>
 
-        <div class="admin-only" id="add-form">
-            <input type="text" id="new-name" placeholder="সদস্যের নাম">
-            <input type="text" id="new-phone" placeholder="মোবাইল নম্বর">
-            <button class="btn btn-add" onclick="createNewMember()">সদস্য যোগ করুন</button>
+        <div class="admin-only" id="add-form-div">
+            <h3>নতুন সদস্য যোগ করুন</h3>
+            <input type="text" id="m-name" placeholder="নাম">
+            <input type="text" id="m-phone" placeholder="মোবাইল">
+            <button class="btn btn-add" id="member-submit-btn" onclick="addMember()">সদস্য সেভ করুন</button>
         </div>
 
         <table>
-            <thead><tr><th>নাম</th><th>মোট জমা</th><th>অ্যাকশন</th></tr></thead>
-            <tbody id="member-table-body"></tbody>
+            <thead><tr><th>নাম ও মোবাইল</th><th>মোট জমা</th><th>অ্যাকশন</th></tr></thead>
+            <tbody id="member-list-body"></tbody>
         </table>
     </div>
 
-    <div id="detail-view" class="section">
-        <button class="btn" style="background:#64748b; margin-bottom:15px;" onclick="goBack()">← তালিকায় ফিরে যান</button>
-        <h2 id="member-name-display"></h2>
+    <div id="member-detail-view" class="section">
+        <button class="btn" style="background:#64748b; margin-bottom:15px;" onclick="showMain()">← তালিকায় ফিরে যান</button>
+        <h2 id="detail-title" style="color:var(--primary)"></h2>
         
-        <div class="admin-only" id="entry-form">
-            <select id="sel-month"></select>
-            <input type="number" id="amt-main" placeholder="জমা">
-            <input type="number" id="amt-extra" placeholder="অতিরিক্ত">
-            <input type="number" id="amt-fine" placeholder="জরিমানা">
-            <button class="btn btn-add" onclick="saveMonthlyData()">সেভ করুন</button>
+        <div class="admin-only" id="entry-form-div">
+            <select id="e-month"></select>
+            <input type="number" id="e-amount" placeholder="জমা">
+            <input type="number" id="e-extra" placeholder="অতিরিক্ত">
+            <input type="number" id="e-fine" placeholder="জরিমানা">
+            <button class="btn btn-add" id="entry-submit-btn" onclick="addMonthlyEntry()">হিসাব যোগ করুন</button>
         </div>
 
         <table>
             <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only">অ্যাকশন</th></tr></thead>
-            <tbody id="entry-table-body"></tbody>
+            <tbody id="entry-list-body"></tbody>
+            <tfoot><tr style="background:#f8fafc; font-weight:bold;"><td colspan="4" style="text-align:right">মোট জমা:</td><td id="p-total-display">০</td><td class="admin-only"></td></tr></tfoot>
         </table>
     </div>
 </div>
 
 <script>
-    // আপনার ফায়ারবেস ইউআরএল (সংশোধিত)
-    const apiURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/data.json";
+    // ডাটাবেস লিঙ্ক ফিক্স করা হয়েছে
+    const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/data.json"; 
 
     let isAdmin = false;
-    let allMembers = [];
-    let selectedMemberIdx = null;
+    let members = [];
+    let currentIdx = null;
+    let editIdx = null;
 
-    async function loadData() {
+    async function fetchData() {
         try {
-            const res = await fetch(apiURL);
-            const json = await res.json();
-            allMembers = json && json.members ? json.members : [];
-            updateUI();
-        } catch (e) { console.error("Load Error"); }
+            const response = await fetch(dbURL);
+            const data = await response.json();
+            // ডাটাবেসের ভেতর থেকে মেম্বার লিস্ট খুঁজে বের করা
+            if (data && data.members) {
+                members = data.members;
+            } else {
+                members = [];
+            }
+            renderMain();
+        } catch (e) { console.error("Error Loading Data:", e); }
     }
 
-    async function pushData() {
+    async function saveData() {
         try {
-            await fetch(apiURL, {
+            await fetch(dbURL, {
                 method: "PUT",
-                body: JSON.stringify({ members: allMembers })
+                body: JSON.stringify({ members: members })
             });
-            updateUI();
-        } catch (e) { alert("ডাটা সেভ হয়নি!"); }
+            renderMain();
+        } catch (e) { alert("Save Error!"); }
     }
 
-    function handleLogin() {
-        const p = document.getElementById('pass-input').value;
-        if(p === "1234" || p === "admin123") {
+    function login() {
+        let input = document.getElementById('login-input').value;
+        // ব্যাকআপ পাসওয়ার্ড হিসেবে '1234' সেট করা আছে
+        if (input === "admin123" || input === "1234") {
             isAdmin = true;
-            document.getElementById('status-text').innerHTML = "✅ মোড: <strong>এডমিন (Active)</strong>";
-            updateUI();
-            alert("লগইন সফল!");
-        } else { alert("ভুল পাসওয়ার্ড!"); }
+            document.getElementById('admin-status').innerHTML = "✅ মোড: <strong>এডমিন (Active)</strong>";
+            renderMain();
+            alert("লগইন সফল হয়েছে!");
+        } else {
+            alert("ভুল পাসওয়ার্ড!");
+        }
     }
 
-    function updateUI() {
-        const body = document.getElementById('member-table-body');
-        body.innerHTML = ''; let total = 0;
-        allMembers.forEach((m, i) => {
+    function generateMonths() {
+        const select = document.getElementById('e-month');
+        const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+        for (let y = 2025; y <= 2027; y++) {
+            months.forEach(m => { let o = document.createElement('option'); o.text = `${m} ${y}`; select.add(o); });
+        }
+    }
+
+    function renderMain() {
+        const body = document.getElementById('member-list-body');
+        body.innerHTML = ''; let totalFund = 0;
+        members.forEach((m, i) => {
             if(!m) return;
-            let sum = (m.entries || []).reduce((a, c) => a + (Number(c.amount||0)+Number(c.extra||0)+Number(c.fine||0)), 0);
-            total += sum;
+            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
+            totalFund += pTotal;
             body.innerHTML += `<tr>
-                <td><strong>${m.name}</strong></td>
-                <td>${sum} ৳</td>
+                <td><strong>${m.name}</strong><br><small>${m.phone || ''}</small></td>
+                <td>${pTotal} ৳</td>
                 <td>
-                    <button class="btn" style="background:var(--primary); padding:5px 10px;" onclick="showDetails(${i})">দেখুন</button>
-                    ${isAdmin ? `<button class="btn" style="background:#e74c3c; padding:5px 10px;" onclick="removeMember(${i})">X</button>` : ''}
+                    <button class="btn btn-view" onclick="viewMember(${i})">দেখুন</button>
+                    ${isAdmin ? `<button class="btn" style="background:var(--edit); font-size:11px;" onclick="editMember(${i})">এডিট</button> <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${i})">X</button>` : ''}
                 </td>
             </tr>`;
         });
-        document.getElementById('m-count').innerText = allMembers.length;
-        document.getElementById('f-count').innerText = total;
+        document.getElementById('total-members').innerText = members.length;
+        document.getElementById('total-fund').innerText = totalFund;
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
 
-    function showDetails(i) {
-        selectedMemberIdx = i;
+    function viewMember(i) {
+        currentIdx = i;
         document.getElementById('main-view').classList.remove('active');
-        document.getElementById('detail-view').classList.add('active');
-        document.getElementById('member-name-display').innerText = allMembers[i].name;
-        refreshEntries();
+        document.getElementById('member-detail-view').classList.add('active');
+        document.getElementById('detail-title').innerText = members[i].name;
+        renderEntries();
     }
 
-    function goBack() { 
-        selectedMemberIdx = null; 
-        document.getElementById('detail-view').classList.remove('active'); 
-        document.getElementById('main-view').classList.add('active'); 
+    function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
+
+    function addMember() {
+        let name = document.getElementById('m-name').value;
+        let phone = document.getElementById('m-phone').value;
+        if(!name) return;
+        if(editIdx !== null) {
+            members[editIdx].name = name; members[editIdx].phone = phone; editIdx = null;
+            document.getElementById('member-submit-btn').innerText = "সদস্য সেভ করুন";
+        } else {
+            members.push({name, phone, entries: []});
+        }
+        saveData();
+        document.getElementById('m-name').value=''; document.getElementById('m-phone').value='';
     }
 
-    function createNewMember() {
-        const n = document.getElementById('new-name').value;
-        const ph = document.getElementById('new-phone').value;
-        if(!n) return;
-        allMembers.push({name: n, phone: ph, entries: []});
-        pushData();
-        document.getElementById('new-name').value = '';
+    function editMember(i) {
+        editIdx = i;
+        document.getElementById('m-name').value = members[i].name;
+        document.getElementById('m-phone').value = members[i].phone;
+        document.getElementById('member-submit-btn').innerText = "আপডেট করুন";
     }
 
-    function saveMonthlyData() {
-        const d = {
-            month: document.getElementById('sel-month').value,
-            amount: Number(document.getElementById('amt-main').value || 0),
-            extra: Number(document.getElementById('amt-extra').value || 0),
-            fine: Number(document.getElementById('amt-fine').value || 0)
+    function addMonthlyEntry() {
+        let data = {
+            month: document.getElementById('e-month').value,
+            amount: Number(document.getElementById('e-amount').value || 0),
+            extra: Number(document.getElementById('e-extra').value || 0),
+            fine: Number(document.getElementById('e-fine').value || 0)
         };
-        if(!allMembers[selectedMemberIdx].entries) allMembers[selectedMemberIdx].entries = [];
-        allMembers[selectedMemberIdx].entries.push(d);
-        pushData(); refreshEntries();
+        if(!members[currentIdx].entries) members[currentIdx].entries = [];
+        members[currentIdx].entries.push(data);
+        saveData(); renderEntries();
+        document.getElementById('e-amount').value=''; document.getElementById('e-extra').value=''; document.getElementById('e-fine').value='';
     }
 
-    function refreshEntries() {
-        const body = document.getElementById('entry-table-body');
-        body.innerHTML = '';
-        (allMembers[selectedMemberIdx].entries || []).forEach((e, i) => {
-            let rowSum = Number(e.amount)+Number(e.extra)+Number(e.fine);
+    function renderEntries() {
+        const body = document.getElementById('entry-list-body'); body.innerHTML = ''; let personalTotal = 0;
+        (members[currentIdx].entries || []).forEach((e, i) => {
+            let rowSum = Number(e.amount || 0) + Number(e.extra || 0) + Number(e.fine || 0);
+            personalTotal += rowSum;
             body.innerHTML += `<tr>
                 <td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td>
-                <td class="admin-only">${isAdmin ? `<button onclick="removeEntry(${i})">X</button>` : ''}</td>
+                <td class="admin-only">${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteEntry(${i})">X</button>` : ''}</td>
             </tr>`;
         });
+        document.getElementById('p-total-display').innerText = personalTotal + " ৳";
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
 
-    function removeMember(i) { if(confirm("সদস্য মুছবেন?")) { allMembers.splice(i, 1); pushData(); } }
-    function removeEntry(i) { if(confirm("হিসাব মুছবেন?")) { allMembers[selectedMemberIdx].entries.splice(i, 1); pushData(); refreshEntries(); } }
+    function deleteMember(i) { if(confirm("মুছবেন?")) { members.splice(i, 1); saveData(); } }
+    function deleteEntry(i) { if(confirm("মুছবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
 
-    window.onload = () => {
-        const sel = document.getElementById('sel-month');
-        const m = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-        for(let y=2025; y<=2026; y++) m.forEach(x => { let o=document.createElement('option'); o.text=`${x} ${y}`; sel.add(o); });
-        loadData();
+    window.onload = function() {
+        generateMonths(); 
+        fetchData(); 
     };
 </script>
 </body>
