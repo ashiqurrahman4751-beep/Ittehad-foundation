@@ -8,9 +8,8 @@
         :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
         .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
-        .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; position: relative; }
         
-        /* লোগো সেকশন - এবার কোনো লিঙ্ক নেই, সরাসরি কোড */
         .logo-container { margin-bottom: 20px; display: flex; justify-content: center; }
         .logo-container img { 
             width: 140px; height: 140px; 
@@ -20,36 +19,67 @@
         }
         
         .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 26px; font-weight: bold; }
+        
+        /* ব্যাংক ও বিকাশ ইনফো ডিজাইন */
+        .payment-info { 
+            background: #e8f5e9; color: var(--primary); padding: 20px; 
+            border-radius: 12px; margin-bottom: 25px; border: 2px solid var(--primary);
+            text-align: left; font-size: 15px; line-height: 1.6;
+        }
+        .payment-info h3 { margin: 0 0 10px 0; border-bottom: 1px solid var(--primary); padding-bottom: 5px; }
+
         .admin-bar { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .stat-card { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-size: 18px; }
         .section { display: none; }
         .active { display: block; }
         .admin-only { display: none; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
         th { background: #f1f5f9; color: var(--primary); }
+        
+        /* পেজিনেশন ডিজাইন */
+        .pagination { margin-top: 20px; display: flex; justify-content: center; gap: 10px; align-items: center; }
+        .page-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .page-btn:disabled { background: #ccc; cursor: not-allowed; }
+
         .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; }
         .btn-login { background: var(--admin); }
         .btn-add { background: var(--secondary); }
         .btn-view { background: var(--primary); }
         input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; width: 85%; max-width: 300px; }
+
+        .footer-rolling { width: 100%; overflow: hidden; background: #f1f5f9; margin-top: 30px; padding: 12px 0; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .rolling-text { display: inline-block; white-space: nowrap; font-weight: bold; font-size: 16px; animation: roll 20s linear infinite; }
+        .warning-red { color: #b91c1c; }
+        .name-green { color: var(--primary); }
+        @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
 
 <div class="warning-bar">
-   *আল্লাহ তায়ালা ব্যাবসায়কে করেছে হালাল আর সুদকে করেছেন হারাম (বাকারা-২৭৫)
+   *আল্লাহ তায়ালা ব্যাবসায়কে করেছেন হালাল আর সুদকে করেছেন হারাম (বাকারা-২৭৫)
 </div>
 
 <div class="container">
     <div class="header">
-    <div class="logo-container">
-        <img src="logo.jpg" alt="Al-Ittehad Logo">
+        <div class="logo-container">
+            <img src="logo.jpg?v=12" alt="Al-Ittehad Logo">
+        </div>
+        <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
     </div>
-    <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
-</div>
 
+    <div class="payment-info">
+        <h3>💳 পেমেন্ট তথ্য </h3>
+        <strong>Bkash:</strong> 01941280332 <br>
+        <strong>Bank:</strong> Islami Bank Bangladesh Plc <br>
+        <strong>Name:</strong> <span style="color:#666;">(Account Name)</span> <br>
+        <strong>Account No:</strong> <span style="color:#666;">(Account Number)</span> <br>
+        <strong>Branch:</strong> Islami Bank Agent Banking Dhaka Head Office <br>
+        <strong>Routing:</strong> 125270607
+    </div>
 
     <div class="admin-bar">
         <div id="admin-status">👤 মোড: <strong>সাধারণ সদস্য</strong></div>
@@ -74,6 +104,12 @@
             <thead><tr><th>নাম ও মোবাইল</th><th>মোট জমা</th><th>অ্যাকশন</th></tr></thead>
             <tbody id="member-list-body"></tbody>
         </table>
+        
+        <div class="pagination">
+            <button class="page-btn" id="prevPage" onclick="changePage(-1)">Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button class="page-btn" id="nextPage" onclick="changePage(1)">Next</button>
+        </div>
     </div>
 
     <div id="member-detail-view" class="section">
@@ -92,37 +128,39 @@
             <tfoot><tr style="background:#f8fafc; font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display">০</td><td class="admin-only"></td></tr></tfoot>
         </table>
     </div>
+
+    <div class="footer-rolling">
+        <div class="rolling-text">
+            <span class="name-green">Created by Ashiqur</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            <span class="warning-red">সতর্কবার্তা: ১ থেকে ১০ তারিখের মধ্যে টাকা পরিশোধ করুন অন্যথায় ২০০ টাকা জরিমানা দিতে হবে</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+           <span class="warning-red">সতর্কবার্তা: টাকা জমা দেয়ার পর সমিতির বইয়ের হিসাব বুঝে নিন পরে ক্যাশিয়ার দায়ী থাকবে না</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+            <span class="name-green">আল ইত্তেহাদ ফাউন্ডেশন</span>
+        </div>
+    </div>
 </div>
 
 <script>
     const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/.json"; 
-    const _secret = "QXNoaWtANDc1MQ=="; // Ashik@4751
+    const _secret = "QXNoaWtANDc1MQ=="; 
     
     let isAdmin = false;
     let members = [];
+    let currentIdx = null;
+    
+    // পেজিনেশন ভেরিয়েবল
+    let currentPage = 1;
+    const membersPerPage = 5;
 
     function handleLogin() {
         const input = document.getElementById('login-input').value;
         const customPass = localStorage.getItem('ittehad_vfinal_fix_v4');
-        
         if (input === atob(_secret) || (customPass && input === customPass)) {
             isAdmin = true;
             document.getElementById('admin-status').innerHTML = "✅ মোড: <strong>এডমিন</strong>";
             document.getElementById('change-pass-btn').style.display = 'inline-block';
             renderMain();
             alert("লগইন সফল!");
-        } else {
-            alert("ভুল পাসওয়ার্ড!");
-        }
-    }
-
-    function changePassword() {
-        if (!isAdmin) return;
-        const newPass = prompt("নতুন পাসওয়ার্ড দিন:");
-        if (newPass && newPass.length >= 4) {
-            localStorage.setItem('ittehad_vfinal_fix_v4', newPass);
-            alert("পাসওয়ার্ড পরিবর্তন সফল!");
-        }
+        } else { alert("ভুল পাসওয়ার্ড!"); }
     }
 
     async function fetchData() {
@@ -141,36 +179,52 @@
         } catch (e) { alert("সেভ করতে সমস্যা হয়েছে!"); }
     }
 
-    function generateMonths() {
-        const select = document.getElementById('e-month');
-        const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-        for (let y = 2025; y <= 2027; y++) {
-            months.forEach(m => { let o = document.createElement('option'); o.text = `${m} ${y}`; select.add(o); });
-        }
-    }
-
     function renderMain() {
         const body = document.getElementById('member-list-body');
         if(!body) return;
-        body.innerHTML = ''; let totalFund = 0;
-        members.forEach((m, i) => {
+        body.innerHTML = ''; 
+        let totalFund = 0;
+
+        // মোট ফান্ড ক্যালকুলেশন
+        members.forEach(m => {
             if(!m) return;
             let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
             totalFund += pTotal;
+        });
+
+        // পেজিনেশন লজিক
+        const start = (currentPage - 1) * membersPerPage;
+        const end = start + membersPerPage;
+        const paginatedMembers = members.slice(start, end);
+
+        paginatedMembers.forEach((m, i) => {
+            const actualIndex = start + i;
+            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
             body.innerHTML += `<tr>
                 <td><strong>${m.name}</strong><br><small>${m.phone || ''}</small></td>
                 <td>${pTotal} ৳</td>
                 <td>
-                    <button class="btn btn-view" onclick="viewMember(${i})">দেখুন</button>
-                    ${isAdmin ? `<button class="btn" style="background:var(--edit); font-size:11px;" onclick="editMember(${i})">এডিট</button> <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${i})">X</button>` : ''}
+                    <button class="btn btn-view" onclick="viewMember(${actualIndex})">দেখুন</button>
+                    ${isAdmin ? `<button class="btn" style="background:var(--edit); font-size:11px;" onclick="editMember(${actualIndex})">এডিট</button> <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${actualIndex})">X</button>` : ''}
                 </td>
             </tr>`;
         });
+
         document.getElementById('total-members').innerText = members.length;
         document.getElementById('total-fund').innerText = totalFund;
+        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(members.length / membersPerPage) || 1}`;
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage >= Math.ceil(members.length / membersPerPage);
+        
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
 
+    function changePage(step) {
+        currentPage += step;
+        renderMain();
+    }
+
+    // বাকি ফাংশনগুলো আগের মতোই (viewMember, addMember, ইত্যাদি)
     function viewMember(i) {
         currentIdx = i;
         document.getElementById('main-view').classList.remove('active');
@@ -178,9 +232,7 @@
         document.getElementById('detail-title').innerText = members[i].name + " এর হিসাব";
         renderEntries();
     }
-
     function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
-
     function addMember() {
         let name = document.getElementById('m-name').value;
         let phone = document.getElementById('m-phone').value;
@@ -189,7 +241,6 @@
         saveData();
         document.getElementById('m-name').value=''; document.getElementById('m-phone').value='';
     }
-
     function addMonthlyEntry() {
         let data = {
             month: document.getElementById('e-month').value,
@@ -202,7 +253,6 @@
         saveData(); renderEntries();
         document.getElementById('e-amount').value=''; document.getElementById('e-extra').value=''; document.getElementById('e-fine').value='';
     }
-
     function renderEntries() {
         const body = document.getElementById('entry-list-body'); body.innerHTML = ''; let personalTotal = 0;
         (members[currentIdx].entries || []).forEach((e, i) => {
@@ -216,10 +266,15 @@
         document.getElementById('p-total-display').innerText = personalTotal + " ৳";
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
-
     function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i, 1); saveData(); } }
     function deleteEntry(i) { if(confirm("ডিলিট করবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
-
+    function generateMonths() {
+        const select = document.getElementById('e-month');
+        const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+        for (let y = 2025; y <= 2027; y++) {
+            months.forEach(m => { let o = document.createElement('option'); o.text = `${m} ${y}`; select.add(o); });
+        }
+    }
     window.onload = function() { generateMonths(); fetchData(); };
 </script>
 </body>
