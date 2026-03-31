@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>আল ইত্তেহাদ ফাউন্ডেশন - লাইভ ডাটাবেস</title>
     <style>
-        :root { --primary: #2c3e50; --secondary: #27ae60; --danger: #e74c3c; --admin: #8e44ad; }
+        :root { --primary: #2c3e50; --secondary: #27ae60; --danger: #e74c3c; --admin: #8e44ad; --edit: #f39c12; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 15px; }
         .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
         .admin-bar { background: #dfe6e9; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
@@ -17,9 +17,10 @@
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
         th { background: #f8f9fa; }
-        .btn { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; margin: 5px; }
+        .btn { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; margin: 2px; }
         .btn-login { background: var(--admin); }
         .btn-add { background: var(--secondary); }
+        .btn-edit { background: var(--edit); font-size: 11px; }
         .btn-del { background: var(--danger); font-size: 11px; }
         input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin: 5px; }
     </style>
@@ -36,7 +37,7 @@
         <div id="setup-area" style="margin-top:10px;">
             <small>পাসওয়ার্ড সেট না থাকলে এখানে দিন:</small><br>
             <input type="password" id="new-pass-input" placeholder="নতুন পাসওয়ার্ড">
-            <button class="btn btn-add" style="padding:5px 10px;" onclick="setPass()">সেভ</button>
+            <button class="btn btn-add" onclick="setPass()">সেভ</button>
         </div>
     </div>
 
@@ -48,10 +49,10 @@
             <div class="stat-card" style="background:var(--admin)">তারিখ: <span id="current-date"></span></div>
         </div>
 
-        <div class="admin-only" style="background:#f1f2f6; padding:15px; border-radius:10px; margin-bottom:20px;">
+        <div class="admin-only" id="add-form-div" style="background:#f1f2f6; padding:15px; border-radius:10px; margin-bottom:20px;">
             <input type="text" id="m-name" placeholder="নাম">
             <input type="text" id="m-phone" placeholder="মোবাইল">
-            <button class="btn btn-add" onclick="addMember()">যোগ করুন</button>
+            <button class="btn btn-add" id="member-submit-btn" onclick="addMember()">যোগ করুন</button>
         </div>
 
         <table>
@@ -63,12 +64,12 @@
     <div id="member-detail-view" class="section">
         <button class="btn" style="background:#636e72;" onclick="showMain()">← ফিরে যান</button>
         <h2 id="detail-title"></h2>
-        <div class="admin-only" style="background:#e8f4fd; padding:15px; border-radius:10px; margin-bottom:15px;">
+        <div class="admin-only" id="entry-form-div" style="background:#e8f4fd; padding:15px; border-radius:10px; margin-bottom:15px;">
             <select id="e-month"></select>
             <input type="number" id="e-amount" placeholder="জমা" style="width:70px">
             <input type="number" id="e-extra" placeholder="অতিরিক্ত" style="width:70px">
             <input type="number" id="e-fine" placeholder="জরিমানা" style="width:70px">
-            <button class="btn btn-add" onclick="addMonthlyEntry()">সেভ</button>
+            <button class="btn btn-add" id="entry-submit-btn" onclick="addMonthlyEntry()">সেভ</button>
         </div>
         <table>
             <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only">অ্যাকশন</th></tr></thead>
@@ -79,18 +80,21 @@
 </div>
 
 <script>
-    // আপনার Firebase URL এখানে বসান (শেষে / থাকতে হবে)
+    // আপনার ফায়ারবেস লিঙ্ক
     const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/"; 
 
     let isAdmin = false;
     let members = [];
     let currentIdx = null;
+    let editIndex = null;
 
     async function fetchData() {
-        const response = await fetch(dbURL + ".json");
-        const data = await response.json();
-        members = data ? data.members || [] : [];
-        renderMain();
+        try {
+            const response = await fetch(dbURL + ".json");
+            const data = await response.json();
+            members = data ? data.members || [] : [];
+            renderMain();
+        } catch (e) { console.error("Error:", e); }
     }
 
     async function saveData() {
@@ -133,10 +137,11 @@
         const body = document.getElementById('member-list-body');
         body.innerHTML = ''; let totalFund = 0;
         members.forEach((m, i) => {
+            // জরিমানা এখন যোগ হচ্ছে (+)
             let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount) + Number(curr.extra) + Number(curr.fine)), 0);
             totalFund += pTotal;
-            ...viewMember(${i})">দেখুন</button> ${isAdmin ? `<button class="btn" style="background:#f39c12; font-size:11px;" onclick="editMember(${i})">এডিট</button> <button class="btn btn-del" onclick="deleteMember(${i})">X</button>` : ''}</td></tr>`;
-
+            body.innerHTML += `<tr><td><strong>${m.name}</strong><br><small>${m.phone}</small></td><td>${pTotal} /-</td><td><button class="btn" style="background:var(--primary)" onclick="viewMember(${i})">দেখুন</button> ${isAdmin ? `<button class="btn btn-edit" onclick="editMember(${i})">এডিট</button> <button class="btn btn-del" onclick="deleteMember(${i})">X</button>` : ''}</td></tr>`;
+        });
         document.getElementById('total-members').innerText = members.length;
         document.getElementById('total-fund').innerText = totalFund + " /-";
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('bn-BD');
@@ -151,13 +156,7 @@
         renderEntries();
     }
 
-    function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
-
-            function addMember() {
-        let name = document.getElementById('m-name').value;
-        if(name) { members.push({name, phone: document.getElementById('m-phone').value, entries: []}); saveData(); document.getElementById('m-name').value=''; }
-    }
-
+    function showMain() { currentIdx = null; editIndex = null; document.getElementById('member-submit-btn').innerText = "যোগ করুন"; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
 
     function addMember() {
         let name = document.getElementById('m-name').value;
@@ -168,7 +167,7 @@
             members[editIndex].name = name;
             members[editIndex].phone = phone;
             editIndex = null;
-            document.querySelector('.btn-add').innerText = "যোগ করুন";
+            document.getElementById('member-submit-btn').innerText = "যোগ করুন";
         } else {
             members.push({name, phone, entries: []});
         }
@@ -181,10 +180,9 @@
         editIndex = i;
         document.getElementById('m-name').value = members[i].name;
         document.getElementById('m-phone').value = members[i].phone;
-        document.querySelector('.btn-add').innerText = "আপডেট করুন";
+        document.getElementById('member-submit-btn').innerText = "আপডেট করুন";
         window.scrollTo(0,0);
     }
-
 
     function addMonthlyEntry() {
         if(!members[currentIdx].entries) members[currentIdx].entries = [];
@@ -195,12 +193,17 @@
             fine: Number(document.getElementById('e-fine').value)
         });
         saveData(); renderEntries();
+        document.getElementById('e-amount').value='';
+        document.getElementById('e-extra').value='';
+        document.getElementById('e-fine').value='';
     }
 
     function renderEntries() {
         const body = document.getElementById('entry-list-body'); body.innerHTML = ''; let personalTotal = 0;
         (members[currentIdx].entries || []).forEach((e, i) => {
-            let rowSum = e.amount + e.extra + e.fine; personalTotal += rowSum;
+            // ব্যক্তিগত হিসাবেও জরিমানা যোগ হচ্ছে (+)
+            let rowSum = Number(e.amount) + Number(e.extra) + Number(e.fine);
+            personalTotal += rowSum;
             body.innerHTML += `<tr><td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td><td class="admin-only">${isAdmin ? `<button class="btn btn-del" onclick="deleteEntry(${i})">X</button>` : ''}</td></tr>`;
         });
         document.getElementById('p-total-display').innerText = personalTotal + " /-";
