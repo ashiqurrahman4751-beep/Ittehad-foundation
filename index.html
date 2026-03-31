@@ -10,6 +10,21 @@
         .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
         .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; position: relative; }
         
+        /* রোলিং টেক্সট ডিজাইন - এখন উপরে */
+        .header-rolling { 
+            width: 100%; 
+            overflow: hidden; 
+            background: #f1f5f9; 
+            margin-bottom: 20px; 
+            padding: 12px 0; 
+            border-radius: 8px; 
+            border: 1px solid #e2e8f0; 
+        }
+        .rolling-text { display: inline-block; white-space: nowrap; font-weight: bold; font-size: 16px; animation: roll 25s linear infinite; }
+        .warning-red { color: #b91c1c; }
+        .name-green { color: var(--primary); }
+        @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
         .logo-container { margin-bottom: 20px; display: flex; justify-content: center; }
         .logo-container img { 
             width: 140px; height: 140px; 
@@ -19,42 +34,23 @@
         }
         
         .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 26px; font-weight: bold; }
-        
-        /* ব্যাংক ও বিকাশ ইনফো ডিজাইন */
-        .payment-info { 
-            background: #e8f5e9; color: var(--primary); padding: 20px; 
-            border-radius: 12px; margin-bottom: 25px; border: 2px solid var(--primary);
-            text-align: left; font-size: 15px; line-height: 1.6;
-        }
+        .payment-info { background: #e8f5e9; color: var(--primary); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 2px solid var(--primary); text-align: left; font-size: 15px; line-height: 1.6; }
         .payment-info h3 { margin: 0 0 10px 0; border-bottom: 1px solid var(--primary); padding-bottom: 5px; }
-
         .admin-bar { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .stat-card { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-size: 18px; }
         .section { display: none; }
         .active { display: block; }
         .admin-only { display: none; }
-        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
         th { background: #f1f5f9; color: var(--primary); }
-        
-        /* পেজিনেশন ডিজাইন */
         .pagination { margin-top: 20px; display: flex; justify-content: center; gap: 10px; align-items: center; }
         .page-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
         .page-btn:disabled { background: #ccc; cursor: not-allowed; }
-
         .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; }
         .btn-login { background: var(--admin); }
-        .btn-add { background: var(--secondary); }
-        .btn-view { background: var(--primary); }
         input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; width: 85%; max-width: 300px; }
-
-        .footer-rolling { width: 100%; overflow: hidden; background: #f1f5f9; margin-top: 30px; padding: 12px 0; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .rolling-text { display: inline-block; white-space: nowrap; font-weight: bold; font-size: 16px; animation: roll 20s linear infinite; }
-        .warning-red { color: #b91c1c; }
-        .name-green { color: var(--primary); }
-        @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
@@ -64,9 +60,18 @@
 </div>
 
 <div class="container">
+    <div class="header-rolling">
+        <div class="rolling-text">
+            <span class="name-green">Created by Ashiqur</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            <span class="warning-red">সতর্কবার্তা: ১ থেকে ১০ তারিখের মধ্যে টাকা পরিশোধ করুন অন্যথায় ২০০ টাকা জরিমানা দিতে হবে</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            <span class="warning-red">সতর্কবার্তা: টাকা জমা দেয়ার পর সমিতির বইয়ের হিসাব বুঝে নিন পরে ক্যাশিয়ার দায়ী থাকবে না</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+            <span class="name-green">আল ইত্তেহাদ ফাউন্ডেশন</span>
+        </div>
+    </div>
+
     <div class="header">
         <div class="logo-container">
-            <img src="logo.jpg?v=12" alt="Al-Ittehad Logo">
+            <img src="logo.jpg?v=14" alt="Al-Ittehad Logo">
         </div>
         <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
     </div>
@@ -98,7 +103,7 @@
         <div class="admin-only" id="add-form-div" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px;">
             <input type="text" id="m-name" placeholder="নাম">
             <input type="text" id="m-phone" placeholder="মোবাইল">
-            <button class="btn btn-add" id="member-submit-btn" onclick="addMember()">যোগ করুন</button>
+            <button class="btn btn-add" id="member-submit-btn" style="background:var(--secondary);" onclick="addMember()">যোগ করুন</button>
         </div>
         <table>
             <thead><tr><th>নাম ও মোবাইল</th><th>মোট জমা</th><th>অ্যাকশন</th></tr></thead>
@@ -120,7 +125,7 @@
             <input type="number" id="e-amount" placeholder="জমা">
             <input type="number" id="e-extra" placeholder="অতিরিক্ত">
             <input type="number" id="e-fine" placeholder="জরিমানা">
-            <button class="btn btn-add" id="entry-submit-btn" onclick="addMonthlyEntry()">সেভ</button>
+            <button class="btn btn-add" id="entry-submit-btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ</button>
         </div>
         <table>
             <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only">অ্যাকশন</th></tr></thead>
@@ -128,26 +133,14 @@
             <tfoot><tr style="background:#f8fafc; font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display">০</td><td class="admin-only"></td></tr></tfoot>
         </table>
     </div>
-
-    <div class="footer-rolling">
-        <div class="rolling-text">
-            <span class="name-green">Created by Ashiqur</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-            <span class="warning-red">সতর্কবার্তা: ১ থেকে ১০ তারিখের মধ্যে টাকা পরিশোধ করুন অন্যথায় ২০০ টাকা জরিমানা দিতে হবে</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-           <span class="warning-red">সতর্কবার্তা: টাকা জমা দেয়ার পর সমিতির বইয়ের হিসাব বুঝে নিন পরে ক্যাশিয়ার দায়ী থাকবে না</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-            <span class="name-green">আল ইত্তেহাদ ফাউন্ডেশন</span>
-        </div>
-    </div>
 </div>
 
 <script>
     const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/.json"; 
     const _secret = "QXNoaWtANDc1MQ=="; 
-    
     let isAdmin = false;
     let members = [];
     let currentIdx = null;
-    
-    // পেজিনেশন ভেরিয়েবল
     let currentPage = 1;
     const membersPerPage = 5;
 
@@ -184,19 +177,14 @@
         if(!body) return;
         body.innerHTML = ''; 
         let totalFund = 0;
-
-        // মোট ফান্ড ক্যালকুলেশন
         members.forEach(m => {
             if(!m) return;
             let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
             totalFund += pTotal;
         });
-
-        // পেজিনেশন লজিক
         const start = (currentPage - 1) * membersPerPage;
         const end = start + membersPerPage;
         const paginatedMembers = members.slice(start, end);
-
         paginatedMembers.forEach((m, i) => {
             const actualIndex = start + i;
             let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
@@ -204,34 +192,21 @@
                 <td><strong>${m.name}</strong><br><small>${m.phone || ''}</small></td>
                 <td>${pTotal} ৳</td>
                 <td>
-                    <button class="btn btn-view" onclick="viewMember(${actualIndex})">দেখুন</button>
-                    ${isAdmin ? `<button class="btn" style="background:var(--edit); font-size:11px;" onclick="editMember(${actualIndex})">এডিট</button> <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${actualIndex})">X</button>` : ''}
+                    <button class="btn" style="background:var(--primary);" onclick="viewMember(${actualIndex})">দেখুন</button>
+                    ${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${actualIndex})">X</button>` : ''}
                 </td>
             </tr>`;
         });
-
         document.getElementById('total-members').innerText = members.length;
         document.getElementById('total-fund').innerText = totalFund;
         document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(members.length / membersPerPage) || 1}`;
         document.getElementById('prevPage').disabled = currentPage === 1;
         document.getElementById('nextPage').disabled = currentPage >= Math.ceil(members.length / membersPerPage);
-        
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
 
-    function changePage(step) {
-        currentPage += step;
-        renderMain();
-    }
-
-    // বাকি ফাংশনগুলো আগের মতোই (viewMember, addMember, ইত্যাদি)
-    function viewMember(i) {
-        currentIdx = i;
-        document.getElementById('main-view').classList.remove('active');
-        document.getElementById('member-detail-view').classList.add('active');
-        document.getElementById('detail-title').innerText = members[i].name + " এর হিসাব";
-        renderEntries();
-    }
+    function changePage(step) { currentPage += step; renderMain(); }
+    function viewMember(i) { currentIdx = i; document.getElementById('main-view').classList.remove('active'); document.getElementById('member-detail-view').classList.add('active'); document.getElementById('detail-title').innerText = members[i].name + " এর হিসাব"; renderEntries(); }
     function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
     function addMember() {
         let name = document.getElementById('m-name').value;
@@ -266,8 +241,8 @@
         document.getElementById('p-total-display').innerText = personalTotal + " ৳";
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
-    function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i, 1); saveData(); } }
-    function deleteEntry(i) { if(confirm("ডিলিট করবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
+    function deleteMember(i) { if(confirm("সদস্য ডিলিট করবেন?")) { members.splice(i, 1); saveData(); } }
+    function deleteEntry(i) { if(confirm("এন্ট্রি ডিলিট করবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
     function generateMonths() {
         const select = document.getElementById('e-month');
         const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
