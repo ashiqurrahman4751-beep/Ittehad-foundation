@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>আল ইত্তেহাদ ফাউন্ডেশন - ড্যাশবোর্ড</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
     <style>
-        :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; --whatsapp: #25d366; }
+        :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; --whatsapp: #25d366; --excel: #1d6f42; --pdf: #c62828; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
         .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
         .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; position: relative; }
@@ -93,6 +97,12 @@
         
         <div class="admin-only" id="admin-controls" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px; border: 1px solid #cbd5e1;">
             <div style="margin-bottom: 20px;">
+                <h4>ডাউনলোড এবং ডাটা রিপোর্ট</h4>
+                <button class="btn" style="background:var(--pdf);" onclick="downloadPDF()">PDF ডাউনলোড</button>
+                <button class="btn" style="background:var(--excel);" onclick="downloadExcel()">Excel ডাউনলোড</button>
+            </div>
+            <hr>
+            <div style="margin-bottom: 20px; margin-top: 20px;">
                 <h4>ব্যয় আপডেট করুন</h4>
                 <input type="number" id="exp-amount" placeholder="ব্যয়ের পরিমাণ লিখুন">
                 <button class="btn" style="background:var(--danger);" onclick="updateExpense()">ব্যয় সেভ করুন</button>
@@ -180,6 +190,42 @@
         } catch (e) { alert("সেভ করতে সমস্যা হয়েছে!"); }
     }
 
+    // PDF ডাউনলোড ফাংশন
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Al-Ittehad Foundation - Member List", 14, 15);
+        const rows = members.map(m => [
+            m.acc || '-',
+            m.name,
+            m.phone || '-',
+            (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0) + " TK"
+        ]);
+        doc.autoTable({
+            startY: 20,
+            head: [['Book No', 'Name', 'Phone', 'Total Deposit']],
+            body: rows,
+        });
+        doc.save("ittehad_members.pdf");
+    }
+
+    // Excel ডাউনলোড ফাংশন
+    function downloadExcel() {
+        let excelData = members.map(m => {
+            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
+            return {
+                "হিসাব নং": m.acc || '-',
+                "নাম": m.name,
+                "মোবাইল": m.phone || '-',
+                "মোট জমা": pTotal
+            };
+        });
+        const worksheet = XLSX.utils.json_to_sheet(excelData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Members");
+        XLSX.writeFile(workbook, "ittehad_report.xlsx");
+    }
+
     function updateExpense() {
         const amount = document.getElementById('exp-amount').value;
         if(amount === "") return alert("ব্যয়ের পরিমাণ লিখুন!");
@@ -223,7 +269,6 @@
         document.getElementById('total-fund').innerText = totalFund;
         document.getElementById('total-expense').innerText = totalExpense;
         document.getElementById('current-balance').innerText = totalFund - totalExpense;
-        document.getElementById('exp-amount').value = totalExpense;
         
         document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(members.length / membersPerPage) || 1}`;
         document.getElementById('prevPage').disabled = currentPage === 1;
@@ -259,7 +304,6 @@
         document.getElementById('m-acc').value = members[i].acc || '';
         document.getElementById('m-name').value = members[i].name;
         document.getElementById('m-phone').value = members[i].phone || '';
-        
         document.getElementById('btn-group').innerHTML = `
             <button class="btn" style="background:var(--edit);" onclick="updateMember()">আপডেট করুন</button>
             <button class="btn" style="background:#64748b; margin-left:5px;" onclick="resetForm()">বাতিল</button>
