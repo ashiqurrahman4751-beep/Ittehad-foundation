@@ -153,7 +153,11 @@
 
     function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
 
-        let editIndex = null;
+            function addMember() {
+        let name = document.getElementById('m-name').value;
+        if(name) { members.push({name, phone: document.getElementById('m-phone').value, entries: []}); saveData(); document.getElementById('m-name').value=''; }
+    }
+
 
     function addMember() {
         let name = document.getElementById('m-name').value;
