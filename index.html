@@ -13,131 +13,70 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 0; direction: ltr; }
         .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
         .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; position: relative; }
-        
         .header-rolling { width: 100%; overflow: hidden; background: #f1f5f9; margin-bottom: 20px; padding: 12px 0; border-radius: 8px; border: 1px solid #e2e8f0; }
         .rolling-text { display: inline-block; white-space: nowrap; font-weight: bold; font-size: 16px; animation: roll 25s linear infinite; }
-        .warning-red { color: #b91c1c; }
-        .name-green { color: var(--primary); }
         @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-        .logo-container { margin-bottom: 20px; display: flex; justify-content: center; }
-        .logo-container img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--primary); padding: 3px; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 26px; font-weight: bold; }
-        
-        .member-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 8px; border: 1px solid #ddd; }
-        .detail-img { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 10px; border: 3px solid var(--primary); object-fit: cover; }
-
-        .payment-info { background: #e8f5e9; color: var(--primary); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 2px solid var(--primary); text-align: left; font-size: 15px; line-height: 1.6; }
-        .admin-bar { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
+        .logo-container img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--primary); object-fit: cover; }
+        .payment-info { background: #e8f5e9; color: var(--primary); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 2px solid var(--primary); text-align: left; }
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-size: 18px; }
-        
+        .stat-card { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-size: 18px; font-weight: bold; }
         .section { display: none; }
         .active { display: block; }
         .admin-only { display: none; }
-        
-        .search-container { margin-bottom: 20px; text-align: right; }
-        #search-input { width: 100%; max-width: 300px; border: 2px solid var(--primary); padding: 8px 15px; border-radius: 8px; }
-
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
         th { background: #f1f5f9; color: var(--primary); }
-        
-        .pagination { margin: 20px 0; display: flex; justify-content: center; gap: 10px; align-items: center; }
-        .page-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        .page-btn:disabled { background: #ccc; cursor: not-allowed; }
-
         .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; margin: 2px; }
-        .btn-wa { background: var(--whatsapp); font-size: 11px; }
         input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; width: 85%; max-width: 300px; }
-        
-        .expense-table-container { margin-top: 30px; border-top: 2px solid #e2e8f0; padding-top: 20px; }
-        #fine-note { font-size: 12px; margin-top: 5px; display: block; }
+        .member-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 8px; }
+        .detail-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
     </style>
 </head>
 <body>
 
-<div class="warning-bar">
-   "আল্লাহ তায়ালা ব্যবসাকে করেছেন হালাল আর সুদকে করেছেন হারাম" (বাক্বারা-২৭৫)
-</div>
+<div class="warning-bar">"আল্লাহ তায়ালা ব্যবসাকে করেছেন হালাল আর সুদকে করেছেন হারাম" (বাক্বারা-২৭৫)</div>
 
 <div class="container">
     <div class="header-rolling">
-        <div class="rolling-text">
-            <span class="name-green">Created by Ashiqur</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-            <span class="warning-red" id="display-notice">লোড হচ্ছে...</span>
-        </div>
+        <div class="rolling-text"><span style="color:var(--primary)">Created by Ashiqur</span> | <span style="color:#b91c1c" id="display-notice">লোড হচ্ছে...</span></div>
     </div>
 
-    <div class="header">
-        <div class="logo-container">
-            <img src="logo.jpg?v=15" alt="Al-Ittehad Logo">
-        </div>
-        <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
-    </div>
+    <div class="logo-container"><img src="logo.jpg?v=15" alt="Logo"></div>
+    <h1 style="color:var(--primary)">আল ইত্তেহাদ ফাউন্ডেশন</h1>
 
     <div class="payment-info">
-        <h3>💳 পেমেন্ট তথ্য </h3>
-        <strong>Bkash:</strong> 01941280332 <br>
-        <strong>Bank:</strong> Islami Bank Bangladesh Plc <br>
-        <strong>Name:</strong> Al-Ittehad Foundation <br>
+        <strong>Bkash:</strong> 01941280332 | <strong>Bank:</strong> Islami Bank Bangladesh Plc <br>
         <strong>Routing:</strong> 125270607
     </div>
 
-    <div class="admin-bar">
+    <div class="admin-bar" style="background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:25px;">
         <div id="admin-status">👤 মোড: <strong>সাধারণ সদস্য</strong></div>
-        <div id="login-section" style="margin-top:15px;">
-            <input type="password" id="login-input" placeholder="পাসওয়ার্ড লিখুন">
-            <button class="btn" style="background:var(--admin);" onclick="handleLogin()">লগইন</button>
-        </div>
-        <div id="logout-section" style="margin-top:15px; display:none;">
-            <button class="btn" style="background:var(--danger);" onclick="handleLogout()">লগআউট</button>
-        </div>
+        <div id="login-section"><input type="password" id="login-input" placeholder="পাসওয়ার্ড"><button class="btn" style="background:var(--admin);" onclick="handleLogin()">লগইন</button></div>
+        <div id="logout-section" style="display:none;"><button class="btn" style="background:var(--danger);" onclick="handleLogout()">লগআউট</button></div>
     </div>
 
     <div id="main-view" class="section active">
         <div class="stats">
             <div class="stat-card">সদস্য: <span id="total-members">০</span> জন</div>
             <div class="stat-card" style="background:#2d6a4f">মোট জমা: <span id="total-fund">০</span> ৳</div>
-            <div class="stat-card" style="background:var(--danger)">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
-            <div class="stat-card" style="background:#1e293b">বর্তমান ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
+            <div class="stat-card" style="background:var(--danger)">ব্যয়: <span id="total-expense-display">০</span> ৳</div>
+            <div class="stat-card" style="background:#1e293b">ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
         </div>
 
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="বই নং বা নাম দিয়ে খুঁজুন..." onkeyup="filterMembers()">
-        </div>
-        
         <div class="admin-only" id="admin-controls" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px; border: 1px solid #cbd5e1;">
-            <div>
-                <h4>ডাউনলোড এবং ডাটা রিপোর্ট</h4>
-                <button class="btn" style="background:var(--pdf);" onclick="downloadPDF()">PDF ডাউনলোড</button>
-                <button class="btn" style="background:var(--excel);" onclick="downloadExcel()">Excel ডাউনলোড</button>
-            </div>
+            <h4 id="form-title">সদস্য যোগ করুন</h4>
+            <input type="text" id="m-acc" placeholder="বই নং">
+            <input type="text" id="m-name" placeholder="নাম">
+            <input type="text" id="m-phone" placeholder="মোবাইল">
+            <input type="file" id="m-image" accept="image/*">
+            <div id="btn-group"><button class="btn" style="background:var(--secondary);" onclick="addMember()">সদস্য যোগ করুন</button></div>
             <hr>
-            <div style="margin: 20px 0;">
-                <h4>নোটিশ আপডেট করুন (Rolling Text)</h4>
-                <input type="text" id="notice-input" placeholder="নোটিশ এখানে লিখুন" style="width: 80%; max-width: 500px;">
-                <button class="btn" style="background:var(--edit);" onclick="updateNotice()">নোটিশ সেভ করুন</button>
-            </div>
-            <hr>
-            <div style="margin: 20px 0;">
-                <h4>নতুন ব্যয় যোগ করুন</h4>
-                <input type="text" id="exp-reason" placeholder="ব্যয়ের কারণ (যেমন: ইফতার মাহফিল)">
-                <input type="number" id="exp-amount" placeholder="ব্যয়ের পরিমাণ">
-                <button class="btn" style="background:var(--danger);" onclick="addExpense()">ব্যয় সেভ করুন</button>
-            </div>
-            <hr>
-            <div style="margin-top: 15px;">
-                <h4 id="form-title">সদস্য যোগ করুন</h4>
-                <input type="text" id="m-acc" placeholder="হিসাব নং/বই নং">
-                <input type="text" id="m-name" placeholder="নাম">
-                <input type="text" id="m-phone" placeholder="মোবাইল">
-                <label style="display:block; font-size:12px; margin-top:5px;">মেম্বার ছবি সিলেক্ট করুন:</label>
-                <input type="file" id="m-image" accept="image/*" style="width: 85%; max-width: 300px;">
-                <div id="btn-group">
-                    <button class="btn" style="background:var(--secondary);" onclick="addMember()">যোগ করুন</button>
-                </div>
-            </div>
+            <h4>ব্যয় এবং নোটিশ</h4>
+            <input type="text" id="exp-reason" placeholder="ব্যয়ের বিবরণ">
+            <input type="number" id="exp-amount" placeholder="পরিমাণ">
+            <button class="btn" style="background:var(--danger);" onclick="addExpense()">ব্যয় সেভ করুন</button>
+            <input type="text" id="notice-input" placeholder="নোটিশ আপডেট করুন" style="width: 80%;">
+            <button class="btn" style="background:var(--edit);" onclick="updateNotice()">নোটিশ আপডেট</button>
         </div>
 
         <h3>সদস্য তালিকা</h3>
@@ -145,44 +84,28 @@
             <thead><tr><th>বই নং</th><th>নাম ও মোবাইল</th><th>মোট জমা</th><th>অ্যাকশন</th></tr></thead>
             <tbody id="member-list-body"></tbody>
         </table>
-        
-        <div class="pagination">
-            <button class="page-btn" id="prevPage" onclick="changePage(-1)">Previous</button>
-            <span id="pageInfo">Page 1</span>
-            <button class="page-btn" id="nextPage" onclick="changePage(1)">Next</button>
-        </div>
 
-        <div class="expense-table-container">
+        <div class="expense-table-container" style="margin-top:30px;">
             <h3 style="color:var(--danger)">ব্যয়ের বিস্তারিত বিবরণ</h3>
-            <table>
-                <thead><tr><th>তারিখ</th><th>বিবরণ</th><th>পরিমাণ</th><th class="admin-only">অ্যাকশন</th></tr></thead>
-                <tbody id="expense-list-body"></tbody>
-                <tfoot><tr style="background:#f1f5f9; font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense">০</td><td class="admin-only"></td></tr></tfoot>
-            </table>
+            <table><tbody id="expense-list-body"></tbody></table>
         </div>
     </div>
 
     <div id="member-detail-view" class="section">
         <button class="btn" style="background:#64748b; margin-bottom:15px;" onclick="showMain()">← ফিরে যান</button>
         <div id="member-profile-header"></div>
-        <h2 id="detail-title" style="margin-top:0;"></h2>
+        <h2 id="detail-title"></h2>
         
-        <div class="admin-only" id="entry-form-div" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px;">
-            <h4 id="entry-form-title">নতুন এন্ট্রি যোগ করুন</h4>
+        <div class="admin-only" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px;">
             <select id="e-month"></select>
             <input type="number" id="e-amount" placeholder="জমা" value="500">
             <input type="number" id="e-extra" placeholder="অতিরিক্ত">
             <input type="number" id="e-fine" placeholder="জরিমানা">
-            <div id="fine-note"></div>
-            <div id="entry-btn-group" style="margin-top:10px;">
-                <button class="btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ করুন</button>
-            </div>
+            <button class="btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ করুন</button>
         </div>
-
         <table>
-            <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only">অ্যাকশন</th></tr></thead>
+            <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th>অ্যাকশন</th></tr></thead>
             <tbody id="entry-list-body"></tbody>
-            <tfoot><tr style="background:#f8fafc; font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display">০</td><td class="admin-only"></td></tr></tfoot>
         </table>
     </div>
 </div>
@@ -190,167 +113,68 @@
 <script>
     const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/.json"; 
     const _secret = "QXNoaWtANDc1MQ=="; 
-    let isAdmin = false;
-    let members = [];
-    let displayedMembers = [];
-    let expenses = []; 
-    let totalExpense = 0;
-    let currentIdx = null;
-    let editIdx = null;
-    let entryEditIdx = null;
-    let currentPage = 1;
-    const membersPerPage = 10;
-    let rollingNotice = "⚠️সতর্কবার্তা: ১০ তারিখের মধ্যে টাকা পরিশোধ করুন অন্যথায় ২০০ টাকা জরিমানা দিতে হবে";
+    let isAdmin = false, members = [], expenses = [], totalExpense = 0, currentIdx = null, editIdx = null;
 
-    function checkLogin() {
-        if (localStorage.getItem("isLoggedIn") === "true") { setAdminUI(true); }
-    }
     function handleLogin() {
-        const input = document.getElementById('login-input').value;
-        if (input === atob(_secret)) {
-            localStorage.setItem("isLoggedIn", "true");
-            setAdminUI(true);
-            alert("লগইন সফল!");
-            document.getElementById('login-input').value = '';
+        if (document.getElementById('login-input').value === atob(_secret)) {
+            isAdmin = true; localStorage.setItem("isLoggedIn", "true");
+            document.getElementById('logout-section').style.display = 'block';
+            document.getElementById('login-section').style.display = 'none';
+            renderMain(); alert("লগইন সফল!");
         } else { alert("ভুল পাসওয়ার্ড!"); }
     }
-    function handleLogout() {
-        localStorage.removeItem("isLoggedIn");
-        setAdminUI(false);
-        alert("লগআউট করা হয়েছে।");
-    }
-    function setAdminUI(status) {
-        isAdmin = status;
-        document.getElementById('admin-status').innerHTML = status ? "✅ মোড: <strong>অ্যাডমিন</strong>" : "👤 মোড: <strong>সাধারণ সদস্য</strong>";
-        document.getElementById('login-section').style.display = status ? 'none' : 'block';
-        document.getElementById('logout-section').style.display = status ? 'block' : 'none';
-        renderMain();
-        if (currentIdx !== null) renderEntries();
-    }
+    function handleLogout() { isAdmin = false; localStorage.removeItem("isLoggedIn"); location.reload(); }
 
     async function fetchData() {
         try {
             const response = await fetch(dbURL);
             const data = await response.json();
             if (data) {
-                let rawMembers = data.members || [];
-                members = rawMembers.sort((a, b) => (a.acc || "").localeCompare((b.acc || ""), undefined, {numeric: true}));
-                displayedMembers = [...members];
-                expenses = data.expenses || []; 
+                members = (data.members || []).sort((a, b) => (a.acc || "").localeCompare((b.acc || ""), undefined, {numeric: true}));
+                expenses = data.expenses || [];
                 totalExpense = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
-                rollingNotice = data.notice || rollingNotice;
-                document.getElementById('display-notice').innerText = rollingNotice;
-                document.getElementById('notice-input').value = rollingNotice;
+                document.getElementById('display-notice').innerText = data.notice || "১০ তারিখের মধ্যে টাকা জমা দিন।";
             }
             renderMain();
-        } catch (e) { console.error("Error fetching data:", e); }
+        } catch (e) { console.error(e); }
     }
 
     async function saveData() {
         totalExpense = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
-        await fetch(dbURL, { 
-            method: "PUT", 
-            body: JSON.stringify({ 
-                members: members, 
-                expenses: expenses, 
-                notice: rollingNotice 
-            }) 
-        });
+        await fetch(dbURL, { method: "PUT", body: JSON.stringify({ members, expenses, notice: document.getElementById('display-notice').innerText }) });
         renderMain();
     }
 
-    function checkFineCondition() {
-        const day = new Date().getDate();
-        const fInput = document.getElementById('e-fine');
-        const fNote = document.getElementById('fine-note');
-        if (day > 10) {
-            fInput.value = 200;
-            fNote.innerHTML = "<span style='color:red'>* ১০ তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
-        } else {
-            fInput.value = 0;
-            fNote.innerHTML = "<span style='color:green'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
-        }
-    }
-
-    // ছবিকে Base64 এ রূপান্তর করার ফাংশন
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
+    function getBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
     async function addMember() {
-        let acc = document.getElementById('m-acc').value;
-        let name = document.getElementById('m-name').value;
-        let phone = document.getElementById('m-phone').value;
-        let imgFile = document.getElementById('m-image').files[0];
-        let imgData = "";
-
-        if(!name) return alert("নাম লিখুন!");
-
-        if(imgFile) {
-            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
-            imgData = await getBase64(imgFile);
-        }
-
-        members.push({acc, name, phone, image: imgData, entries: []});
-        members.sort((a, b) => (a.acc || "").localeCompare((b.acc || ""), undefined, {numeric: true}));
-        displayedMembers = [...members];
-        await saveData();
-        resetMemberForm();
-        document.getElementById('m-image').value = '';
-        alert("সদস্য যোগ হয়েছে!");
+        let acc = document.getElementById('m-acc').value, name = document.getElementById('m-name').value, phone = document.getElementById('m-phone').value, imgFile = document.getElementById('m-image').files[0];
+        let imgData = imgFile ? await getBase64(imgFile) : "";
+        members.push({acc, name, phone, image: imgData, entries: []}); saveData();
     }
 
     function renderMain() {
         const body = document.getElementById('member-list-body');
         const expBody = document.getElementById('expense-list-body');
-        if(!body || !expBody) return;
         body.innerHTML = ''; expBody.innerHTML = '';
-        
         let totalFund = 0;
-        members.forEach(m => {
-            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
+
+        members.forEach((m, idx) => {
+            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount||0) + Number(curr.extra||0) + Number(curr.fine||0)), 0);
             totalFund += pTotal;
-        });
-
-        const start = (currentPage - 1) * membersPerPage;
-        const paginated = displayedMembers.slice(start, start + membersPerPage);
-        
-        paginated.forEach((m, i) => {
-            const originalIdx = members.indexOf(m);
-            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
             let userImg = m.image ? `<img src="${m.image}" class="member-img">` : `👤 `;
-
-            body.innerHTML += `<tr>
-                <td>${m.acc || '-'}</td>
-                <td style="text-align:left;">${userImg} <strong>${m.name}</strong><br><small>${m.phone || ''}</small></td>
-                <td>${pTotal} ৳</td>
-                <td>
-                    <button class="btn" style="background:var(--primary);" onclick="viewMember(${originalIdx})">দেখুন</button>
-                    ${isAdmin ? `
-                        <button class="btn" style="background:var(--edit); font-size:11px;" onclick="editMember(${originalIdx})">Edit</button>
-                        <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${originalIdx})">X</button>
-                    ` : ''}
-                </td>
-            </tr>`;
+            body.innerHTML += `<tr><td>${m.acc || '-'}</td><td style="text-align:left;">${userImg}<strong>${m.name}</strong></td><td>${pTotal} ৳</td><td>
+                <button class="btn" style="background:var(--primary);" onclick="viewMember(${idx})">দেখুন</button>
+                ${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${idx})">X</button>` : ''}
+            </td></tr>`;
         });
 
-        expenses.forEach((e, i) => {
-            expBody.innerHTML += `<tr><td>${e.date}</td><td style="text-align:left">${e.reason}</td><td>${e.amount} ৳</td><td class="admin-only">${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteExpense(${i})">X</button>` : ''}</td></tr>`;
-        });
+        expenses.forEach((e, i) => { expBody.innerHTML += `<tr><td>${e.date}</td><td style="text-align:left">${e.reason}</td><td>${e.amount} ৳</td></tr>`; });
 
         document.getElementById('total-members').innerText = members.length;
         document.getElementById('total-fund').innerText = totalFund;
         document.getElementById('total-expense-display').innerText = totalExpense;
-        document.getElementById('footer-total-expense').innerText = totalExpense + " ৳";
         document.getElementById('current-balance').innerText = totalFund - totalExpense;
-        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(displayedMembers.length / membersPerPage) || 1}`;
-        document.getElementById('prevPage').disabled = currentPage === 1;
-        document.getElementById('nextPage').disabled = currentPage >= Math.ceil(displayedMembers.length / membersPerPage);
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
     }
 
@@ -359,203 +183,87 @@
         const m = members[i];
         document.getElementById('main-view').classList.remove('active'); 
         document.getElementById('member-detail-view').classList.add('active'); 
-        
         let imgHtml = m.image ? `<img src="${m.image}" class="detail-img"><br>` : `👤<br>`;
         document.getElementById('detail-title').innerHTML = imgHtml + m.name + " এর হিসাব"; 
-        
-        const today = new Date();
-        const mNames = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-        document.getElementById('e-month').value = mNames[today.getMonth()] + " " + today.getFullYear();
-
-        checkFineCondition();
         renderEntries(); 
     }
 
+    function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
+
     function renderEntries() {
-        const body = document.getElementById('entry-list-body'); body.innerHTML = ''; 
-        let pTotal = 0;
+        const body = document.getElementById('entry-list-body'); body.innerHTML = '';
         const m = members[currentIdx];
         (m.entries || []).forEach((e, i) => {
-            let rowSum = Number(e.amount||0) + Number(e.extra||0) + Number(e.fine||0);
-            pTotal += rowSum;
-            body.innerHTML += `<tr>
-                <td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td>
-                <td class="admin-only" style="display:${isAdmin ? 'table-cell' : 'none'}">
-                    <button class="btn btn-wa" onclick="sendWA('${m.phone}', '${m.name}', '${e.month}', ${rowSum})">WA</button>
-                    <button class="btn" style="background:var(--edit); font-size:11px;" onclick="editEntry(${i})">Edit</button>
-                    <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteEntry(${i})">X</button>
-                </td>
-            </tr>`;
+            let sum = Number(e.amount)+Number(e.extra)+Number(e.fine);
+            body.innerHTML += `<tr><td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${sum}</td>
+            <td><button class="btn" style="background:var(--whatsapp); font-size:11px;" onclick="sendWA('${m.phone}','${m.name}','${e.month}',${sum})">WhatsApp</button>
+            ${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteEntry(${i})">X</button>` : ''}</td></tr>`;
         });
-        document.getElementById('p-total-display').innerText = pTotal + " ৳";
     }
 
     function addMonthlyEntry() {
-        let entry = {
-            month: document.getElementById('e-month').value,
-            amount: Number(document.getElementById('e-amount').value || 0),
-            extra: Number(document.getElementById('e-extra').value || 0),
-            fine: Number(document.getElementById('e-fine').value || 0)
-        };
+        let e = { month: document.getElementById('e-month').value, amount: Number(document.getElementById('e-amount').value), extra: Number(document.getElementById('e-extra').value || 0), fine: Number(document.getElementById('e-fine').value || 0) };
         if(!members[currentIdx].entries) members[currentIdx].entries = [];
-        members[currentIdx].entries.push(entry);
-        saveData(); renderEntries(); resetEntryForm();
-    }
-    function updateNotice() {
-        rollingNotice = document.getElementById('notice-input').value;
-        document.getElementById('display-notice').innerText = rollingNotice;
-        saveData(); alert("নোটিশ সেভ হয়েছে");
-    }
-    function addExpense() {
-        const reason = document.getElementById('exp-reason').value;
-        const amount = document.getElementById('exp-amount').value;
-        if(!reason || !amount) return alert("সব তথ্য দিন");
-        expenses.push({date: new Date().toLocaleDateString('bn-BD'), reason, amount: Number(amount)});
-        saveData(); document.getElementById('exp-reason').value = ''; document.getElementById('exp-amount').value = '';
-    }
-    function deleteExpense(i) { if(confirm("ডিলিট করবেন?")) { expenses.splice(i,1); saveData(); } }
-
-    function editMember(i) {
-        editIdx = i;
-        const m = members[i];
-        document.getElementById('form-title').innerText = "সদস্য তথ্য ও ছবি সংশোধন";
-        document.getElementById('m-acc').value = m.acc || '';
-        document.getElementById('m-name').value = m.name;
-        document.getElementById('m-phone').value = m.phone || '';
-        
-        document.getElementById('btn-group').innerHTML = `
-            <button class="btn" style="background:var(--edit);" onclick="updateMember()">তথ্য ও ছবি আপডেট করুন</button>
-            <button class="btn" style="background:#64748b;" onclick="resetMemberForm()">বাতিল</button>
-        `;
-        window.scrollTo({ top: document.getElementById('admin-controls').offsetTop, behavior: 'smooth' });
+        members[currentIdx].entries.push(e); saveData(); renderEntries();
     }
 
-    async function updateMember() {
-        let acc = document.getElementById('m-acc').value;
-        let name = document.getElementById('m-name').value;
-        let phone = document.getElementById('m-phone').value;
-        let imgFile = document.getElementById('m-image').files[0];
+    function updateNotice() { document.getElementById('display-notice').innerText = document.getElementById('notice-input').value; saveData(); }
+    function addExpense() { expenses.push({date: new Date().toLocaleDateString('bn-BD'), reason: document.getElementById('exp-reason').value, amount: Number(document.getElementById('exp-amount').value)}); saveData(); }
+    function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i,1); saveData(); } }
+    function deleteEntry(i) { if(confirm("ডিলিট করবেন?")) { members[currentIdx].entries.splice(i,1); saveData(); renderEntries(); } }
 
-        if(!name) return alert("নাম লিখুন!");
-
-        // ছবি আপডেট করার লজিক
-        if(imgFile) {
-            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
-            let imgData = await getBase64(imgFile);
-            members[editIdx].image = imgData;
-        }
-
-        members[editIdx].acc = acc;
-        members[editIdx].name = name;
-        members[editIdx].phone = phone;
-
-        await saveData(); 
-        resetMemberForm();
-        document.getElementById('m-image').value = '';
-        alert("তথ্য আপডেট হয়েছে!");
-    }
-
-    function resetMemberForm() {
-        editIdx = null; document.getElementById('form-title').innerText = "সদস্য যোগ করুন";
-        document.getElementById('m-acc').value = ''; document.getElementById('m-name').value = ''; document.getElementById('m-phone').value = '';
-        document.getElementById('btn-group').innerHTML = `<button class="btn" style="background:var(--secondary);" onclick="addMember()">যোগ করুন</button>`;
-    }
-    function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i, 1); displayedMembers = [...members]; saveData(); } }
-    function resetEntryForm() {
-        entryEditIdx = null; document.getElementById('entry-form-title').innerText = "নতুন এন্ট্রি যোগ করুন";
-        document.getElementById('e-amount').value='500'; document.getElementById('e-extra').value=''; 
-        checkFineCondition();
-        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ করুন</button>`;
-    }
-    function editEntry(i) {
-        entryEditIdx = i; const e = members[currentIdx].entries[i];
-        document.getElementById('entry-form-title').innerText = "এন্ট্রি সংশোধন";
-        document.getElementById('e-month').value = e.month; document.getElementById('e-amount').value = e.amount;
-        document.getElementById('e-extra').value = e.extra; document.getElementById('e-fine').value = e.fine;
-        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background:var(--edit);" onclick="updateEntry()">আপডেট</button> <button class="btn" style="background:#64748b;" onclick="resetEntryForm()">বাতিল</button>`;
-    }
-    function updateEntry() {
-        members[currentIdx].entries[entryEditIdx] = { month: document.getElementById('e-month').value, amount: Number(document.getElementById('e-amount').value), extra: Number(document.getElementById('e-extra').value), fine: Number(document.getElementById('e-fine').value) };
-        saveData(); renderEntries(); resetEntryForm();
-    }
-    function deleteEntry(i) { if(confirm("ডিলিট করবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
-    function filterMembers() {
-        const query = document.getElementById('search-input').value.toLowerCase();
-        displayedMembers = members.filter(m => (m.name.toLowerCase().includes(query)) || (m.acc && m.acc.includes(query)));
-        currentPage = 1; renderMain();
-    }
-    function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
-    function changePage(step) { currentPage += step; renderMain(); }
     function sendWA(phone, name, month, total) {
-        let cleanPhone = phone.replace(/\D/g, ''); if(!cleanPhone.startsWith('88')) cleanPhone = '88' + cleanPhone;
-        let msg = `সম্মানিত ${name}, আল ইত্তেহাদ ফাউন্ডেশনে আপনার ${month} মাসের মোট ${total} টাকা জমা হয়েছে। ধন্যবাদ।`;
+        let cleanPhone = phone.startsWith('88') ? phone : '88' + phone;
+        let msg = `সম্মানিত ${name}, আল ইত্তেহাদ ফাউন্ডেশনে আপনার ${month} মাসের মোট ${total} টাকা জমা হয়েছে। ধন্যবাদ।`;
         window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
+
     function generateMonths() {
         const select = document.getElementById('e-month');
         const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-        for (let y = 2025; y <= 2030; y++) { months.forEach(m => { let o = document.createElement('option'); o.text = `${m} ${y}`; select.add(o); }); }
+        months.forEach(m => { let o = document.createElement('option'); o.text = `${m} 2026`; select.add(o); });
     }
-    function downloadPDF() {
-        const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        doc.text("Al-Ittehad Foundation - Report", 14, 15);
-        const rows = members.map(m => [m.acc || '-', m.name, m.phone || '-', (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount||0)+Number(curr.extra||0)+Number(curr.fine||0)), 0) + " TK"]);
-        doc.autoTable({ head: [['Book No', 'Name', 'Phone', 'Total']], body: rows, startY: 20 });
-        doc.save("ittehad_report.pdf");
-    }
-    function downloadExcel() {
-        const data = members.map(m => ({ "বই নং": m.acc || '-', "নাম": m.name, "মোবাইল": m.phone || '-', "মোট জমা": (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount||0)+Number(curr.extra||0)+Number(curr.fine||0)), 0) }));
-        const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Members"); XLSX.writeFile(wb, "ittehad_report.xlsx");
-    }
-    window.onload = function() { generateMonths(); fetchData(); checkLogin(); };
-    <script type="module">
+
+    window.onload = function() { generateMonths(); fetchData(); if (localStorage.getItem("isLoggedIn") === "true") handleLogin(); };
+</script>
+
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
 
-  // আপনার কপি করা কনফিগ এখানে পেস্ট করুন
+  // আপনার ফায়ারবেস কনসোল থেকে তথ্যগুলো বসানো হলো
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCxQRfgWCUPP5Xfvtbgjs-EcEclcMgTfSc",
+    authDomain: "ittehad2-db-49332.firebaseapp.com",
+    projectId: "ittehad2-db-49332",
+    storageBucket: "ittehad2-db-49332.appspot.com",
+    messagingSenderId: "60177697498",
+    appId: "1:60177697498:web:86b5c00e6e7686888c3a14" 
   };
 
   const app = initializeApp(firebaseConfig);
   const messaging = getMessaging(app);
 
-  // নোটিফিকেশন পারমিশন চাওয়া
   async function requestPermission() {
-    console.log('Requesting permission...');
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-      
-      // এখানে VAPID Key বসাতে হবে (ফায়ারবেস Cloud Messaging সেকশনে পাবেন)
-      const token = await getToken(messaging, { 
-        vapidKey: 'BL2JdwKp8zxltcZr6xSZzoNJfwg_y3SFdSYSOkwNO7_HGY9i84aAgUc-8J06ZMgmyBaYlTx_trul-0U3tqE0_ck' 
-      });
-      
-      if (token) {
-        console.log('Device Token:', token);
-        // এই টোকেনটি দিয়ে আপনি পরে নির্দিষ্ট এই ডিভাইসকে মেসেজ পাঠাতে পারবেন
-      }
-    } else {
-      console.log('Permission denied.');
-    }
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            const token = await getToken(messaging, { 
+                vapidKey: 'BL2JdwKp8zxltcZr6xSZzoNJfwg_y3SFdSYSOkwNO7_HGY9i84aAgUc-8J06ZMgmyBaYlTx_trul-0U3tqE0_ck' 
+            });
+            if (token) {
+                console.log('Device Token:', token);
+            }
+        }
+    } catch (err) { console.log(err); }
   }
 
-  // অ্যাপ খোলা থাকা অবস্থায় মেসেজ আসলে যা হবে
   onMessage(messaging, (payload) => {
-    console.log('Message received: ', payload);
-    alert(`নতুন নোটিফিকেশন: ${payload.notification.title}\n${payload.notification.body}`);
+    alert(`নোটিফিকেশন: ${payload.notification.title}\n${payload.notification.body}`);
   });
 
-  // পেজ লোড হলে পারমিশন চাইবে
   requestPermission();
 </script>
 
-</script>
 </body>
 </html>
