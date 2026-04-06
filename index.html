@@ -267,12 +267,12 @@
         const day = new Date().getDate();
         const fInput = document.getElementById('e-fine');
         const fNote = document.getElementById('fine-note');
-        if (day > 5) {
+        if (day > 10) {
             fInput.value = 200;
-            fNote.innerHTML = "<span style='color:red'>* ৫ তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
+            fNote.innerHTML = "<span style='color:red'>* 10 তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
         } else {
             fInput.value = 0;
-            fNote.innerHTML = "<span style='color:green'>* ৫ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
+            fNote.innerHTML = "<span style='color:green'>* 10 তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
         }
     }
 
