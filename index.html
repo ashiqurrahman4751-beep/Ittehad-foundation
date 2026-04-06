@@ -508,6 +508,54 @@
         const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Members"); XLSX.writeFile(wb, "ittehad_report.xlsx");
     }
     window.onload = function() { generateMonths(); fetchData(); checkLogin(); };
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
+
+  // আপনার কপি করা কনফিগ এখানে পেস্ট করুন
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
+
+  // নোটিফিকেশন পারমিশন চাওয়া
+  async function requestPermission() {
+    console.log('Requesting permission...');
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');
+      
+      // এখানে VAPID Key বসাতে হবে (ফায়ারবেস Cloud Messaging সেকশনে পাবেন)
+      const token = await getToken(messaging, { 
+        vapidKey: 'BL2JdwKp8zxltcZr6xSZzoNJfwg_y3SFdSYSOkwNO7_HGY9i84aAgUc-8J06ZMgmyBaYlTx_trul-0U3tqE0_ck' 
+      });
+      
+      if (token) {
+        console.log('Device Token:', token);
+        // এই টোকেনটি দিয়ে আপনি পরে নির্দিষ্ট এই ডিভাইসকে মেসেজ পাঠাতে পারবেন
+      }
+    } else {
+      console.log('Permission denied.');
+    }
+  }
+
+  // অ্যাপ খোলা থাকা অবস্থায় মেসেজ আসলে যা হবে
+  onMessage(messaging, (payload) => {
+    console.log('Message received: ', payload);
+    alert(`নতুন নোটিফিকেশন: ${payload.notification.title}\n${payload.notification.body}`);
+  });
+
+  // পেজ লোড হলে পারমিশন চাইবে
+  requestPermission();
+</script>
+
 </script>
 </body>
 </html>
