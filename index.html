@@ -24,7 +24,6 @@
         .logo-container img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--primary); padding: 3px; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 26px; font-weight: bold; }
         
-        /* ছবির স্টাইল */
         .member-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 8px; border: 1px solid #ddd; }
         .detail-img { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 10px; border: 3px solid var(--primary); object-fit: cover; }
 
@@ -100,12 +99,12 @@
         <div class="stats">
             <div class="stat-card">সদস্য: <span id="total-members">০</span> জন</div>
             <div class="stat-card" style="background:#2d6a4f">মোট জমা: <span id="total-fund">০</span> ৳</div>
-            <div class="stat-card" style="background:var(--danger)">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
+            <div class="stat-card" style="background:var(--danger)">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
             <div class="stat-card" style="background:#1e293b">বর্তমান ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
         </div>
 
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="বই নং বা নাম দিয়ে খুঁজুন..." onkeyup="filterMembers()">
+            <input type="text" id="search-input" placeholder="বই নং বা নাম দিয়ে খুঁজুন..." onkeyup="filterMembers()">
         </div>
         
         <div class="admin-only" id="admin-controls" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px; border: 1px solid #cbd5e1;">
@@ -122,10 +121,10 @@
             </div>
             <hr>
             <div style="margin: 20px 0;">
-                <h4>নতুন ব্যয় যোগ করুন</h4>
-                <input type="text" id="exp-reason" placeholder="ব্যয়ের কারণ (যেমন: ইফতার মাহফিল)">
-                <input type="number" id="exp-amount" placeholder="ব্যয়ের পরিমাণ">
-                <button class="btn" style="background:var(--danger);" onclick="addExpense()">ব্যয় সেভ করুন</button>
+                <h4>নতুন ব্যয় যোগ করুন</h4>
+                <input type="text" id="exp-reason" placeholder="ব্যয়ের কারণ (যেমন: ইফতার মাহফিল)">
+                <input type="number" id="exp-amount" placeholder="ব্যয়ের পরিমাণ">
+                <button class="btn" style="background:var(--danger);" onclick="addExpense()">ব্যয় সেভ করুন</button>
             </div>
             <hr>
             <div style="margin-top: 15px;">
@@ -154,11 +153,11 @@
         </div>
 
         <div class="expense-table-container">
-            <h3 style="color:var(--danger)">ব্যয়ের বিস্তারিত বিবরণ</h3>
+            <h3 style="color:var(--danger)">ব্যয়ের বিস্তারিত বিবরণ</h3>
             <table>
                 <thead><tr><th>তারিখ</th><th>বিবরণ</th><th>পরিমাণ</th><th class="admin-only">অ্যাকশন</th></tr></thead>
                 <tbody id="expense-list-body"></tbody>
-                <tfoot><tr style="background:#f1f5f9; font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense">০</td><td class="admin-only"></td></tr></tfoot>
+                <tfoot><tr style="background:#f1f5f9; font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense">০</td><td class="admin-only"></td></tr></tfoot>
             </table>
         </div>
     </div>
@@ -201,9 +200,8 @@
     let entryEditIdx = null;
     let currentPage = 1;
     const membersPerPage = 10;
-    let rollingNotice = "⚠️সতর্কবার্তা: ১ থেকে ৫ তারিখের মধ্যে টাকা পরিশোধ করুন অন্যথায় ২০০ টাকা জরিমানা দিতে হবে";
+    let rollingNotice = "⚠️সতর্কবার্তা: ১০ তারিখের মধ্যে টাকা পরিশোধ করুন অন্যথায় ২০০ টাকা জরিমানা দিতে হবে";
 
-    // --- Authentication ---
     function checkLogin() {
         if (localStorage.getItem("isLoggedIn") === "true") { setAdminUI(true); }
     }
@@ -219,7 +217,7 @@
     function handleLogout() {
         localStorage.removeItem("isLoggedIn");
         setAdminUI(false);
-        alert("লগআউট করা হয়েছে।");
+        alert("লগআউট করা হয়েছে।");
     }
     function setAdminUI(status) {
         isAdmin = status;
@@ -230,7 +228,6 @@
         if (currentIdx !== null) renderEntries();
     }
 
-    // --- Data Management ---
     async function fetchData() {
         try {
             const response = await fetch(dbURL);
@@ -262,21 +259,29 @@
         renderMain();
     }
 
-    // --- Fine logic (1-5 Date) ---
     function checkFineCondition() {
         const day = new Date().getDate();
         const fInput = document.getElementById('e-fine');
         const fNote = document.getElementById('fine-note');
         if (day > 10) {
             fInput.value = 200;
-            fNote.innerHTML = "<span style='color:red'>* 10 তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
+            fNote.innerHTML = "<span style='color:red'>* ১০ তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
         } else {
             fInput.value = 0;
-            fNote.innerHTML = "<span style='color:green'>* 10 তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
+            fNote.innerHTML = "<span style='color:green'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
         }
     }
 
-    // --- Member Actions ---
+    // ছবিকে Base64 এ রূপান্তর করার ফাংশন
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
     async function addMember() {
         let acc = document.getElementById('m-acc').value;
         let name = document.getElementById('m-name').value;
@@ -287,19 +292,17 @@
         if(!name) return alert("নাম লিখুন!");
 
         if(imgFile) {
-            const reader = new FileReader();
-            imgData = await new Promise((res) => {
-                reader.onload = () => res(reader.result);
-                reader.readAsDataURL(imgFile);
-            });
+            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
+            imgData = await getBase64(imgFile);
         }
 
         members.push({acc, name, phone, image: imgData, entries: []});
         members.sort((a, b) => (a.acc || "").localeCompare((b.acc || ""), undefined, {numeric: true}));
         displayedMembers = [...members];
-        saveData();
+        await saveData();
         resetMemberForm();
         document.getElementById('m-image').value = '';
+        alert("সদস্য যোগ হয়েছে!");
     }
 
     function renderMain() {
@@ -320,7 +323,6 @@
         paginated.forEach((m, i) => {
             const originalIdx = members.indexOf(m);
             let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
-            
             let userImg = m.image ? `<img src="${m.image}" class="member-img">` : `👤 `;
 
             body.innerHTML += `<tr>
@@ -362,7 +364,7 @@
         document.getElementById('detail-title').innerHTML = imgHtml + m.name + " এর হিসাব"; 
         
         const today = new Date();
-        const mNames = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+        const mNames = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
         document.getElementById('e-month').value = mNames[today.getMonth()] + " " + today.getFullYear();
 
         checkFineCondition();
@@ -388,7 +390,6 @@
         document.getElementById('p-total-display').innerText = pTotal + " ৳";
     }
 
-    // --- Standard Functions (Unchanged Logic) ---
     function addMonthlyEntry() {
         let entry = {
             month: document.getElementById('e-month').value,
@@ -403,7 +404,7 @@
     function updateNotice() {
         rollingNotice = document.getElementById('notice-input').value;
         document.getElementById('display-notice').innerText = rollingNotice;
-        saveData(); alert("নোটিশ সেভ হয়েছে");
+        saveData(); alert("নোটিশ সেভ হয়েছে");
     }
     function addExpense() {
         const reason = document.getElementById('exp-reason').value;
@@ -413,29 +414,47 @@
         saveData(); document.getElementById('exp-reason').value = ''; document.getElementById('exp-amount').value = '';
     }
     function deleteExpense(i) { if(confirm("ডিলিট করবেন?")) { expenses.splice(i,1); saveData(); } }
-  function editMember(i) {
-    editIdx = i;
-    const m = members[i];
-    document.getElementById('form-title').innerText = "সদস্য তথ্য ও ছবি সংশোধন";
-    document.getElementById('m-acc').value = m.acc || '';
-    document.getElementById('m-name').value = m.name;
-    document.getElementById('m-phone').value = m.phone || '';
-    
-    // এডিট মোডে বাটনের ডিজাইন পরিবর্তন
-    document.getElementById('btn-group').innerHTML = `
-        <button class="btn" style="background:var(--edit);" onclick="updateMember()">তথ্য ও ছবি আপডেট করুন</button>
-        <button class="btn" style="background:#64748b;" onclick="resetMemberForm()">বাতিল</button>
-    `;
-    
-    // এডিট করার সময় স্ক্রল করে ফর্মের কাছে নিয়ে যাবে
-    window.scrollTo({ top: document.getElementById('admin-controls').offsetTop, behavior: 'smooth' });
-}
-    function updateMember() {
-        members[editIdx].acc = document.getElementById('m-acc').value;
-        members[editIdx].name = document.getElementById('m-name').value;
-        members[editIdx].phone = document.getElementById('m-phone').value;
-        saveData(); resetMemberForm();
+
+    function editMember(i) {
+        editIdx = i;
+        const m = members[i];
+        document.getElementById('form-title').innerText = "সদস্য তথ্য ও ছবি সংশোধন";
+        document.getElementById('m-acc').value = m.acc || '';
+        document.getElementById('m-name').value = m.name;
+        document.getElementById('m-phone').value = m.phone || '';
+        
+        document.getElementById('btn-group').innerHTML = `
+            <button class="btn" style="background:var(--edit);" onclick="updateMember()">তথ্য ও ছবি আপডেট করুন</button>
+            <button class="btn" style="background:#64748b;" onclick="resetMemberForm()">বাতিল</button>
+        `;
+        window.scrollTo({ top: document.getElementById('admin-controls').offsetTop, behavior: 'smooth' });
     }
+
+    async function updateMember() {
+        let acc = document.getElementById('m-acc').value;
+        let name = document.getElementById('m-name').value;
+        let phone = document.getElementById('m-phone').value;
+        let imgFile = document.getElementById('m-image').files[0];
+
+        if(!name) return alert("নাম লিখুন!");
+
+        // ছবি আপডেট করার লজিক
+        if(imgFile) {
+            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
+            let imgData = await getBase64(imgFile);
+            members[editIdx].image = imgData;
+        }
+
+        members[editIdx].acc = acc;
+        members[editIdx].name = name;
+        members[editIdx].phone = phone;
+
+        await saveData(); 
+        resetMemberForm();
+        document.getElementById('m-image').value = '';
+        alert("তথ্য আপডেট হয়েছে!");
+    }
+
     function resetMemberForm() {
         editIdx = null; document.getElementById('form-title').innerText = "সদস্য যোগ করুন";
         document.getElementById('m-acc').value = ''; document.getElementById('m-name').value = ''; document.getElementById('m-phone').value = '';
@@ -469,12 +488,12 @@
     function changePage(step) { currentPage += step; renderMain(); }
     function sendWA(phone, name, month, total) {
         let cleanPhone = phone.replace(/\D/g, ''); if(!cleanPhone.startsWith('88')) cleanPhone = '88' + cleanPhone;
-        let msg = `সম্মানিত ${name}, আল ইত্তেহাদ ফাউন্ডেশনে আপনার ${month} মাসের মোট ${total} টাকা জমা হয়েছে। ধন্যবাদ।`;
+        let msg = `সম্মানিত ${name}, আল ইত্তেহাদ ফাউন্ডেশনে আপনার ${month} মাসের মোট ${total} টাকা জমা হয়েছে। ধন্যবাদ।`;
         window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
     }
     function generateMonths() {
         const select = document.getElementById('e-month');
-        const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+        const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
         for (let y = 2025; y <= 2030; y++) { months.forEach(m => { let o = document.createElement('option'); o.text = `${m} ${y}`; select.add(o); }); }
     }
     function downloadPDF() {
