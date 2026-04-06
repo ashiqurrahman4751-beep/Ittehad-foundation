@@ -413,14 +413,23 @@
         saveData(); document.getElementById('exp-reason').value = ''; document.getElementById('exp-amount').value = '';
     }
     function deleteExpense(i) { if(confirm("ডিলিট করবেন?")) { expenses.splice(i,1); saveData(); } }
-    function editMember(i) {
-        editIdx = i;
-        document.getElementById('form-title').innerText = "তথ্য সংশোধন";
-        document.getElementById('m-acc').value = members[i].acc || '';
-        document.getElementById('m-name').value = members[i].name;
-        document.getElementById('m-phone').value = members[i].phone || '';
-        document.getElementById('btn-group').innerHTML = `<button class="btn" style="background:var(--edit);" onclick="updateMember()">আপডেট</button> <button class="btn" style="background:#64748b;" onclick="resetMemberForm()">বাতিল</button>`;
-    }
+  function editMember(i) {
+    editIdx = i;
+    const m = members[i];
+    document.getElementById('form-title').innerText = "সদস্য তথ্য ও ছবি সংশোধন";
+    document.getElementById('m-acc').value = m.acc || '';
+    document.getElementById('m-name').value = m.name;
+    document.getElementById('m-phone').value = m.phone || '';
+    
+    // এডিট মোডে বাটনের ডিজাইন পরিবর্তন
+    document.getElementById('btn-group').innerHTML = `
+        <button class="btn" style="background:var(--edit);" onclick="updateMember()">তথ্য ও ছবি আপডেট করুন</button>
+        <button class="btn" style="background:#64748b;" onclick="resetMemberForm()">বাতিল</button>
+    `;
+    
+    // এডিট করার সময় স্ক্রল করে ফর্মের কাছে নিয়ে যাবে
+    window.scrollTo({ top: document.getElementById('admin-controls').offsetTop, behavior: 'smooth' });
+}
     function updateMember() {
         members[editIdx].acc = document.getElementById('m-acc').value;
         members[editIdx].name = document.getElementById('m-name').value;
