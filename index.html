@@ -170,7 +170,7 @@
         <div class="admin-only" id="entry-form-div" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px;">
             <h4 id="entry-form-title">নতুন এন্ট্রি যোগ করুন</h4>
             <select id="e-month"></select>
-            <input type="number" id="e-amount" placeholder="জমা" value="500">
+            <input type="number" id="e-amount" placeholder="জমা" value="1000">
             <input type="number" id="e-extra" placeholder="অতিরিক্ত">
             <input type="number" id="e-fine" placeholder="জরিমানা">
             <div id="fine-note"></div>
@@ -463,7 +463,7 @@
     function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i, 1); displayedMembers = [...members]; saveData(); } }
     function resetEntryForm() {
         entryEditIdx = null; document.getElementById('entry-form-title').innerText = "নতুন এন্ট্রি যোগ করুন";
-        document.getElementById('e-amount').value='500'; document.getElementById('e-extra').value=''; 
+        document.getElementById('e-amount').value='1000'; document.getElementById('e-extra').value=''; 
         checkFineCondition();
         document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ করুন</button>`;
     }
