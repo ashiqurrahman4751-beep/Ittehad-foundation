@@ -53,6 +53,8 @@
         
         .expense-table-container { margin-top: 30px; border-top: 2px solid #e2e8f0; padding-top: 20px; }
         #fine-note { font-size: 12px; margin-top: 5px; display: block; }
+
+        .status-badge { font-size: 11px; font-weight: bold; display: block; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -77,11 +79,11 @@
     </div>
 
     <div class="payment-info">
-        <h3>💳 পেমেন্ট তথ্য (টাকা প্রেরনের পর ক্যাশিয়ারকে জানান) </h3>
+        <h3>💳 পেমেন্ট তথ্য (টাকা প্রেরনের পর ক্যাশিয়ারকে জানান) </h3>
         <strong>Bkash:</strong> 01941280332 <br>
         <strong>Bank:</strong> Islami Bank Bangladesh Plc <br>
         <strong>Account No:</strong> Islami Bank Bangladesh Plc <br>
-        <strong>Name:</strong>                  <br>
+        <strong>Name:</strong>                   <br>
         <strong>Routing:</strong> 125270607
     </div>
 
@@ -143,7 +145,7 @@
 
         <h3>সদস্য তালিকা</h3>
         <table>
-            <thead><tr><th>বই নং</th><th>নাম ও মোবাইল</th><th>মোট জমা</th><th>অ্যাকশন</th></tr></thead>
+            <thead><tr><th>বই নং</th><th>নাম ও মোবাইল</th><th>মোট জমা ও স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
             <tbody id="member-list-body"></tbody>
         </table>
         
@@ -273,7 +275,6 @@
         }
     }
 
-    // ছবিকে Base64 এ রূপান্তর করার ফাংশন
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -291,9 +292,8 @@
         let imgData = "";
 
         if(!name) return alert("নাম লিখুন!");
-
         if(imgFile) {
-            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
+            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
             imgData = await getBase64(imgFile);
         }
 
@@ -303,7 +303,7 @@
         await saveData();
         resetMemberForm();
         document.getElementById('m-image').value = '';
-        alert("সদস্য যোগ হয়েছে!");
+        alert("সদস্য যোগ হয়েছে!");
     }
 
     function renderMain() {
@@ -318,18 +318,37 @@
             totalFund += pTotal;
         });
 
+        // Advance/Due logic base date: December 2025
+        const today = new Date();
+       const startYear = 2025;
+       const startMonth = 12; // ডিসেম্বর
+       const monthsPassed = (today.getFullYear() - startYear) * 12 + (today.getMonth() + 1) - (startMonth - 1);
+
         const start = (currentPage - 1) * membersPerPage;
         const paginated = displayedMembers.slice(start, start + membersPerPage);
         
         paginated.forEach((m, i) => {
             const originalIdx = members.indexOf(m);
-            let pTotal = (m.entries || []).reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
+            let entries = m.entries || [];
+            let pTotal = entries.reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
+            
+            // Calculate Advance or Due
+            let paidMonths = entries.length;
+            let statusHtml = "";
+            if (paidMonths > monthsPassed) {
+                statusHtml = `<span class="status-badge" style="color:blue;">অগ্রিম: ${paidMonths - monthsPassed} মাস</span>`;
+            } else if (paidMonths < monthsPassed) {
+                statusHtml = `<span class="status-badge" style="color:red;">বকেয়া: ${monthsPassed - paidMonths} মাস</span>`;
+            } else {
+                statusHtml = `<span class="status-badge" style="color:green;">পরিশোধিত</span>`;
+            }
+
             let userImg = m.image ? `<img src="${m.image}" class="member-img">` : `👤 `;
 
             body.innerHTML += `<tr>
                 <td>${m.acc || '-'}</td>
                 <td style="text-align:left;">${userImg} <strong>${m.name}</strong><br><small>${m.phone || ''}</small></td>
-                <td>${pTotal} ৳</td>
+                <td><strong>${pTotal} ৳</strong>${statusHtml}</td>
                 <td>
                     <button class="btn" style="background:var(--primary);" onclick="viewMember(${originalIdx})">দেখুন</button>
                     ${isAdmin ? `
@@ -423,7 +442,6 @@
         document.getElementById('m-acc').value = m.acc || '';
         document.getElementById('m-name').value = m.name;
         document.getElementById('m-phone').value = m.phone || '';
-        
         document.getElementById('btn-group').innerHTML = `
             <button class="btn" style="background:var(--edit);" onclick="updateMember()">তথ্য ও ছবি আপডেট করুন</button>
             <button class="btn" style="background:#64748b;" onclick="resetMemberForm()">বাতিল</button>
@@ -436,24 +454,13 @@
         let name = document.getElementById('m-name').value;
         let phone = document.getElementById('m-phone').value;
         let imgFile = document.getElementById('m-image').files[0];
-
         if(!name) return alert("নাম লিখুন!");
-
-        // ছবি আপডেট করার লজিক
         if(imgFile) {
-            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
-            let imgData = await getBase64(imgFile);
-            members[editIdx].image = imgData;
+            if(imgFile.size > 1.5 * 1024 * 1024) return alert("ছবি অনেক বড়! দয়া করে ১.৫ এমবি-র নিচের ছবি দিন।");
+            members[editIdx].image = await getBase64(imgFile);
         }
-
-        members[editIdx].acc = acc;
-        members[editIdx].name = name;
-        members[editIdx].phone = phone;
-
-        await saveData(); 
-        resetMemberForm();
-        document.getElementById('m-image').value = '';
-        alert("তথ্য আপডেট হয়েছে!");
+        members[editIdx].acc = acc; members[editIdx].name = name; members[editIdx].phone = phone;
+        await saveData(); resetMemberForm(); alert("তথ্য আপডেট হয়েছে!");
     }
 
     function resetMemberForm() {
