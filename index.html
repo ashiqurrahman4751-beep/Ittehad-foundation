@@ -9,58 +9,193 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
-        :root { --primary: #1b4332; --secondary: #2d6a4f; --danger: #e74c3c; --admin: #6a040f; --edit: #f39c12; --whatsapp: #25d366; --excel: #1d6f42; --pdf: #c62828; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 0; direction: ltr; }
-        .warning-bar { background: #b91c1c; color: white; text-align: center; padding: 12px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
-        .container { max-width: 1000px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; position: relative; }
+        :root { 
+    --bg-main: #0a1128;        /* এটি পুরো স্ক্রিনের ব্যাকগ্রাউন্ড (যদি ছবি লোড না হয়, তখন এই ডার্ক ব্লু দেখাবে) */
+    --bg-container: rgba(13, 27, 42, 0.88); /* মাঝখানের মূল বক্সের রং (ডার্ক ব্লু-র ওপর ৮৮% হালকা কাঁচের মতো পর্দা, যাতে পেছনের ছবিও হালকা দেখা যায় আবার লেখাও স্পষ্ট হয়) */
+    --primary: #1b263b;       /* টেবিলের ওপরের হেডারের রং (গাঢ় নেভি ব্লু) */
+    --primary-light: #23131E; /* সার্চ বক্স, অ্যাডমিন প্যানেল এবং ইনপুট ফিল্ডের ব্যাকগ্রাউন্ড রং */
+    --accent: #e0a96d;        /* সব টাইটেল, বর্ডার এবং লোগোর চারপাশের প্রিমিয়াম গোল্ডেন/সোনালী রং */
+    --accent-light: rgba(224, 169, 109, 0.15); /* নোটিশ বোর্ডের ভেতরের হালকা সোনালী ব্যাকগ্রাউন্ড */
+    --text-light: #f8fafc;    /* সব লেখার সাধারণ রং (সাদাটে, যা ডার্কের ওপর চমৎকার ফুটে ওঠে) */
+    --text-muted: #e2e8f0;    /* মোবাইল নাম্বার বা ছোট টেক্সটের জন্য হালকা সিলভার রং */
+    --danger: #e11d48;        /* মোট ব্যয় এবং ডিলিট (X) বাটনের জন্য লাল রং */
+    --edit: #f39c12;          /* এডিট (Edit) বাটনের জন্য কমলা রং */
+    --whatsapp: #25d366;      /* হোয়াটসঅ্যাপ (WA) বাটনের চেনা সবুজ রং */
+    --excel: #1d6f42;         /* এক্সেল ডাউনলোডের সবুজ বাটন */
+    --pdf: #c62828;           /* পিডিএফ ডাউনলোডের লাল বাটন */
+}
         
-        .header-rolling { width: 100%; overflow: hidden; background: #f1f5f9; margin-bottom: 20px; padding: 12px 0; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .rolling-text { display: inline-block; white-space: nowrap; font-weight: bold; font-size: 16px; animation: roll 25s linear infinite; }
-        .warning-red { color: #b91c1c; }
-        .name-green { color: var(--primary); }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-light);
+            margin: 0; 
+            padding: 0; 
+            direction: ltr; 
+        }
+        
+        .warning-bar { 
+            background: linear-gradient(135deg, #b91c1c, #881337); 
+            color: white; 
+            text-align: center; 
+            padding: 14px; 
+            font-weight: 600; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 15px;
+        }
+        
+        .container { 
+            max-width: 1050px; 
+            margin: 30px auto; 
+            background: var(--bg-container); 
+            padding: 35px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
+            text-align: center; 
+            position: relative; 
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        
+        .header-rolling { 
+            width: 100%; 
+            overflow: hidden; 
+            background: var(--accent-light); 
+            margin-bottom: 25px; 
+            padding: 12px 0; 
+            border-radius: 10px; 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+        }
+        
+        .rolling-text { 
+            display: inline-block; 
+            white-space: nowrap; 
+            font-weight: bold; 
+            font-size: 15px; 
+            color: var(--accent);
+            animation: roll 25s linear infinite; 
+        }
+        
+        .warning-red { color: #ff6b6b; }
+        .name-green { color: #4ade80; font-weight: 800; }
         @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        .logo-container { margin-bottom: 20px; display: flex; justify-content: center; }
-        .logo-container img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--primary); padding: 3px; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .main-title { color: var(--primary); margin: 0 0 20px 0; font-size: 26px; font-weight: bold; }
+        .logo-container { margin-bottom: 15px; display: flex; justify-content: center; }
+        .logo-container img { 
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            border: 4px solid var(--accent); 
+            padding: 4px; 
+            object-fit: cover; 
+            background: var(--bg-container); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
+        }
         
-        .member-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 8px; border: 1px solid #ddd; }
-        .detail-img { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 10px; border: 3px solid var(--primary); object-fit: cover; }
+        .main-title { 
+            color: var(--accent); 
+            margin: 0 0 25px 0; 
+            font-size: 30px; 
+            font-weight: 800; 
+            letter-spacing: 0.5px;
+        }
+        
+        .member-img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 10px; border: 2px solid var(--accent); }
+        .detail-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 12px; border: 4px solid var(--accent); object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-        .payment-info { background: #e8f5e9; color: var(--primary); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 2px solid var(--primary); text-align: left; font-size: 15px; line-height: 1.6; }
-        .admin-bar { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0; }
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: var(--primary); color: white; padding: 20px; border-radius: 12px; font-size: 18px; }
+        .payment-info { 
+            background: rgba(19, 62, 47, 0.5); 
+            color: var(--text-light); 
+            padding: 22px; 
+            border-radius: 14px; 
+            margin-bottom: 30px; 
+            border-left: 6px solid var(--accent); 
+            text-align: left; 
+            font-size: 15px; 
+            line-height: 1.7; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .payment-info strong { color: var(--accent); }
+        
+        .admin-bar { 
+            background: var(--primary-light); 
+            padding: 18px; 
+            border-radius: 14px; 
+            margin-bottom: 30px; 
+            border: 1px solid rgba(212, 175, 55, 0.1); 
+        }
+        
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); 
+            gap: 18px; 
+            margin-bottom: 30px; 
+        }
+        
+        .stat-card { 
+            background: linear-gradient(135deg, var(--primary-light), #1e5c47); 
+            color: white; 
+            padding: 22px; 
+            border-radius: 14px; 
+            font-size: 18px; 
+            font-weight: 600;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card span { color: var(--accent); }
         
         .section { display: none; }
         .active { display: block; }
         .admin-only { display: none; }
         
-        .search-container { margin-bottom: 20px; text-align: right; }
-        #search-input { width: 100%; max-width: 300px; border: 2px solid var(--primary); padding: 8px 15px; border-radius: 8px; }
+        .search-container { margin-bottom: 25px; text-align: right; }
+        #search-input { 
+            width: 100%; 
+            max-width: 320px; 
+            background: var(--primary-light);
+            border: 2px solid rgba(212, 175, 55, 0.2); 
+            padding: 10px 16px; 
+            border-radius: 10px; 
+            font-size: 14px;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+        #search-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2); }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
-        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
-        th { background: #f1f5f9; color: var(--primary); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14.5px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        th, td { border: 1px solid rgba(212, 175, 55, 0.15); padding: 14px; text-align: center; }
+        th { background: var(--primary); color: var(--accent); font-weight: 700; }
+        tr:nth-child(even) { background-color: rgba(19, 62, 47, 0.2); }
+        tr:hover { background-color: rgba(19, 62, 47, 0.4); transition: background 0.2s; }
         
-        .pagination { margin: 20px 0; display: flex; justify-content: center; gap: 10px; align-items: center; }
-        .page-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        .page-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .pagination { margin: 25px 0; display: flex; justify-content: center; gap: 12px; align-items: center; }
+        .page-btn { background: var(--accent); color: var(--primary); border: none; padding: 9px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .page-btn:hover:not(:disabled) { background: #f1c40f; }
+        .page-btn:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; }
 
-        .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; margin: 2px; }
-        .btn-wa { background: var(--whatsapp); font-size: 11px; }
-        input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 5px; width: 85%; max-width: 300px; }
+        .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; transition: all 0.3s; margin: 3px; font-size: 13.5px; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .btn-wa { background: var(--whatsapp); font-size: 11px; padding: 6px 12px; color: white; }
+        input, select { padding: 11px; background: var(--primary-light); border: 1px solid rgba(212, 175, 55, 0.2); color: var(--text-light); border-radius: 9px; margin: 6px; width: 85%; max-width: 310px; font-size: 14px; }
+        input:focus, select:focus { border-color: var(--accent); outline: none; }
+        ::placeholder { color: #94a3b8; }
         
-        .expense-table-container { margin-top: 30px; border-top: 2px solid #e2e8f0; padding-top: 20px; }
-        #fine-note { font-size: 12px; margin-top: 5px; display: block; }
-
-        .status-badge { font-size: 11px; font-weight: bold; display: block; margin-top: 4px; }
+        .expense-table-container { margin-top: 40px; border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 25px; }
+        #fine-note { font-size: 12.5px; margin-top: 6px; display: block; font-weight: 500; }
+        .status-badge { font-size: 11.5px; font-weight: 700; display: inline-block; margin-top: 6px; padding: 3px 8px; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid currentColor; }
+        
+        h3 { color: var(--accent); font-size: 20px; font-weight: 700; text-align: left; margin-top: 30px; border-bottom: 2px solid var(--accent); padding-bottom: 6px; display: inline-block; }
+        hr { border: 0; border-top: 1px solid rgba(212, 175, 55, 0.15); margin: 25px 0; }
     </style>
 </head>
 <body>
 
 <div class="warning-bar">
-   "আল্লাহ তায়ালা ব্যবসাকে করেছেন হালাল আর সুদকে করেছেন হারাম" (বাক্বারা-২৭৫)
+    "আল্লাহ তায়ালা ব্যবসাকে করেছেন হালাল আর সুদকে করেছেন হারাম" (বাক্বারা-২৭৫)
 </div>
 
 <div class="container">
@@ -79,11 +214,11 @@
     </div>
 
     <div class="payment-info">
-        <h3>💳 পেমেন্ট তথ্য (টাকা প্রেরনের পর ক্যাশিয়ারকে জানান) </h3>
+        <h3>💳 পেমেন্ট তথ্য (টাকা প্রেরনের পর ক্যাশিয়ারকে জানান) </h3> <br>
         <strong>Bkash:</strong> 01941280332 <br>
         <strong>Bank:</strong> Islami Bank Bangladesh Plc <br>
         <strong>Account No:</strong> Islami Bank Bangladesh Plc <br>
-        <strong>Name:</strong>                   <br>
+        <strong>Name:</strong> <br>
         <strong>Routing:</strong> 125270607
     </div>
 
@@ -91,7 +226,7 @@
         <div id="admin-status">👤 মোড: <strong>সাধারণ সদস্য</strong></div>
         <div id="login-section" style="margin-top:15px;">
             <input type="password" id="login-input" placeholder="পাসওয়ার্ড লিখুন">
-            <button class="btn" style="background:var(--admin);" onclick="handleLogin()">লগইন</button>
+            <button class="btn" style="background:var(--accent); color:var(--primary);" onclick="handleLogin()">লগইন</button>
         </div>
         <div id="logout-section" style="margin-top:15px; display:none;">
             <button class="btn" style="background:var(--danger);" onclick="handleLogout()">লগআউট</button>
@@ -101,49 +236,51 @@
     <div id="main-view" class="section active">
         <div class="stats">
             <div class="stat-card">সদস্য: <span id="total-members">০</span> জন</div>
-            <div class="stat-card" style="background:#2d6a4f">মোট জমা: <span id="total-fund">০</span> ৳</div>
-            <div class="stat-card" style="background:var(--danger)">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
-            <div class="stat-card" style="background:#1e293b">বর্তমান ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #133e2f, #1e5c47)">মোট জমা: <span id="total-fund">০</span> ৳</div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #7f1d1d, var(--danger))">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #1e293b, #334155)">বর্তমান ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
         </div>
 
         <div class="search-container">
             <input type="text" id="search-input" placeholder="বই নং বা নাম দিয়ে খুঁজুন..." onkeyup="filterMembers()">
         </div>
         
-        <div class="admin-only" id="admin-controls" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px; border: 1px solid #cbd5e1;">
+        <div class="admin-only" id="admin-controls" style="background:var(--primary-light); padding:25px; border-radius:16px; margin-bottom:25px; border: 1px solid rgba(212, 175, 55, 0.2); text-align: left;">
             <div>
-                <h4>ডাউনলোড এবং ডাটা রিপোর্ট</h4>
+                <h4 style="color:var(--accent); margin-top:0;">ডাউনলোড এবং ডাটা রিপোর্ট</h4>
                 <button class="btn" style="background:var(--pdf);" onclick="downloadPDF()">PDF ডাউনলোড</button>
                 <button class="btn" style="background:var(--excel);" onclick="downloadExcel()">Excel ডাউনলোড</button>
             </div>
             <hr>
-            <div style="margin: 20px 0;">
-                <h4>নোটিশ আপডেট করুন (Rolling Text)</h4>
+            <div>
+                <h4 style="color:var(--accent);">নোটিশ আপডেট করুন (Rolling Text)</h4>
                 <input type="text" id="notice-input" placeholder="নোটিশ এখানে লিখুন" style="width: 80%; max-width: 500px;">
                 <button class="btn" style="background:var(--edit);" onclick="updateNotice()">নোটিশ সেভ করুন</button>
             </div>
             <hr>
-            <div style="margin: 20px 0;">
-                <h4>নতুন ব্যয় যোগ করুন</h4>
+            <div>
+                <h4 style="color:var(--accent);">নতুন ব্যয় যোগ করুন</h4>
                 <input type="text" id="exp-reason" placeholder="ব্যয়ের কারণ (যেমন: ইফতার মাহফিল)">
                 <input type="number" id="exp-amount" placeholder="ব্যয়ের পরিমাণ">
                 <button class="btn" style="background:var(--danger);" onclick="addExpense()">ব্যয় সেভ করুন</button>
             </div>
             <hr>
-            <div style="margin-top: 15px;">
-                <h4 id="form-title">সদস্য যোগ করুন</h4>
+            <div>
+                <h4 id="form-title" style="color:var(--accent);">সদস্য যোগ করুন</h4>
                 <input type="text" id="m-acc" placeholder="হিসাব নং/বই নং">
                 <input type="text" id="m-name" placeholder="নাম">
                 <input type="text" id="m-phone" placeholder="মোবাইল">
-                <label style="display:block; font-size:12px; margin-top:5px;">মেম্বার ছবি সিলেক্ট করুন:</label>
+                <label style="display:block; font-size:13px; margin: 10px 0 5px 6px; font-weight: 600;">মেম্বার ছবি সিলেক্ট করুন:</label>
                 <input type="file" id="m-image" accept="image/*" style="width: 85%; max-width: 300px;">
-                <div id="btn-group">
-                    <button class="btn" style="background:var(--secondary);" onclick="addMember()">যোগ করুন</button>
+                <div id="btn-group" style="margin-top: 10px;">
+                    <button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMember()">যোগ করুন</button>
                 </div>
             </div>
         </div>
 
-        <h3>সদস্য তালিকা</h3>
+        <div style="text-align: left;">
+            <h3>সদস্য তালিকা</h3>
+        </div>
         <table>
             <thead><tr><th>বই নং</th><th>নাম ও মোবাইল</th><th>মোট জমা ও স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
             <tbody id="member-list-body"></tbody>
@@ -156,36 +293,40 @@
         </div>
 
         <div class="expense-table-container">
-            <h3 style="color:var(--danger)">ব্যয়ের বিস্তারিত বিবরণ</h3>
+            <div style="text-align: left;">
+                <h3 style="border-bottom-color: var(--danger);">ব্যয়ের বিস্তারিত বিবরণ</h3>
+            </div>
             <table>
-                <thead><tr><th>তারিখ</th><th>বিবরণ</th><th>পরিমাণ</th><th class="admin-only">অ্যাকশন</th></tr></thead>
+                <thead><tr><th>তারিখ</th><th>বিবরণ</th><th>পরিমাণ</th><th class="admin-th-action admin-only">অ্যাকশন</th></tr></thead>
                 <tbody id="expense-list-body"></tbody>
-                <tfoot><tr style="background:#f1f5f9; font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense">০</td><td class="admin-only"></td></tr></tfoot>
+                <tfoot><tr style="background:rgba(19, 62, 47, 0.4); font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense" style="color:var(--accent)">০</td><td class="admin-td-action admin-only"></td></tr></tfoot>
             </table>
         </div>
     </div>
 
     <div id="member-detail-view" class="section">
-        <button class="btn" style="background:#64748b; margin-bottom:15px;" onclick="showMain()">← ফিরে যান</button>
+        <div style="text-align: left;">
+            <button class="btn" style="background:#475569; margin-bottom:20px;" onclick="showMain()">← ফিরে যান</button>
+        </div>
         <div id="member-profile-header"></div>
-        <h2 id="detail-title" style="margin-top:0;"></h2>
+        <h2 id="detail-title" style="margin-top:0; color: var(--accent);"></h2>
         
-        <div class="admin-only" id="entry-form-div" style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px;">
-            <h4 id="entry-form-title">নতুন এন্ট্রি যোগ করুন</h4>
+        <div class="admin-only" id="entry-form-div" style="background:var(--primary-light); padding:25px; border-radius:16px; margin-bottom:25px; border: 1px solid rgba(212, 175, 55, 0.2); text-align: left;">
+            <h4 id="entry-form-title" style="color:var(--accent); margin-top:0;">নতুন এন্ট্রি যোগ করুন</h4>
             <select id="e-month"></select>
             <input type="number" id="e-amount" placeholder="জমা" value="1000">
             <input type="number" id="e-extra" placeholder="অতিরিক্ত">
             <input type="number" id="e-fine" placeholder="জরিমানা">
             <div id="fine-note"></div>
-            <div id="entry-btn-group" style="margin-top:10px;">
-                <button class="btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ করুন</button>
+            <div id="entry-btn-group" style="margin-top:15px;">
+                <button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMonthlyEntry()">সেভ করুন</button>
             </div>
         </div>
 
         <table>
-            <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only">অ্যাকশন</th></tr></thead>
+            <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only text-action-th">অ্যাকশন</th></tr></thead>
             <tbody id="entry-list-body"></tbody>
-            <tfoot><tr style="background:#f8fafc; font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display">০</td><td class="admin-only"></td></tr></tfoot>
+            <tfoot><tr style="background:rgba(19, 62, 47, 0.4); font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display" style="color:var(--accent)">০</td><td class="admin-only text-action-td"></td></tr></tfoot>
         </table>
     </div>
 </div>
@@ -268,10 +409,10 @@
         const fNote = document.getElementById('fine-note');
         if (day > 10) {
             fInput.value = 200;
-            fNote.innerHTML = "<span style='color:red'>* ১০ তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
+            fNote.innerHTML = "<span style='color:var(--danger)'>* ১০ তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
         } else {
             fInput.value = 0;
-            fNote.innerHTML = "<span style='color:green'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
+            fNote.innerHTML = "<span style='color:#4ade80'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
         }
     }
 
@@ -318,11 +459,10 @@
             totalFund += pTotal;
         });
 
-        // Advance/Due logic base date: December 2025
         const today = new Date();
-       const startYear = 2025;
-       const startMonth = 12; // ডিসেম্বর
-       const monthsPassed = (today.getFullYear() - startYear) * 12 + (today.getMonth() + 1) - (startMonth - 1);
+        const startYear = 2025;
+        const startMonth = 12; 
+        const monthsPassed = (today.getFullYear() - startYear) * 12 + (today.getMonth() + 1) - startMonth + 1;
 
         const start = (currentPage - 1) * membersPerPage;
         const paginated = displayedMembers.slice(start, start + membersPerPage);
@@ -332,25 +472,24 @@
             let entries = m.entries || [];
             let pTotal = entries.reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
             
-            // Calculate Advance or Due
             let paidMonths = entries.length;
             let statusHtml = "";
             if (paidMonths > monthsPassed) {
-                statusHtml = `<span class="status-badge" style="color:blue;">অগ্রিম: ${paidMonths - monthsPassed} মাস</span>`;
+                statusHtml = `<span class="status-badge" style="color:#60a5fa;">অগ্রিম: ${paidMonths - monthsPassed} মাস</span>`;
             } else if (paidMonths < monthsPassed) {
-                statusHtml = `<span class="status-badge" style="color:red;">বকেয়া: ${monthsPassed - paidMonths} মাস</span>`;
+                statusHtml = `<span class="status-badge" style="color:#f87171;">বকেয়া: ${monthsPassed - paidMonths} মাস</span>`;
             } else {
-                statusHtml = `<span class="status-badge" style="color:green;">পরিশোধিত</span>`;
+                statusHtml = `<span class="status-badge" style="color:#4ade80;">পরিশোধিত</span>`;
             }
 
             let userImg = m.image ? `<img src="${m.image}" class="member-img">` : `👤 `;
 
             body.innerHTML += `<tr>
                 <td>${m.acc || '-'}</td>
-                <td style="text-align:left;">${userImg} <strong>${m.name}</strong><br><small>${m.phone || ''}</small></td>
+                <td style="text-align:left;">${userImg} <strong>${m.name}</strong><br><small style="color:var(--text-muted);">${m.phone || ''}</small></td>
                 <td><strong>${pTotal} ৳</strong>${statusHtml}</td>
                 <td>
-                    <button class="btn" style="background:var(--primary);" onclick="viewMember(${originalIdx})">দেখুন</button>
+                    <button class="btn" style="background:var(--primary-light); border:1px solid var(--accent);" onclick="viewMember(${originalIdx})">দেখুন</button>
                     ${isAdmin ? `
                         <button class="btn" style="background:var(--edit); font-size:11px;" onclick="editMember(${originalIdx})">Edit</button>
                         <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${originalIdx})">X</button>
@@ -360,7 +499,7 @@
         });
 
         expenses.forEach((e, i) => {
-            expBody.innerHTML += `<tr><td>${e.date}</td><td style="text-align:left">${e.reason}</td><td>${e.amount} ৳</td><td class="admin-only">${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteExpense(${i})">X</button>` : ''}</td></tr>`;
+            expBody.innerHTML += `<tr><td>${e.date}</td><td style="text-align:left">${e.reason}</td><td>${e.amount} ৳</td><td class="admin-only" style="display:${isAdmin ? 'table-cell' : 'none'}">${isAdmin ? `<button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteExpense(${i})">X</button>` : ''}</td></tr>`;
         });
 
         document.getElementById('total-members').innerText = members.length;
@@ -371,7 +510,14 @@
         document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(displayedMembers.length / membersPerPage) || 1}`;
         document.getElementById('prevPage').disabled = currentPage === 1;
         document.getElementById('nextPage').disabled = currentPage >= Math.ceil(displayedMembers.length / membersPerPage);
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'block' : 'none');
+        
+        document.querySelectorAll('.admin-only').forEach(el => {
+            if(el.tagName === 'TD' || el.tagName === 'TH') {
+                el.style.display = isAdmin ? 'table-cell' : 'none';
+            } else {
+                el.style.display = isAdmin ? 'block' : 'none';
+            }
+        });
     }
 
     function viewMember(i) { 
@@ -408,6 +554,13 @@
             </tr>`;
         });
         document.getElementById('p-total-display').innerText = pTotal + " ৳";
+        document.querySelectorAll('.admin-only').forEach(el => {
+            if(el.tagName === 'TD' || el.tagName === 'TH') {
+                el.style.display = isAdmin ? 'table-cell' : 'none';
+            } else {
+                el.style.display = isAdmin ? 'block' : 'none';
+            }
+        });
     }
 
     function addMonthlyEntry() {
@@ -466,14 +619,14 @@
     function resetMemberForm() {
         editIdx = null; document.getElementById('form-title').innerText = "সদস্য যোগ করুন";
         document.getElementById('m-acc').value = ''; document.getElementById('m-name').value = ''; document.getElementById('m-phone').value = '';
-        document.getElementById('btn-group').innerHTML = `<button class="btn" style="background:var(--secondary);" onclick="addMember()">যোগ করুন</button>`;
+        document.getElementById('btn-group').innerHTML = `<button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMember()">যোগ করুন</button>`;
     }
     function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i, 1); displayedMembers = [...members]; saveData(); } }
     function resetEntryForm() {
         entryEditIdx = null; document.getElementById('entry-form-title').innerText = "নতুন এন্ট্রি যোগ করুন";
         document.getElementById('e-amount').value='1000'; document.getElementById('e-extra').value=''; 
         checkFineCondition();
-        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background:var(--secondary);" onclick="addMonthlyEntry()">সেভ করুন</button>`;
+        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMonthlyEntry()">সেভ করুন</button>`;
     }
     function editEntry(i) {
         entryEditIdx = i; const e = members[currentIdx].entries[i];
