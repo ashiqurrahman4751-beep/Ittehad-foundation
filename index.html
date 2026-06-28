@@ -10,32 +10,49 @@
     
     <style>
         :root { 
-    --bg-main: #0a1128;        /* এটি পুরো স্ক্রিনের ব্যাকগ্রাউন্ড (যদি ছবি লোড না হয়, তখন এই ডার্ক ব্লু দেখাবে) */
-    --bg-container: rgba(13, 27, 42, 0.88); /* মাঝখানের মূল বক্সের রং (ডার্ক ব্লু-র ওপর ৮৮% হালকা কাঁচের মতো পর্দা, যাতে পেছনের ছবিও হালকা দেখা যায় আবার লেখাও স্পষ্ট হয়) */
-    --primary: #1b263b;       /* টেবিলের ওপরের হেডারের রং (গাঢ় নেভি ব্লু) */
-    --primary-light: #23131E; /* সার্চ বক্স, অ্যাডমিন প্যানেল এবং ইনপুট ফিল্ডের ব্যাকগ্রাউন্ড রং */
-    --accent: #e0a96d;        /* সব টাইটেল, বর্ডার এবং লোগোর চারপাশের প্রিমিয়াম গোল্ডেন/সোনালী রং */
-    --accent-light: rgba(224, 169, 109, 0.15); /* নোটিশ বোর্ডের ভেতরের হালকা সোনালী ব্যাকগ্রাউন্ড */
-    --text-light: #f8fafc;    /* সব লেখার সাধারণ রং (সাদাটে, যা ডার্কের ওপর চমৎকার ফুটে ওঠে) */
-    --text-muted: #e2e8f0;    /* মোবাইল নাম্বার বা ছোট টেক্সটের জন্য হালকা সিলভার রং */
-    --danger: #e11d48;        /* মোট ব্যয় এবং ডিলিট (X) বাটনের জন্য লাল রং */
-    --edit: #f39c12;          /* এডিট (Edit) বাটনের জন্য কমলা রং */
-    --whatsapp: #25d366;      /* হোয়াটসঅ্যাপ (WA) বাটনের চেনা সবুজ রং */
-    --excel: #1d6f42;         /* এক্সেল ডাউনলোডের সবুজ বাটন */
-    --pdf: #c62828;           /* পিডিএফ ডাউনলোডের লাল বাটন */
-}
+            /* iOS পিওর গ্লাস কালার প্যালেট */
+            --bg-container: rgba(255, 255, 255, 0.05); 
+            --primary: rgba(15, 23, 42, 0.5); 
+            --primary-light: rgba(255, 255, 255, 0.06); 
+            --accent: #ffd700; 
+            --accent-light: rgba(255, 255, 255, 0.1); 
+            --danger: #ff4757; 
+            --edit: #ffa502; 
+            --whatsapp: #2ed573; 
+            --excel: #2ecc71; 
+            --pdf: #ff6b6b; 
+            --text-light: #ffffff;
+            --text-muted: #cbd5e1;
+            --glass-border: rgba(255, 255, 255, 0.12); 
+            --ios-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
         
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: var(--bg-main); 
+            /* 📱 iOS অ্যানিমেটেড লিকুইড ব্যাকগ্রাউন্ড গ্রাফিক্স */
+            background: linear-gradient(-45deg, #070a13, #0f172a, #1e1b4b, #2e1065);
+            background-size: 400% 400%;
+            animation: auroraBackground 15s ease infinite;
+            background-attachment: fixed;
             color: var(--text-light);
             margin: 0; 
             padding: 0; 
             direction: ltr; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 🪐 ব্যাকগ্রাউন্ড অরোরো অ্যানিমেশন */
+        @keyframes auroraBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         .warning-bar { 
-            background: linear-gradient(135deg, #b91c1c, #881337); 
+            background: rgba(255, 71, 87, 0.15); 
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             color: white; 
             text-align: center; 
             padding: 14px; 
@@ -43,30 +60,42 @@
             position: sticky; 
             top: 0; 
             z-index: 1000; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--glass-border);
             font-size: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
         
+        /* 📱 iOS মেইন গ্লাস কন্টেইনার + অ্যানিমেশন */
         .container { 
             max-width: 1050px; 
-            margin: 30px auto; 
+            margin: 40px auto; 
             background: var(--bg-container); 
             padding: 35px; 
-            border-radius: 20px; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
+            border-radius: 28px; 
+            box-shadow: var(--ios-shadow); 
             text-align: center; 
             position: relative; 
-            border: 1px solid rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(35px); 
+            -webkit-backdrop-filter: blur(35px);
+            
+            /* প্রবেশ অ্যানিমেশন */
+            animation: AppContentFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes AppContentFadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         
         .header-rolling { 
             width: 100%; 
             overflow: hidden; 
-            background: var(--accent-light); 
+            background: rgba(255, 255, 255, 0.03); 
             margin-bottom: 25px; 
             padding: 12px 0; 
-            border-radius: 10px; 
-            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 14px; 
+            border: 1px solid var(--glass-border); 
         }
         
         .rolling-text { 
@@ -79,7 +108,7 @@
         }
         
         .warning-red { color: #ff6b6b; }
-        .name-green { color: #4ade80; font-weight: 800; }
+        .name-green { color: #2ed573; font-weight: 800; }
         @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         .logo-container { margin-bottom: 15px; display: flex; justify-content: center; }
@@ -87,46 +116,54 @@
             width: 130px; 
             height: 130px; 
             border-radius: 50%; 
-            border: 4px solid var(--accent); 
+            border: 2px solid var(--glass-border); 
             padding: 4px; 
             object-fit: cover; 
-            background: var(--bg-container); 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
+            background: rgba(255,255,255,0.05); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease;
+        }
+        .logo-container img:hover {
+            transform: rotate(360deg) scale(1.05);
         }
         
         .main-title { 
-            color: var(--accent); 
+            color: var(--text-light); 
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
             margin: 0 0 25px 0; 
-            font-size: 30px; 
+            font-size: 34px; 
             font-weight: 800; 
-            letter-spacing: 0.5px;
+            letter-spacing: -0.5px;
         }
         
-        .member-img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 10px; border: 2px solid var(--accent); }
-        .detail-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 12px; border: 4px solid var(--accent); object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .member-img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 10px; border: 2px solid var(--glass-border); transition: transform 0.2s; }
+        .member-img:hover { transform: scale(1.2); }
+        .detail-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 12px; border: 2px solid var(--glass-border); object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
         .payment-info { 
-            background: rgba(19, 62, 47, 0.5); 
+            background: rgba(255, 255, 255, 0.02); 
             color: var(--text-light); 
             padding: 22px; 
-            border-radius: 14px; 
+            border-radius: 18px; 
             margin-bottom: 30px; 
-            border-left: 6px solid var(--accent); 
+            border: 1px solid var(--glass-border);
             text-align: left; 
             font-size: 15px; 
             line-height: 1.7; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: background 0.3s;
         }
+        .payment-info:hover { background: rgba(255, 255, 255, 0.04); }
         .payment-info strong { color: var(--accent); }
         
         .admin-bar { 
-            background: var(--primary-light); 
+            background: rgba(0, 0, 0, 0.2); 
             padding: 18px; 
-            border-radius: 14px; 
+            border-radius: 18px; 
             margin-bottom: 30px; 
-            border: 1px solid rgba(212, 175, 55, 0.1); 
+            border: 1px solid var(--glass-border); 
         }
         
+        /* 📊 গ্রাফিক্স কার্ড গ্রিড */
         .stats { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); 
@@ -135,18 +172,42 @@
         }
         
         .stat-card { 
-            background: linear-gradient(135deg, var(--primary-light), #1e5c47); 
+            background: rgba(255, 255, 255, 0.04); 
             color: white; 
             padding: 22px; 
-            border-radius: 14px; 
+            border-radius: 18px; 
             font-size: 18px; 
             font-weight: 600;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-            transition: transform 0.3s;
-            border: 1px solid rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .stat-card:hover { transform: translateY(-3px); }
-        .stat-card span { color: var(--accent); }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: 0.5s;
+        }
+        .stat-card:hover::before { left: 100%; }
+        .stat-card:hover { 
+            transform: translateY(-5px); 
+            background: rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255,255,255,0.25);
+        }
+        .stat-card span { color: var(--accent); font-size: 20px; font-weight: 700; }
+        
+        /* বর্তমান ব্যালেন্স কার্ডের জন্য স্পেশাল পালস অ্যানিমেশন */
+        .pulse-card {
+            animation: pulseGlow 3s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { border-color: var(--glass-border); box-shadow: 0 0 0 rgba(0,0,0,0); }
+            100% { border-color: rgba(46, 213, 115, 0.4); box-shadow: 0 0 15px rgba(46, 213, 115, 0.15); }
+        }
         
         .section { display: none; }
         .active { display: block; }
@@ -156,40 +217,49 @@
         #search-input { 
             width: 100%; 
             max-width: 320px; 
-            background: var(--primary-light);
-            border: 2px solid rgba(212, 175, 55, 0.2); 
-            padding: 10px 16px; 
-            border-radius: 10px; 
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border); 
+            padding: 12px 18px; 
+            border-radius: 14px; 
             font-size: 14px;
             color: var(--text-light);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
-        #search-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2); }
+        #search-input:focus { background: rgba(255, 255, 255, 0.12); outline: none; border-color: rgba(255,255,255,0.4); box-shadow: 0 0 10px rgba(255,255,255,0.1); }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14.5px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        th, td { border: 1px solid rgba(212, 175, 55, 0.15); padding: 14px; text-align: center; }
-        th { background: var(--primary); color: var(--accent); font-weight: 700; }
-        tr:nth-child(even) { background-color: rgba(19, 62, 47, 0.2); }
-        tr:hover { background-color: rgba(19, 62, 47, 0.4); transition: background 0.2s; }
+        /* 📊 গ্লাস টেবিল স্টাইল */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14.5px; border-radius: 18px; overflow: hidden; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--glass-border); }
+        th, td { border: 1px solid var(--glass-border); padding: 14px; text-align: center; }
+        th { background: var(--primary); color: #ffffff; font-weight: 700; backdrop-filter: blur(15px); }
+        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.01); }
+        tr { transition: background 0.2s ease; }
+        tr:hover { background-color: rgba(255, 255, 255, 0.05); }
         
         .pagination { margin: 25px 0; display: flex; justify-content: center; gap: 12px; align-items: center; }
-        .page-btn { background: var(--accent); color: var(--primary); border: none; padding: 9px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .page-btn:hover:not(:disabled) { background: #f1c40f; }
-        .page-btn:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; }
+        .page-btn { background: rgba(255, 255, 255, 0.08); color: white; border: 1px solid var(--glass-border); padding: 9px 18px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+        .page-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.2); }
+        .page-btn:active:not(:disabled) { transform: scale(0.95); }
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; transition: all 0.3s; margin: 3px; font-size: 13.5px; }
-        .btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .btn-wa { background: var(--whatsapp); font-size: 11px; padding: 6px 12px; color: white; }
-        input, select { padding: 11px; background: var(--primary-light); border: 1px solid rgba(212, 175, 55, 0.2); color: var(--text-light); border-radius: 9px; margin: 6px; width: 85%; max-width: 310px; font-size: 14px; }
-        input:focus, select:focus { border-color: var(--accent); outline: none; }
+        /* 🖱️ iOS বাটন অ্যাক্টিভিটি অ্যানিমেশন */
+        .btn { padding: 11px 20px; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; cursor: pointer; font-weight: bold; color: white; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); margin: 4px; font-size: 13.5px; }
+        .btn:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+        .btn:active { transform: scale(0.96); } /* বাটন চাপ দিলে ডাবানোর ইফেক্ট */
+        .btn-wa { background: var(--whatsapp); font-size: 11px; padding: 6px 12px; color: white; border: none; }
+        
+        /* ⌨️ iOS ডার্ক ইনপুট বক্স */
+        input, select { padding: 11px 16px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--glass-border); color: var(--text-light); border-radius: 12px; margin: 6px; width: 85%; max-width: 310px; font-size: 14px; transition: all 0.3s; }
+        input:focus, select:focus { background: rgba(0, 0, 0, 0.45); border-color: rgba(255,255,255,0.4); outline: none; box-shadow: 0 0 8px rgba(255,255,255,0.05); }
         ::placeholder { color: #94a3b8; }
         
-        .expense-table-container { margin-top: 40px; border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 25px; }
+        .expense-table-container { margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 25px; }
         #fine-note { font-size: 12.5px; margin-top: 6px; display: block; font-weight: 500; }
-        .status-badge { font-size: 11.5px; font-weight: 700; display: inline-block; margin-top: 6px; padding: 3px 8px; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid currentColor; }
         
-        h3 { color: var(--accent); font-size: 20px; font-weight: 700; text-align: left; margin-top: 30px; border-bottom: 2px solid var(--accent); padding-bottom: 6px; display: inline-block; }
-        hr { border: 0; border-top: 1px solid rgba(212, 175, 55, 0.15); margin: 25px 0; }
+        /* স্ট্যাটাস ব্যাজ */
+        .status-badge { font-size: 11.5px; font-weight: 700; display: inline-block; margin-top: 6px; padding: 4px 10px; border-radius: 9px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s; }
+        
+        h3 { color: var(--text-light); font-size: 21px; font-weight: 700; text-align: left; margin-top: 30px; border-bottom: 2px solid var(--glass-border); padding-bottom: 6px; display: inline-block; letter-spacing: -0.3px; }
+        hr { border: 0; border-top: 1px solid var(--glass-border); margin: 25px 0; }
     </style>
 </head>
 <body>
@@ -202,7 +272,7 @@
     <div class="header-rolling">
         <div class="rolling-text">
             <span class="name-green">Created by Ashiqur</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-            <span class="warning-red" id="display-notice">লোড হচ্ছে...</span>
+            <span class="warning-red" id="display-notice">로드 হচ্ছে...</span>
         </div>
     </div>
 
@@ -226,7 +296,7 @@
         <div id="admin-status">👤 মোড: <strong>সাধারণ সদস্য</strong></div>
         <div id="login-section" style="margin-top:15px;">
             <input type="password" id="login-input" placeholder="পাসওয়ার্ড লিখুন">
-            <button class="btn" style="background:var(--accent); color:var(--primary);" onclick="handleLogin()">লগইন</button>
+            <button class="btn" style="background: rgba(255,255,255,0.12); border: 1px solid var(--glass-border);" onclick="handleLogin()">লগইন</button>
         </div>
         <div id="logout-section" style="margin-top:15px; display:none;">
             <button class="btn" style="background:var(--danger);" onclick="handleLogout()">লগআউট</button>
@@ -236,44 +306,44 @@
     <div id="main-view" class="section active">
         <div class="stats">
             <div class="stat-card">সদস্য: <span id="total-members">০</span> জন</div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #133e2f, #1e5c47)">মোট জমা: <span id="total-fund">০</span> ৳</div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #7f1d1d, var(--danger))">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #1e293b, #334155)">বর্তমান ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
+            <div class="stat-card">মোট জমা: <span id="total-fund">০</span> ৳</div>
+            <div class="stat-card" style="background: rgba(255, 71, 87, 0.12);">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
+            <div class="stat-card pulse-card" style="background: rgba(46, 213, 115, 0.12);">বর্তমান ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
         </div>
 
         <div class="search-container">
             <input type="text" id="search-input" placeholder="বই নং বা নাম দিয়ে খুঁজুন..." onkeyup="filterMembers()">
         </div>
         
-        <div class="admin-only" id="admin-controls" style="background:var(--primary-light); padding:25px; border-radius:16px; margin-bottom:25px; border: 1px solid rgba(212, 175, 55, 0.2); text-align: left;">
+        <div class="admin-only" id="admin-controls" style="background:rgba(0,0,0,0.2); padding:25px; border-radius:20px; margin-bottom:25px; border: 1px solid var(--glass-border); text-align: left;">
             <div>
-                <h4 style="color:var(--accent); margin-top:0;">ডাউনলোড এবং ডাটা রিপোর্ট</h4>
+                <h4 style="color:var(--text-light); margin-top:0;">ডাউনলোড এবং ডাটা রিপোর্ট</h4>
                 <button class="btn" style="background:var(--pdf);" onclick="downloadPDF()">PDF ডাউনলোড</button>
                 <button class="btn" style="background:var(--excel);" onclick="downloadExcel()">Excel ডাউনলোড</button>
             </div>
             <hr>
             <div>
-                <h4 style="color:var(--accent);">নোটিশ আপডেট করুন (Rolling Text)</h4>
+                <h4 style="color:var(--text-light);">নোটিশ আপডেট করুন (Rolling Text)</h4>
                 <input type="text" id="notice-input" placeholder="নোটিশ এখানে লিখুন" style="width: 80%; max-width: 500px;">
                 <button class="btn" style="background:var(--edit);" onclick="updateNotice()">নোটিশ সেভ করুন</button>
             </div>
             <hr>
             <div>
-                <h4 style="color:var(--accent);">নতুন ব্যয় যোগ করুন</h4>
+                <h4 style="color:var(--text-light);">নতুন ব্যয় যোগ করুন</h4>
                 <input type="text" id="exp-reason" placeholder="ব্যয়ের কারণ (যেমন: ইফতার মাহফিল)">
                 <input type="number" id="exp-amount" placeholder="ব্যয়ের পরিমাণ">
                 <button class="btn" style="background:var(--danger);" onclick="addExpense()">ব্যয় সেভ করুন</button>
             </div>
             <hr>
             <div>
-                <h4 id="form-title" style="color:var(--accent);">সদস্য যোগ করুন</h4>
+                <h4 id="form-title" style="color:var(--text-light);">সদস্য যোগ করুন</h4>
                 <input type="text" id="m-acc" placeholder="হিসাব নং/বই নং">
                 <input type="text" id="m-name" placeholder="নাম">
                 <input type="text" id="m-phone" placeholder="মোবাইল">
                 <label style="display:block; font-size:13px; margin: 10px 0 5px 6px; font-weight: 600;">মেম্বার ছবি সিলেক্ট করুন:</label>
                 <input type="file" id="m-image" accept="image/*" style="width: 85%; max-width: 300px;">
                 <div id="btn-group" style="margin-top: 10px;">
-                    <button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMember()">যোগ করুন</button>
+                    <button class="btn" style="background: rgba(255,255,255,0.12); border: 1px solid var(--glass-border);" onclick="addMember()">যোগ করুন</button>
                 </div>
             </div>
         </div>
@@ -294,39 +364,39 @@
 
         <div class="expense-table-container">
             <div style="text-align: left;">
-                <h3 style="border-bottom-color: var(--danger);">ব্যয়ের বিস্তারিত বিবরণ</h3>
+                <h3>ব্যয়ের বিস্তারিত বিবরণ</h3>
             </div>
             <table>
                 <thead><tr><th>তারিখ</th><th>বিবরণ</th><th>পরিমাণ</th><th class="admin-th-action admin-only">অ্যাকশন</th></tr></thead>
                 <tbody id="expense-list-body"></tbody>
-                <tfoot><tr style="background:rgba(19, 62, 47, 0.4); font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense" style="color:var(--accent)">০</td><td class="admin-td-action admin-only"></td></tr></tfoot>
+                <tfoot><tr style="background:rgba(0,0,0,0.15); font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense" style="color:var(--accent)">০</td><td class="admin-td-action admin-only"></td></tr></tfoot>
             </table>
         </div>
     </div>
 
     <div id="member-detail-view" class="section">
         <div style="text-align: left;">
-            <button class="btn" style="background:#475569; margin-bottom:20px;" onclick="showMain()">← ফিরে যান</button>
+            <button class="page-btn" style="margin-bottom:20px;" onclick="showMain()">← ফিরে যান</button>
         </div>
         <div id="member-profile-header"></div>
-        <h2 id="detail-title" style="margin-top:0; color: var(--accent);"></h2>
+        <h2 id="detail-title" style="margin-top:0; color: var(--text-light);"></h2>
         
-        <div class="admin-only" id="entry-form-div" style="background:var(--primary-light); padding:25px; border-radius:16px; margin-bottom:25px; border: 1px solid rgba(212, 175, 55, 0.2); text-align: left;">
-            <h4 id="entry-form-title" style="color:var(--accent); margin-top:0;">নতুন এন্ট্রি যোগ করুন</h4>
+        <div class="admin-only" id="entry-form-div" style="background:rgba(0,0,0,0.2); padding:25px; border-radius:20px; margin-bottom:25px; border: 1px solid var(--glass-border); text-align: left;">
+            <h4 id="entry-form-title" style="color:var(--text-light); margin-top:0;">নতুন এন্ট্রি যোগ করুন</h4>
             <select id="e-month"></select>
             <input type="number" id="e-amount" placeholder="জমা" value="1000">
             <input type="number" id="e-extra" placeholder="অতিরিক্ত">
             <input type="number" id="e-fine" placeholder="জরিমানা">
             <div id="fine-note"></div>
             <div id="entry-btn-group" style="margin-top:15px;">
-                <button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMonthlyEntry()">সেভ করুন</button>
+                <button class="btn" style="background: rgba(255,255,255,0.12); border: 1px solid var(--glass-border);" onclick="addMonthlyEntry()">সেভ করুন</button>
             </div>
         </div>
 
         <table>
             <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only text-action-th">অ্যাকশন</th></tr></thead>
             <tbody id="entry-list-body"></tbody>
-            <tfoot><tr style="background:rgba(19, 62, 47, 0.4); font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display" style="color:var(--accent)">০</td><td class="admin-only text-action-td"></td></tr></tfoot>
+            <tfoot><tr style="background:rgba(0,0,0,0.2); font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display" style="color:var(--accent)">০</td><td class="admin-only text-action-td"></td></tr></tfoot>
         </table>
     </div>
 </div>
@@ -412,7 +482,7 @@
             fNote.innerHTML = "<span style='color:var(--danger)'>* ১০ তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
         } else {
             fInput.value = 0;
-            fNote.innerHTML = "<span style='color:#4ade80'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
+            fNote.innerHTML = "<span style='color:#2ed573'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
         }
     }
 
@@ -475,11 +545,11 @@
             let paidMonths = entries.length;
             let statusHtml = "";
             if (paidMonths > monthsPassed) {
-                statusHtml = `<span class="status-badge" style="color:#60a5fa;">অগ্রিম: ${paidMonths - monthsPassed} মাস</span>`;
+                statusHtml = `<span class="status-badge" style="color:#70a1ff; box-shadow: 0 0 10px rgba(112,161,255,0.2)">অগ্রিম: ${paidMonths - monthsPassed} মাস</span>`;
             } else if (paidMonths < monthsPassed) {
-                statusHtml = `<span class="status-badge" style="color:#f87171;">বকেয়া: ${monthsPassed - paidMonths} মাস</span>`;
+                statusHtml = `<span class="status-badge" style="color:#ff6b6b; box-shadow: 0 0 10px rgba(255,107,107,0.2)">বকেয়া: ${monthsPassed - paidMonths} মাস</span>`;
             } else {
-                statusHtml = `<span class="status-badge" style="color:#4ade80;">পরিশোধিত</span>`;
+                statusHtml = `<span class="status-badge" style="color:#2ed573; box-shadow: 0 0 10px rgba(46,213,115,0.2)">পরিশোধিত</span>`;
             }
 
             let userImg = m.image ? `<img src="${m.image}" class="member-img">` : `👤 `;
@@ -489,7 +559,7 @@
                 <td style="text-align:left;">${userImg} <strong>${m.name}</strong><br><small style="color:var(--text-muted);">${m.phone || ''}</small></td>
                 <td><strong>${pTotal} ৳</strong>${statusHtml}</td>
                 <td>
-                    <button class="btn" style="background:var(--primary-light); border:1px solid var(--accent);" onclick="viewMember(${originalIdx})">দেখুন</button>
+                    <button class="btn" style="background: rgba(255,255,255,0.08); border:1px solid var(--glass-border);" onclick="viewMember(${originalIdx})">দেখুন</button>
                     ${isAdmin ? `
                         <button class="btn" style="background:var(--edit); font-size:11px;" onclick="editMember(${originalIdx})">Edit</button>
                         <button class="btn" style="background:var(--danger); font-size:11px;" onclick="deleteMember(${originalIdx})">X</button>
@@ -619,14 +689,14 @@
     function resetMemberForm() {
         editIdx = null; document.getElementById('form-title').innerText = "সদস্য যোগ করুন";
         document.getElementById('m-acc').value = ''; document.getElementById('m-name').value = ''; document.getElementById('m-phone').value = '';
-        document.getElementById('btn-group').innerHTML = `<button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMember()">যোগ করুন</button>`;
+        document.getElementById('btn-group').innerHTML = `<button class="btn" style="background: rgba(255,255,255,0.12); border: 1px solid var(--glass-border);" onclick="addMember()">যোগ করুন</button>`;
     }
     function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i, 1); displayedMembers = [...members]; saveData(); } }
     function resetEntryForm() {
         entryEditIdx = null; document.getElementById('entry-form-title').innerText = "নতুন এন্ট্রি যোগ করুন";
         document.getElementById('e-amount').value='1000'; document.getElementById('e-extra').value=''; 
         checkFineCondition();
-        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background:var(--accent); color:var(--primary);" onclick="addMonthlyEntry()">সেভ করুন</button>`;
+        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background: rgba(255,255,255,0.12); border: 1px solid var(--glass-border);" onclick="addMonthlyEntry()">সেভ করুন</button>`;
     }
     function editEntry(i) {
         entryEditIdx = i; const e = members[currentIdx].entries[i];
