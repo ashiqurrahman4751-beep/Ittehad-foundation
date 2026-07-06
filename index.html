@@ -3,286 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আল ইত্তেহাদ ফাউন্ডেশন - ড্যাশবোর্ড (World Cup Premium Soft Edition)</title>
+    <title>আল ইত্তেহাদ ফাউন্ডেশন - iOS Premium Edition</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
         :root { 
-            /* 🇧🇷 সফট ব্রাজিল ফ্ল্যাগ থিম গ্লাস কালার প্যালেট (কম অপাসিটি) */
-            --bg-container: rgba(12, 38, 20, 0.25); /* অনেক হালকা ডিপ গ্রিন গ্লাস */
-            --primary: rgba(5, 24, 11, 0.5); 
-            --primary-light: rgba(255, 255, 255, 0.04); 
+            /* 📱 iOS আল্ট্রা-লাইট গ্লাস কালার প্যালেট */
+            --bg-container: rgba(20, 25, 22, 0.4); 
+            --card-inner: rgba(255, 255, 255, 0.03); 
             --accent: #fed100; 
-            --accent-light: rgba(254, 209, 0, 0.1); 
-            --danger: #ff4757; 
-            --edit: #ffa502; 
-            --whatsapp: #2ed573; 
-            --excel: #2ecc71; 
-            --pdf: #ff6b6b; 
+            --accent-blue: #007aff; 
+            --danger: #ff3b30; 
+            --edit: #ff9500; 
+            --whatsapp: #34c759; 
             --text-light: #ffffff;
-            --text-muted: #cbd5e1;
-            --glass-border: rgba(254, 209, 0, 0.15); /* বর্ডারের উজ্জ্বলতাও কমানো হয়েছে */
-            --ios-shadow: 0 20px 50px rgba(0, 20, 5, 0.4);
+            --text-muted: #a1a1aa;
+            --glass-border: rgba(255, 255, 255, 0.08); 
+            --apple-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
         }
         
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            /* 📱 হালকা ও সুদিং (Soothing) লিকুইড ব্যাকগ্রাউন্ড - অপাসিটি ও কালার কমানো হয়েছে */
-            background: linear-gradient(-45deg, #065423, #0a3a1d, #bda218, #0b2252, #041409);
-            background-size: 400% 400%;
-            animation: brazilAurora 22s ease infinite;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #041409 0%, #082412 50%, #051833 100%);
             background-attachment: fixed;
             color: var(--text-light);
             margin: 0; 
             padding: 0; 
-            direction: ltr; 
             min-height: 100vh;
             overflow-x: hidden;
         }
-
-        @keyframes brazilAurora {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
         
         .warning-bar { 
-            background: rgba(0, 20, 60, 0.3); 
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            color: white; 
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            color: #e5e5ea; 
             text-align: center; 
-            padding: 14px; 
-            font-weight: 600; 
+            padding: 12px; 
+            font-size: 14px;
+            font-weight: 500; 
             position: sticky; 
             top: 0; 
             z-index: 1000; 
             border-bottom: 1px solid var(--glass-border);
-            font-size: 15px;
         }
         
         .container { 
-            max-width: 1050px; 
+            max-width: 950px; 
             margin: 40px auto; 
             background: var(--bg-container); 
-            padding: 35px; 
-            border-radius: 28px; 
-            box-shadow: var(--ios-shadow); 
+            padding: 40px 30px; 
+            border-radius: 30px; 
+            box-shadow: var(--apple-shadow); 
             text-align: center; 
-            position: relative; 
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(40px); 
-            -webkit-backdrop-filter: blur(40px);
-            animation: AppContentFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes AppContentFadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            backdrop-filter: blur(50px); 
+            -webkit-backdrop-filter: blur(50px);
         }
         
         .header-rolling { 
             width: 100%; 
             overflow: hidden; 
-            background: rgba(255, 255, 255, 0.02); 
-            margin-bottom: 25px; 
+            background: rgba(0, 0, 0, 0.2); 
+            margin-bottom: 30px; 
             padding: 12px 0; 
-            border-radius: 14px; 
+            border-radius: 16px; 
             border: 1px solid var(--glass-border); 
         }
         
         .rolling-text { 
             display: inline-block; 
             white-space: nowrap; 
-            font-weight: bold; 
-            font-size: 15px; 
+            font-weight: 600; 
+            font-size: 14px; 
             color: var(--accent);
             animation: roll 25s linear infinite; 
         }
         
-        .warning-red { color: #ff7675; }
-        .name-green { color: #2ed573; font-weight: 800; }
+        .warning-red { color: #ff453a; }
+        .name-green { color: #34c759; }
         @keyframes roll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        /* ⚽ প্লেফুল ইউনিক ফুটবল কিক স্পিন লোগো ফিচার */
-        .logo-container { margin-bottom: 15px; display: flex; justify-content: center; }
+        .logo-container { margin-bottom: 20px; display: flex; justify-content: center; }
         .logo-container img { 
-            width: 130px; 
-            height: 130px; 
+            width: 120px; 
+            height: 120px; 
             border-radius: 50%; 
-            border: 2px solid var(--glass-border); 
+            border: 2px solid rgba(255, 255, 255, 0.2); 
             padding: 4px; 
             object-fit: cover; 
-            background: rgba(255,255,255,0.03); 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        /* মাউস নিলে ফুটবল কিকের মতো লাফিয়ে উঠে ওল্টা ঘুরবে */
         .logo-container img:hover {
-            transform: translateY(-15px) scale(1.08) rotate(-360deg);
-            border-color: var(--accent);
-            box-shadow: 0 15px 35px rgba(254, 209, 0, 0.3);
+            transform: translateY(-12px) scale(1.06) rotate(-360deg);
+            border-color: var(--accent-blue);
         }
         
         .main-title { 
             color: var(--text-light); 
-            text-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            margin: 0 0 25px 0; 
-            font-size: 34px; 
-            font-weight: 800; 
-            letter-spacing: -0.5px;
+            margin: 0 0 30px 0; 
+            font-size: 32px; 
+            font-weight: 700; 
         }
         
-        .member-img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 10px; border: 1px solid var(--glass-border); transition: transform 0.2s; }
-        .member-img:hover { transform: scale(1.2); }
-        .detail-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 12px; border: 1px solid var(--glass-border); object-fit: cover; }
+        .member-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 12px; border: 1px solid var(--glass-border); }
+        .detail-img { width: 110px; height: 110px; border-radius: 50%; margin-bottom: 15px; border: 2px solid var(--glass-border); object-fit: cover; }
 
-        .payment-info { 
+        .ios-card { 
             background: rgba(0, 0, 0, 0.15); 
             color: var(--text-light); 
-            padding: 22px; 
-            border-radius: 18px; 
+            padding: 24px; 
+            border-radius: 20px; 
             margin-bottom: 30px; 
             border: 1px solid var(--glass-border);
             text-align: left; 
             font-size: 15px; 
-            line-height: 1.7; 
+            line-height: 1.8; 
         }
-        .payment-info strong { color: var(--accent); }
+        .ios-card strong { color: var(--accent-blue); }
         
         .admin-bar { 
-            background: rgba(0, 0, 0, 0.2); 
-            padding: 18px; 
-            border-radius: 18px; 
-            margin-bottom: 30px; 
+            background: rgba(0, 0, 0, 0.25); 
+            padding: 20px; 
+            border-radius: 20px; 
+            margin-bottom: 35px; 
             border: 1px solid var(--glass-border); 
         }
         
         .stats { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); 
-            gap: 18px; 
-            margin-bottom: 30px; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 16px; 
+            margin-bottom: 35px; 
         }
         
         .stat-card { 
-            background: rgba(0, 0, 0, 0.18); 
-            color: white; 
+            background: rgba(255, 255, 255, 0.02); 
             padding: 22px; 
-            border-radius: 18px; 
-            font-size: 18px; 
-            font-weight: 600;
-            border: 1px solid rgba(254, 209, 0, 0.08);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 20px; 
+            font-size: 15px; 
+            font-weight: 500;
+            color: var(--text-muted);
+            border: 1px solid var(--glass-border);
+            text-align: left;
         }
-        .stat-card:hover { 
-            transform: translateY(-3px); 
-            background: rgba(0, 0, 0, 0.3); 
-            border-color: rgba(254, 209, 0, 0.3);
-        }
-        .stat-card span { color: var(--accent); font-size: 20px; font-weight: 700; }
-        
-        .pulse-card {
-            animation: brazilGlow 4s infinite alternate;
-        }
-        @keyframes brazilGlow {
-            0% { border-color: var(--glass-border); }
-            100% { border-color: rgba(0, 39, 118, 0.4); box-shadow: 0 0 15px rgba(0, 39, 118, 0.2); }
-        }
+        .stat-card span { color: var(--text-light); font-size: 24px; font-weight: 700; display: block; margin-top: 5px; }
         
         .section { display: none; }
         .active { display: block; }
         .admin-only { display: none; }
         
-        .search-container { margin-bottom: 25px; text-align: right; }
+        .search-container { margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
         #search-input { 
             width: 100%; 
             max-width: 320px; 
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.25);
             border: 1px solid var(--glass-border); 
-            padding: 12px 18px; 
+            padding: 12px 16px; 
             border-radius: 14px; 
             color: var(--text-light);
         }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14.5px; border-radius: 18px; overflow: hidden; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); }
-        th, td { border: 1px solid rgba(254, 209, 0, 0.08); padding: 14px; text-align: center; }
-        th { background: var(--primary); color: var(--accent); font-weight: 700; }
-        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.01); }
-        tr:hover { background-color: rgba(254, 209, 0, 0.03); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 15px; border-radius: 20px; overflow: hidden; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--glass-border); }
+        th, td { padding: 16px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        th { background: rgba(0, 0, 0, 0.3); color: var(--text-light); font-weight: 600; }
         
         .pagination { margin: 25px 0; display: flex; justify-content: center; gap: 12px; align-items: center; }
-        .page-btn { background: rgba(0, 0, 0, 0.2); color: white; border: 1px solid var(--glass-border); padding: 9px 18px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
-        .page-btn:hover:not(:disabled) { background: rgba(254, 209, 0, 0.1); border-color: var(--accent); }
-        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .page-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid var(--glass-border); padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        .page-btn:disabled { opacity: 0.2; cursor: not-allowed; }
 
-        /* 🇧🇷 ⚽ আল্ট্রা প্রিমিয়াম ব্রাজিল লিকুইড গ্লো বাটন ইফেক্ট */
         .btn { 
-            padding: 11px 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+            padding: 12px 22px; 
             border-radius: 14px; 
             cursor: pointer; 
-            font-weight: bold; 
+            font-weight: 600; 
             color: white; 
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            display: inline-block;
             margin: 4px; 
-            font-size: 13.5px; 
-            background: rgba(0, 50, 15, 0.4); /* বেস গ্রিন গ্লাস */
+            font-size: 14px; 
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
         }
-        /* বাটন হোভার করলে ব্রাজিলের নীল ও হলুদ আলোর ঢেউ (Neon Liquid Wave) */
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(254, 209, 0, 0.25), rgba(0, 39, 118, 0.4), transparent);
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            z-index: -1;
+        .btn-blue { background: var(--accent-blue) !important; border: none; }
+        .btn-wa { background: rgba(52, 199, 89, 0.2) !important; color: #34c759; border: 1px solid rgba(52, 199, 89, 0.3); font-size: 12px; padding: 6px 14px; }
+        .btn-info { background: rgba(0, 122, 255, 0.15) !important; color: #30a2ff; border: 1px solid rgba(0, 122, 255, 0.3); }
+        .btn-info:hover { background: var(--accent-blue) !important; color: white; }
+        
+        input, select, textarea { padding: 12px 16px; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--glass-border); color: var(--text-light); border-radius: 14px; margin: 6px; width: 85%; max-width: 310px; font-family: inherit; }
+        
+        .expense-table-container { margin-top: 45px; border-top: 1px solid var(--glass-border); padding-top: 30px; }
+        #fine-note { font-size: 13px; margin-top: 6px; display: block; color: var(--text-muted); }
+        .status-badge { font-size: 12px; font-weight: 600; display: inline-block; margin-top: 4px; padding: 4px 12px; border-radius: 10px; background: rgba(255,255,255,0.04); }
+        
+        h3 { color: var(--text-light); font-size: 22px; font-weight: 600; text-align: left; margin-top: 30px; }
+        hr { border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0; }
+
+        /* ✨ 📱 iOS প্রিমিয়াম মডাল (About Us পপ-আপ থিম) */
+        .ios-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .btn:hover { 
-            transform: translateY(-2px) scale(1.03); 
-            border-color: var(--accent);
-            box-shadow: 0 8px 20px rgba(4, 31, 13, 0.5);
+        .ios-modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
         }
-        .btn:hover::before {
-            left: 100%;
+        .ios-modal-card {
+            background: rgba(30, 40, 35, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 90%;
+            max-width: 550px;
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+            text-align: center;
+            transform: scale(0.85) translateY(30px);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .btn:active { transform: scale(0.97); }
-        
-        /* স্পেশাল বাটন কালার ওভাররাইড (কালার টোন সফট রাখা হয়েছে) */
-        .btn-wa { background: rgba(46, 213, 115, 0.3) !important; font-size: 11px; padding: 6px 12px; }
-        .btn-wa:hover { background: rgba(46, 213, 115, 0.5) !important; }
-        
-        input, select { padding: 11px 16px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--glass-border); color: var(--text-light); border-radius: 12px; margin: 6px; width: 85%; max-width: 310px; font-size: 14px; }
-        input:focus, select:focus { background: rgba(0, 0, 0, 0.4); border-color: var(--accent); outline: none; }
-        
-        .expense-table-container { margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 25px; }
-        #fine-note { font-size: 12.5px; margin-top: 6px; display: block; font-weight: 500; }
-        
-        .status-badge { font-size: 11.5px; font-weight: 700; display: inline-block; margin-top: 6px; padding: 4px 10px; border-radius: 9px; background: rgba(0,0,0,0.2); border: 1px solid rgba(254,209,0,0.1); }
-        
-        h3 { color: var(--text-light); font-size: 21px; font-weight: 700; text-align: left; margin-top: 30px; border-bottom: 2px solid var(--glass-border); padding-bottom: 6px; display: inline-block; }
-        hr { border: 0; border-top: 1px solid var(--glass-border); margin: 25px 0; }
+        .ios-modal-overlay.show .ios-modal-card {
+            transform: scale(1) translateY(0);
+        }
+        .modal-logo {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 2px solid var(--accent-blue); padding: 3px; margin-bottom: 15px;
+        }
+
+        /* 📜 স্ক্রোলযোগ্য আর্টিকেল কন্টেইনার এরিয়া */
+        .modal-scroll-area {
+            max-height: 280px; /* নির্দিষ্ট উচ্চতা যার পর স্ক্রোল হবে */
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        /* 🎨 কাস্টম মডার্ন স্ক্রোলবার স্টাইল */
+        .modal-scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-scroll-area::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+        .modal-scroll-area::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        .modal-scroll-area::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-blue);
+        }
     </style>
 </head>
 <body>
 
 <div class="warning-bar">
-    "আল্লাহ তায়ালা ব্যবসাকে করেছেন হালাল আর সুদকে করেছেন হারাম" (বাক্বারা-২৭৫)
+ "আল্লাহ তায়ালা ব্যবসাকে করেছেন হালাল আর সুদকে করেছেন হারাম" (বাক্বারা-২৭৫)
 </div>
 
 <div class="container">
     <div class="header-rolling">
         <div class="rolling-text">
             <span class="name-green">Created by Ashiqur</span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-            <span class="warning-red" id="display-notice">로드 হচ্ছে...</span>
+            <span class="warning-red" id="display-notice">লোড হচ্ছে...</span>
         </div>
     </div>
 
@@ -293,39 +287,44 @@
         <h1 class="main-title">আল ইত্তেহাদ ফাউন্ডেশন</h1>
     </div>
 
-    <div class="payment-info">
-        <h3>💳 পেমেন্ট তথ্য (টাকা প্রেরনের পর ক্যাশিয়ারকে জানান) </h3> <br>
+    <!-- পেমেন্ট ইনফো কার্ড -->
+    <div class="ios-card" style="border-left: 4px solid var(--accent-blue);">
+        <h3 style="margin-top: 0; color: var(--accent-blue);">💳 পেমেন্ট তথ্য (টাকা প্রেরনের পর ক্যাশিয়ারকে জানান)</h3>
         <strong>Bkash:</strong> 01941280332 <br>
         <strong>Bank:</strong> Islami Bank Bangladesh Plc <br>
-        <strong>Account No:</strong> 20507770239062717 <br>
-        <strong>Name:</strong> MD ASHIQUR RAHMAN <br>
+        <strong>Account No:</strong> Islami Bank Bangladesh Plc <br>
         <strong>Routing:</strong> 125270607
     </div>
 
+    <!-- লগইন কন্ট্রোল -->
     <div class="admin-bar">
         <div id="admin-status">👤 মোড: <strong>সাধারণ সদস্য</strong></div>
         <div id="login-section" style="margin-top:15px;">
             <input type="password" id="login-input" placeholder="পাসওয়ার্ড লিখুন">
-            <button class="btn" onclick="handleLogin()">লগইন</button>
+            <button class="btn btn-blue" onclick="handleLogin()">লগইন</button>
         </div>
         <div id="logout-section" style="margin-top:15px; display:none;">
-            <button class="btn" style="background:rgba(255, 71, 87, 0.4) !important;" onclick="handleLogout()">লগআউট</button>
+            <button class="btn" style="background:var(--danger) !important; border:none;" onclick="handleLogout()">লগআউট</button>
         </div>
     </div>
 
     <div id="main-view" class="section active">
+        <!-- স্ট্যাটাস কাউন্টার -->
         <div class="stats">
-            <div class="stat-card">সদস্য: <span id="total-members">০</span> জন</div>
-            <div class="stat-card">মোট জমা: <span id="total-fund">০</span> ৳</div>
-            <div class="stat-card" style="background: rgba(255, 71, 87, 0.08);">মোট ব্যয়: <span id="total-expense-display">০</span> ৳</div>
-            <div class="stat-card pulse-card" style="background: rgba(0, 39, 118, 0.12);">বর্তমান ব্যালেন্স: <span id="current-balance">০</span> ৳</div>
+            <div class="stat-card">সদস্য <span id="total-members">০</span></div>
+            <div class="stat-card">মোট জমা <span id="total-fund">০</span></div>
+            <div class="stat-card">মোট ব্যয় <span id="total-expense-display" style="color:var(--danger);">0</span></div>
+            <div class="stat-card">বর্তমান ব্যালেন্স <span id="current-balance" style="color:#34c759;">0</span></div>
         </div>
 
+        <!-- সার্চ বক্স ও আমাদের সম্পর্কে বাটন -->
         <div class="search-container">
             <input type="text" id="search-input" placeholder="বই নং বা নাম দিয়ে খুঁজুন..." onkeyup="filterMembers()">
+            <button class="btn btn-info" onclick="openAboutModal()">ℹ️ আমাদের সম্পর্কে (About Us)</button>
         </div>
         
-        <div class="admin-only" id="admin-controls" style="background:rgba(0,0,0,0.15); padding:25px; border-radius:20px; margin-bottom:25px; border: 1px solid var(--glass-border); text-align: left;">
+        <!-- 🔐 এডমিন কন্ট্রোল এরিয়া -->
+        <div class="admin-only" id="admin-controls" style="background:rgba(0,0,0,0.2); padding:25px; border-radius:20px; margin-bottom:25px; border: 1px solid var(--glass-border); text-align: left;">
             <div>
                 <h4 style="color:var(--text-light); margin-top:0;">ডাউনলোড এবং ডাটা রিপোর্ট</h4>
                 <button class="btn" onclick="downloadPDF()">PDF ডাউনলোড</button>
@@ -335,14 +334,20 @@
             <div>
                 <h4 style="color:var(--text-light);">নোটিশ আপডেট করুন (Rolling Text)</h4>
                 <input type="text" id="notice-input" placeholder="নোটিশ এখানে লিখুন" style="width: 80%; max-width: 500px;">
-                <button class="btn" onclick="updateNotice()">নোটিশ সেভ করুন</button>
+                <button class="btn btn-blue" onclick="updateNotice()">নোটিশ সেভ করুন</button>
+            </div>
+            <hr>
+            <div>
+                <h4 style="color:var(--text-light);">আমাদের সম্পর্কে আপডেট করুন (About Us)</h4>
+                <textarea id="about-input" placeholder="আমাদের সম্পর্কে তথ্য এখানে লিখুন..." style="width: 80%; max-width: 500px; height: 100px; resize: vertical;"></textarea><br>
+                <button class="btn btn-blue" onclick="updateAbout()">About Us সেভ করুন</button>
             </div>
             <hr>
             <div>
                 <h4 style="color:var(--text-light);">নতুন ব্যয় যোগ করুন</h4>
-                <input type="text" id="exp-reason" placeholder="ব্যয়ের কারণ (যেমন: ইফতার মাহফিল)">
+                <input type="text" id="exp-reason" placeholder="ব্যয়ের কারণ (তারিখ উল্লেখ করতে পারেন)">
                 <input type="number" id="exp-amount" placeholder="ব্যয়ের পরিমাণ">
-                <button class="btn" onclick="addExpense()">ব্যয় সেভ করুন</button>
+                <button class="btn btn-blue" onclick="addExpense()">ব্যয় সেভ করুন</button>
             </div>
             <hr>
             <div>
@@ -353,11 +358,12 @@
                 <label style="display:block; font-size:13px; margin: 10px 0 5px 6px; font-weight: 600;">মেম্বার ছবি সিলেক্ট করুন:</label>
                 <input type="file" id="m-image" accept="image/*" style="width: 85%; max-width: 300px;">
                 <div id="btn-group" style="margin-top: 10px;">
-                    <button class="btn" onclick="addMember()">যোগ করুন</button>
+                    <button class="btn btn-blue" onclick="addMember()">যোগ করুন</button>
                 </div>
             </div>
         </div>
 
+        <!-- মেম্বার লিস্ট টেবিল -->
         <div style="text-align: left;">
             <h3>সদস্য তালিকা</h3>
         </div>
@@ -366,24 +372,27 @@
             <tbody id="member-list-body"></tbody>
         </table>
         
+        <!-- পেজিনেশন -->
         <div class="pagination">
             <button class="page-btn" id="prevPage" onclick="changePage(-1)">Previous</button>
             <span id="pageInfo">Page 1</span>
             <button class="page-btn" id="nextPage" onclick="changePage(1)">Next</button>
         </div>
 
+        <!-- এক্সপেন্স টেবিল -->
         <div class="expense-table-container">
             <div style="text-align: left;">
                 <h3>ব্যয়ের বিস্তারিত বিবরণ</h3>
             </div>
             <table>
-                <thead><tr><th>তারিখ</th><th>বিবরণ</th><th>পরিমাণ</th><th class="admin-th-action admin-only">অ্যাকশন</th></tr></thead>
+                <thead><tr><th>তারিখ/বিবরণ</th><th>পরিমাণ</th><th class="admin-th-action admin-only">অ্যাকশন</th></tr></thead>
                 <tbody id="expense-list-body"></tbody>
-                <tfoot><tr style="background:rgba(0,0,0,0.15); font-weight:bold;"><td colspan="2" style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense" style="color:var(--accent)">০</td><td class="admin-td-action admin-only"></td></tr></tfoot>
+                <tfoot><tr style="background:rgba(0,0,0,0.2); font-weight:bold;"><td style="text-align:right">মোট ব্যয়:</td><td id="footer-total-expense" style="color:var(--accent)">০</td><td class="admin-td-action admin-only"></td></tr></tfoot>
             </table>
         </div>
     </div>
 
+    <!-- মেম্বারদের ইনডিভিজুয়াল ড্যাশবোর্ড স্ক্রিন -->
     <div id="member-detail-view" class="section">
         <div style="text-align: left;">
             <button class="page-btn" style="margin-bottom:20px;" onclick="showMain()">← ফিরে যান</button>
@@ -391,7 +400,7 @@
         <div id="member-profile-header"></div>
         <h2 id="detail-title" style="margin-top:0; color: var(--text-light);"></h2>
         
-        <div class="admin-only" id="entry-form-div" style="background:rgba(0,0,0,0.15); padding:25px; border-radius:20px; margin-bottom:25px; border: 1px solid var(--glass-border); text-align: left;">
+        <div class="admin-only" id="entry-form-div" style="background:rgba(0,0,0,0.2); padding:25px; border-radius:20px; margin-bottom:25px; border: 1px solid var(--glass-border); text-align: left;">
             <h4 id="entry-form-title" style="color:var(--text-light); margin-top:0;">নতুন এন্ট্রি যোগ করুন</h4>
             <select id="e-month"></select>
             <input type="number" id="e-amount" placeholder="জমা" value="1000">
@@ -399,19 +408,36 @@
             <input type="number" id="e-fine" placeholder="জরিমানা">
             <div id="fine-note"></div>
             <div id="entry-btn-group" style="margin-top:15px;">
-                <button class="btn" onclick="addMonthlyEntry()">সেভ করুন</button>
+                <button class="btn btn-blue" onclick="addMonthlyEntry()">সেভ করুন</button>
             </div>
         </div>
 
         <table>
             <thead><tr><th>মাস</th><th>জমা</th><th>অতিরিক্ত</th><th>জরিমানা</th><th>মোট</th><th class="admin-only text-action-th">অ্যাকশন</th></tr></thead>
             <tbody id="entry-list-body"></tbody>
-            <tfoot><tr style="background:rgba(0,0,0,0.15); font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display" style="color:var(--accent)">০</td><td class="admin-only text-action-td"></td></tr></tfoot>
+            <tfoot><tr style="background:rgba(0,0,0,0.2); font-weight:bold;"><td colspan="4" style="text-align:right">ব্যক্তিগত মোট:</td><td id="p-total-display" style="color:var(--accent)">০</td><td class="admin-only text-action-td"></td></tr></tfoot>
         </table>
     </div>
 </div>
 
+<!-- 📦 পপ-আপ মডাল উইন্ডো এলিমেন্ট (স্ক্রোল সুবিধাসহ) -->
+<div class="ios-modal-overlay" id="aboutModal" onclick="closeAboutModal(event)">
+    <div class="ios-modal-card" onclick="event.stopPropagation()">
+        <img src="logo.jpg?v=15" alt="Logo" class="modal-logo">
+        <h2 style="color: var(--accent); margin: 0 0 10px 0; font-size: 24px;">আল ইত্তেহাদ ফাউন্ডেশন</h2>
+        <h4 style="color: var(--accent-blue); margin: 0 0 15px 0; font-weight: 600;">📋 আমাদের লক্ষ্য ও উদ্দেশ্য</h4>
+        
+        <!-- আর্টিকেল স্ক্রোল এরিয়া -->
+        <div class="modal-scroll-area">
+            <p id="display-about" style="white-space: pre-line; line-height: 1.8; color: #f2f2f7; font-size: 15px; margin: 0;">লোড হচ্ছে...</p>
+        </div>
+        
+        <button class="btn btn-blue" style="width: 100%; max-width: 150px; margin: 0;" onclick="closeAboutModal(null)">ঠিক আছে</button>
+    </div>
+</div>
+
 <script>
+    // আপনার ফায়ারবেস রিয়েলটাইম ডাটাবেস URL
     const dbURL = "https://ittehad2-db-49332-default-rtdb.firebaseio.com/.json"; 
     const _secret = "QXNoaWtANDc1MQ=="; 
     let isAdmin = false;
@@ -425,6 +451,7 @@
     let currentPage = 1;
     const membersPerPage = 10;
     let rollingNotice = "⚠️সতর্কবার্তা: ১০ তারিখের মধ্যে টাকা পরিশোধ করুন অন্যথায় ২০০ টাকা জরিমানা দিতে হবে";
+    let aboutText = "আল ইত্তেহাদ ফাউন্ডেশন একটি অলাভজনক ও ভবিষ্যৎমুখী তহবিল গঠনকারী প্রতিষ্ঠান। আমাদের মূল লক্ষ্য সদস্যদের পারস্পরিক কল্যাণ ও অর্থনৈতিক স্বনির্ভরতা অর্জন করা।";
 
     function checkLogin() {
         if (localStorage.getItem("isLoggedIn") === "true") { setAdminUI(true); }
@@ -452,6 +479,7 @@
         if (currentIdx !== null) renderEntries();
     }
 
+    // ব্যাকএন্ড ফায়ারবেস থেকে ডেটা ফেচ করা
     async function fetchData() {
         try {
             const response = await fetch(dbURL);
@@ -462,14 +490,21 @@
                 displayedMembers = [...members];
                 expenses = data.expenses || []; 
                 totalExpense = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+                
                 rollingNotice = data.notice || rollingNotice;
                 document.getElementById('display-notice').innerText = rollingNotice;
                 document.getElementById('notice-input').value = rollingNotice;
+
+                // ব্যাকএন্ড থেকে About Us ডেটা রিড করা
+                aboutText = data.about || aboutText;
+                document.getElementById('display-about').innerText = aboutText;
+                document.getElementById('about-input').value = aboutText;
             }
             renderMain();
         } catch (e) { console.error("Error fetching data:", e); }
     }
 
+    // ব্যাকএন্ডে সম্পূর্ণ ডেটা রাইট/সেভ করা 
     async function saveData() {
         totalExpense = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
         await fetch(dbURL, { 
@@ -477,10 +512,19 @@
             body: JSON.stringify({ 
                 members: members, 
                 expenses: expenses, 
-                notice: rollingNotice 
+                notice: rollingNotice,
+                about: aboutText
             }) 
         });
         renderMain();
+    }
+
+    // পপ-আপ কন্ট্রোল ফাংশন
+    function openAboutModal() {
+        document.getElementById('aboutModal').classList.add('show');
+    }
+    function closeAboutModal(e) {
+        document.getElementById('aboutModal').classList.remove('show');
     }
 
     function checkFineCondition() {
@@ -492,7 +536,7 @@
             fNote.innerHTML = "<span style='color:var(--danger)'>* ১০ তারিখ পার হওয়ায় ২০০ টাকা জরিমানা যুক্ত হয়েছে।</span>";
         } else {
             fInput.value = 0;
-            fNote.innerHTML = "<span style='color:#2ed573'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
+            fNote.innerHTML = "<span style='color:#34c759'>* ১০ তারিখের মধ্যে আছেন, জরিমানা নেই।</span>";
         }
     }
 
@@ -527,6 +571,7 @@
         alert("সদস্য যোগ হয়েছে!");
     }
 
+    // ফ্রন্টএন্ড ভিউ রেন্ডারিং এবং গণনা
     function renderMain() {
         const body = document.getElementById('member-list-body');
         const expBody = document.getElementById('expense-list-body');
@@ -547,7 +592,7 @@
         const start = (currentPage - 1) * membersPerPage;
         const paginated = displayedMembers.slice(start, start + membersPerPage);
         
-        paginated.forEach((m, i) => {
+        paginated.forEach((m) => {
             const originalIdx = members.indexOf(m);
             let entries = m.entries || [];
             let pTotal = entries.reduce((acc, curr) => acc + (Number(curr.amount || 0) + Number(curr.extra || 0) + Number(curr.fine || 0)), 0);
@@ -557,9 +602,9 @@
             if (paidMonths > monthsPassed) {
                 statusHtml = `<span class="status-badge" style="color:#70a1ff;">অগ্রিম: ${paidMonths - monthsPassed} মাস</span>`;
             } else if (paidMonths < monthsPassed) {
-                statusHtml = `<span class="status-badge" style="color:#ff6b6b;">বকেয়া: ${monthsPassed - paidMonths} মাস</span>`;
+                statusHtml = `<span class="status-badge" style="color:#ff3b30;">বকেয়া: ${monthsPassed - paidMonths} মাস</span>`;
             } else {
-                statusHtml = `<span class="status-badge" style="color:#2ed573;">পরিশোধিত</span>`;
+                statusHtml = `<span class="status-badge" style="color:#34c759;">পরিশোধিত</span>`;
             }
 
             let userImg = m.image ? `<img src="${m.image}" class="member-img">` : `👤 `;
@@ -571,15 +616,15 @@
                 <td>
                     <button class="btn" onclick="viewMember(${originalIdx})">দেখুন</button>
                     ${isAdmin ? `
-                        <button class="btn" style="background:rgba(255, 165, 2, 0.4) !important; font-size:11px;" onclick="editMember(${originalIdx})">Edit</button>
-                        <button class="btn" style="background:rgba(255, 71, 87, 0.4) !important; font-size:11px;" onclick="deleteMember(${originalIdx})">X</button>
+                        <button class="btn" style="background:rgba(255, 149, 0, 0.25) !important; color:var(--edit); font-size:11px;" onclick="editMember(${originalIdx})">Edit</button>
+                        <button class="btn" style="background:rgba(255, 59, 48, 0.25) !important; color:var(--danger); font-size:11px;" onclick="deleteMember(${originalIdx})">X</button>
                     ` : ''}
                 </td>
             </tr>`;
         });
 
         expenses.forEach((e, i) => {
-            expBody.innerHTML += `<tr><td>${e.date}</td><td style="text-align:left">${e.reason}</td><td>${e.amount} ৳</td><td class="admin-only" style="display:${isAdmin ? 'table-cell' : 'none'}">${isAdmin ? `<button class="btn" style="background:rgba(255, 71, 87, 0.4) !important; font-size:11px;" onclick="deleteExpense(${i})">X</button>` : ''}</td></tr>`;
+            expBody.innerHTML += `<tr><td style="text-align:left">${e.reason} (${e.date || ''})</td><td>${e.amount} ৳</td><td class="admin-only" style="display:${isAdmin ? 'table-cell' : 'none'}">${isAdmin ? `<button class="btn" style="background:rgba(255, 59, 48, 0.25) !important; color:var(--danger); font-size:11px;" onclick="deleteExpense(${i})">X</button>` : ''}</td></tr>`;
         });
 
         document.getElementById('total-members').innerText = members.length;
@@ -627,9 +672,9 @@
             body.innerHTML += `<tr>
                 <td>${e.month}</td><td>${e.amount}</td><td>${e.extra}</td><td>${e.fine}</td><td>${rowSum}</td>
                 <td class="admin-only" style="display:${isAdmin ? 'table-cell' : 'none'}">
-                    <button class="btn btn-wa" onclick="sendWA('${m.phone}', '${m.name}', '${e.month}', ${rowSum})">WA</button>
-                    <button class="btn" style="background:rgba(255, 165, 2, 0.4) !important; font-size:11px;" onclick="editEntry(${i})">Edit</button>
-                    <button class="btn" style="background:rgba(255, 71, 87, 0.4) !important; font-size:11px;" onclick="deleteEntry(${i})">X</button>
+                    <button class="btn btn-wa" onclick="sendWA('${m.phone}', '${m.name}', '${e.month}', ${rowSum})">WhatsApp</button>
+                    <button class="btn" style="background:rgba(255, 149, 0, 0.25) !important; color:var(--edit); font-size:11px;" onclick="editEntry(${i})">Edit</button>
+                    <button class="btn" style="background:rgba(255, 59, 48, 0.25) !important; color:var(--danger); font-size:11px;" onclick="deleteEntry(${i})">X</button>
                 </td>
             </tr>`;
         });
@@ -654,11 +699,19 @@
         members[currentIdx].entries.push(entry);
         saveData(); renderEntries(); resetEntryForm();
     }
+    
     function updateNotice() {
         rollingNotice = document.getElementById('notice-input').value;
         document.getElementById('display-notice').innerText = rollingNotice;
         saveData(); alert("নোটিশ সেভ হয়েছে");
     }
+
+    function updateAbout() {
+        aboutText = document.getElementById('about-input').value;
+        document.getElementById('display-about').innerText = aboutText;
+        saveData(); alert("About Us সেভ হয়েছে");
+    }
+
     function addExpense() {
         const reason = document.getElementById('exp-reason').value;
         const amount = document.getElementById('exp-amount').value;
@@ -676,8 +729,8 @@
         document.getElementById('m-name').value = m.name;
         document.getElementById('m-phone').value = m.phone || '';
         document.getElementById('btn-group').innerHTML = `
-            <button class="btn" style="background:rgba(255, 165, 2, 0.4) !important;" onclick="updateMember()">তথ্য ও ছবি আপডেট করুন</button>
-            <button class="btn" style="background:rgba(255,255,255,0.1) !important;" onclick="resetMemberForm()">বাতিল</button>
+            <button class="btn btn-blue" onclick="updateMember()">তথ্য ও ছবি আপডেট করুন</button>
+            <button class="btn" style="background:rgba(255,255,255,0.05) !important;" onclick="resetMemberForm()">বাতিল</button>
         `;
         window.scrollTo({ top: document.getElementById('admin-controls').offsetTop, behavior: 'smooth' });
     }
@@ -699,27 +752,28 @@
     function resetMemberForm() {
         editIdx = null; document.getElementById('form-title').innerText = "সদস্য যোগ করুন";
         document.getElementById('m-acc').value = ''; document.getElementById('m-name').value = ''; document.getElementById('m-phone').value = '';
-        document.getElementById('btn-group').innerHTML = `<button class="btn" onclick="addMember()">যোগ করুন</button>`;
+        document.getElementById('btn-group').innerHTML = `<button class="btn btn-blue" onclick="addMember()">যোগ করুন</button>`;
     }
     function deleteMember(i) { if(confirm("ডিলিট করবেন?")) { members.splice(i, 1); displayedMembers = [...members]; saveData(); } }
     function resetEntryForm() {
         entryEditIdx = null; document.getElementById('entry-form-title').innerText = "নতুন এন্ট্রি যোগ করুন";
         document.getElementById('e-amount').value='1000'; document.getElementById('e-extra').value=''; 
         checkFineCondition();
-        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" onclick="addMonthlyEntry()">সেভ করুন</button>`;
+        document.getElementById('entry-btn-group').innerHTML = `<button class="btn btn-blue" onclick="addMonthlyEntry()">সেভ করুন</button>`;
     }
     function editEntry(i) {
         entryEditIdx = i; const e = members[currentIdx].entries[i];
         document.getElementById('entry-form-title').innerText = "এন্ট্রি সংশোধন";
         document.getElementById('e-month').value = e.month; document.getElementById('e-amount').value = e.amount;
         document.getElementById('e-extra').value = e.extra; document.getElementById('e-fine').value = e.fine;
-        document.getElementById('entry-btn-group').innerHTML = `<button class="btn" style="background:rgba(255, 165, 2, 0.4) !important;" onclick="updateEntry()">আপডেট</button> <button class="btn" style="background:rgba(255,255,255,0.1) !important;" onclick="resetEntryForm()">বাতিল</button>`;
+        document.getElementById('entry-btn-group').innerHTML = `<button class="btn btn-blue" onclick="updateEntry()">আপডেট</button> <button class="btn" style="background:rgba(255,255,255,0.05) !important;" onclick="resetEntryForm()">বাতিল</button>`;
     }
     function updateEntry() {
         members[currentIdx].entries[entryEditIdx] = { month: document.getElementById('e-month').value, amount: Number(document.getElementById('e-amount').value), extra: Number(document.getElementById('e-extra').value), fine: Number(document.getElementById('e-fine').value) };
         saveData(); renderEntries(); resetEntryForm();
     }
     function deleteEntry(i) { if(confirm("ডিলিট করবেন?")) { members[currentIdx].entries.splice(i, 1); saveData(); renderEntries(); } }
+    
     function filterMembers() {
         const query = document.getElementById('search-input').value.toLowerCase();
         displayedMembers = members.filter(m => (m.name.toLowerCase().includes(query)) || (m.acc && m.acc.includes(query)));
@@ -727,6 +781,7 @@
     }
     function showMain() { currentIdx = null; document.getElementById('member-detail-view').classList.remove('active'); document.getElementById('main-view').classList.add('active'); renderMain(); }
     function changePage(step) { currentPage += step; renderMain(); }
+    
     function sendWA(phone, name, month, total) {
         let cleanPhone = phone.replace(/\D/g, ''); if(!cleanPhone.startsWith('88')) cleanPhone = '88' + cleanPhone;
         let msg = `সম্মানিত ${name}, আল ইত্তেহাদ ফাউন্ডেশনে আপনার ${month} মাসের মোট ${total} টাকা জমা হয়েছে। ধন্যবাদ।`;
